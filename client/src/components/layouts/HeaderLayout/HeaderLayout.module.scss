@@ -1,0 +1,12 @@
+@import "styles/variables";
+
+.headerMain {
+	padding: $spacing-5 0;
+	.imgHeader {
+		height: 46px;
+	}
+	.buttonHeader {
+		cursor: pointer;
+		width: 28px;
+	}
+}
