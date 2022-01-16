@@ -1,0 +1,42 @@
+@import "styles/variables";
+
+.postTrendingItem {
+  display: flex;
+  justify-content: space-between;
+
+  & + & {
+    margin-top: 3rem;
+  }
+
+  .postBody {
+    width: 65%;
+    margin-right: 2.3rem;
+    font-size: 1.6rem;
+    display: flex;
+    flex-direction: column;
+
+    .postContent {
+      flex-grow: 1;
+    }
+
+    .postTitle {
+      font-weight: 600;
+    }
+
+    .postDes {
+      color: $text-title-color;
+      line-height: 2.4rem;
+      margin-top: 1.5rem;
+    }
+  }
+
+  .postImg {
+    width: 35%;
+
+    img {
+      width: 20.9rem;
+      height: 19.7rem;
+      border-radius: 2.5rem;
+    }
+  }
+}

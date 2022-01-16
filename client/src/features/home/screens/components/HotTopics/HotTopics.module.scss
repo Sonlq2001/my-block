@@ -1,0 +1,49 @@
+@import "styles/variables";
+
+.hotTopicsBg {
+  max-width: 153.7rem;
+  margin: 0 auto;
+  margin-top: 11.2rem;
+  border-radius: 4rem;
+  padding: 7rem 0;
+  background-color: $bg-gray;
+
+  .hotTopicHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    .carouselNavigation {
+      .carouselBtn {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+        background-color: $white-color;
+        border: 1.5px solid $gray2-color;
+
+        i {
+          font-size: 1.5rem;
+        }
+
+        &:hover {
+          border: 1.5px solid $gray3-color;
+        }
+      }
+    }
+    .carouselBtn:nth-child(2) {
+      margin-left: 0.8rem;
+    }
+  }
+
+  .carouselHotTopic {
+    margin-top: 7rem;
+
+    .carouselGroup {
+      width: 100%;
+      flex-wrap: nowrap;
+      display: flex;
+      overflow: hidden;
+      transition: 0.3s ease-in-out;
+    }
+  }
+}

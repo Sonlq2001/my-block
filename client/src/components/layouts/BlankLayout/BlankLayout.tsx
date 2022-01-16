@@ -1,14 +1,5 @@
-import { memo } from "react";
-import { Layout } from "antd";
-
-const { Content } = Layout;
-
-const BlankLayout: React.FC = ({ children }) => {
-	return (
-		<Layout>
-			<Content>{children}</Content>
-		</Layout>
-	);
+const BlankLayout = () => {
+  return <div>blank</div>;
 };
 
-export default memo(BlankLayout);
+export default BlankLayout;

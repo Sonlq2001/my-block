@@ -1,35 +1,52 @@
-import { Row, Col } from "antd";
-import { Link } from "react-router-dom";
-import Button from "components/atoms/Button/Button";
+import clsx from "clsx";
 
-import styleHeader from "./HeaderLayout.module.scss";
 import Logo from "assets/images/logo.png";
 import { ReactComponent as IconSun } from "assets/images/icon-sun.svg";
 
-const HeaderLayout = () => {
-	return (
-		<div>
-			<Row
-				justify="space-between"
-				align="middle"
-				className={styleHeader.headerMain}
-			>
-				<Col>
-					<Link to="/">
-						<img src={Logo} alt="" className={styleHeader.imgHeader} />
-					</Link>
-				</Col>
+import styles from "./HeaderLayout.module.scss";
 
-				<Col>
-					<Button>
-						<div className={styleHeader.buttonHeader}>
-							<IconSun />
-						</div>
-					</Button>
-				</Col>
-			</Row>
-		</div>
-	);
+const HeaderLayout = () => {
+  return (
+    <header className={styles.headerGroup}>
+      <div className={styles.headerLogo}>
+        <img src={Logo} alt="logo" />
+      </div>
+
+      <ul className={styles.headerNav}>
+        <li className="header-li">
+          <a href="as" className={styles.headerLink}>
+            Home
+          </a>
+        </li>
+        <li className="header-li">
+          <a href="as" className={styles.headerLink}>
+            About
+          </a>
+        </li>
+        <li className="header-li">
+          <a href="as" className={styles.headerLink}>
+            Blog
+          </a>
+        </li>
+      </ul>
+
+      <div className={styles.headerOption}>
+        <button className={styles.headerBtn}>
+          <IconSun className={styles.headerOptionIcon} />
+        </button>
+
+        <button className={styles.headerBtn}>
+          <span
+            className={clsx(styles.headerOptionIcon, styles.headerIconSearch)}
+          >
+            <i className="las la-search" />
+          </span>
+        </button>
+
+        <button className={styles.btnLogin}>Sign up</button>
+      </div>
+    </header>
+  );
 };
 
 export default HeaderLayout;

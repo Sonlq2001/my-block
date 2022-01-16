@@ -1,16 +1,16 @@
 import React from "react";
-import { Layout } from "antd";
 
-import HeaderLayout from "components/layouts/HeaderLayout/HeaderLayout";
-import styleDefaultLayout from "./DefaultLayout.module.scss";
+import HeaderLayout from "../../components/layouts/HeaderLayout/HeaderLayout";
 
 const DefaultLayout: React.FC = ({ children }) => {
-	return (
-		<Layout className={styleDefaultLayout.container}>
-			<HeaderLayout />
-			<div>{children}</div>
-		</Layout>
-	);
+  return (
+    <div className="">
+      <div className="container">
+        <HeaderLayout />
+      </div>
+      {children}
+    </div>
+  );
 };
 
 export default DefaultLayout;

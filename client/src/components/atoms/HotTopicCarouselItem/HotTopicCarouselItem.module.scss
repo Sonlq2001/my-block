@@ -1,0 +1,58 @@
+@import "styles/variables";
+
+.carouselItem {
+  min-width: 20%;
+  margin: 0 1.5rem;
+
+  &:nth-child(1) {
+    margin-left: 0;
+  }
+
+  &:nth-child(5) {
+    margin-right: 0;
+  }
+
+  .carouselHeader {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.5rem;
+
+    img {
+      width: 100%;
+      height: 32.3rem;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transition: 0.3s ease-out;
+    }
+  }
+
+  &:hover .carouselHeader::after {
+    opacity: 1;
+  }
+
+  .carouselBody {
+    .carouselTitle {
+      font: {
+        size: 1.8rem;
+        weight: 600;
+      }
+      margin: 2.3rem 0 1.5rem 0;
+    }
+
+    .carouselDes {
+      font-size: 1.4rem;
+      color: $text-title-color;
+    }
+  }
+}

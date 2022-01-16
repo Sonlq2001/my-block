@@ -1,16 +1,39 @@
 * {
-	padding: 0;
-	margin: 0;
-	box-sizing: border-box;
-}
-body {
-	background-color: rgba(17, 24, 39, 1);
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-.ant-layout {
-	background-color: transparent;
+html {
+  font-size: 62.5%;
+  font-family: "Poppins", sans-serif;
+  line-height: 1.5rem;
 }
 
-.ant-layout-header {
-	padding: 0;
+.container {
+  width: 1280px;
+  margin: 0 auto;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+img {
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+  object-fit: cover;
 }

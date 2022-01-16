@@ -1,0 +1,47 @@
+@import "styles/variables";
+
+.trendingGroup {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 7rem;
+
+  // post main trending
+  .postMain {
+    width: 50%;
+
+    .postHeader {
+      position: relative;
+
+      img {
+        border-radius: 2.7rem;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 47.1rem;
+      }
+    }
+
+    .postBody {
+      padding-top: 74.9%;
+      margin-top: 3.6rem;
+
+      .postTitle {
+        font-size: 2.4rem;
+        line-height: 3.2rem;
+      }
+
+      .postDes {
+        margin: 2rem 0 2rem 0;
+        font-size: 1.6rem;
+        line-height: 2.4rem;
+        color: $text-title-color;
+      }
+    }
+  }
+
+  .postItemGroup {
+    width: 50%;
+    margin-left: 2.7rem;
+  }
+}

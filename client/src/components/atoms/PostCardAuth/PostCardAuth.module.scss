@@ -1,0 +1,41 @@
+@import "styles/variables";
+
+.authGroup {
+  display: flex;
+  align-items: center;
+
+  .authInfo {
+    img {
+      border-radius: 50%;
+      width: 2.8rem;
+      height: 2.8rem;
+    }
+
+    .authInfoName {
+      font-size: 1.2rem;
+      font-weight: 600;
+      padding-left: 1.5rem;
+    }
+  }
+
+  .dot {
+    position: relative;
+    padding: 0 1rem;
+
+    &::after {
+      content: "";
+      top: 50%;
+      left: 50%;
+      transform: translateY(-50%, -50%);
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background-color: $text-color;
+    }
+  }
+
+  .postTime {
+    font-size: 1.2rem;
+    color: $text-title-color;
+  }
+}
