@@ -1,0 +1,23 @@
+.newsletter {
+	margin-top: 11.2rem;
+	display: flex;
+	justify-content: space-between;
+
+	.newsletterLeft {
+		width: 40%;
+		margin: 7rem 4rem 0 0;
+
+		.listNote {
+			margin-top: 4.4rem;
+		}
+
+		.listNoteItem {
+			display: flex;
+			font-size: 1.4rem;
+		}
+	}
+
+	.newsletterRight {
+		width: 60%;
+	}
+}
