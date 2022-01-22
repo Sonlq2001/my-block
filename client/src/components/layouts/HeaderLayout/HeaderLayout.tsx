@@ -1,11 +1,14 @@
+import React from "react";
 import clsx from "clsx";
+import { Link } from "react-router-dom";
 
 import Logo from "assets/images/logo.png";
 import { ReactComponent as IconSun } from "assets/images/icon-sun.svg";
+import Button from "components/atoms/Button/Button";
 
 import styles from "./HeaderLayout.module.scss";
 
-const HeaderLayout = () => {
+const HeaderLayout: React.FC = () => {
   return (
     <header className={styles.headerGroup}>
       <div className={styles.headerLogo}>
@@ -14,19 +17,19 @@ const HeaderLayout = () => {
 
       <ul className={styles.headerNav}>
         <li className="header-li">
-          <a href="as" className={styles.headerLink}>
+          <Link to="/" className={styles.headerLink}>
             Home
-          </a>
+          </Link>
         </li>
         <li className="header-li">
-          <a href="as" className={styles.headerLink}>
+          <Link to="/about" className={styles.headerLink}>
             About
-          </a>
+          </Link>
         </li>
         <li className="header-li">
-          <a href="as" className={styles.headerLink}>
+          <Link to="/abcasdf" className={styles.headerLink}>
             Blog
-          </a>
+          </Link>
         </li>
       </ul>
 
@@ -43,7 +46,7 @@ const HeaderLayout = () => {
           </span>
         </button>
 
-        <button className={styles.btnLogin}>Sign up</button>
+        <Button title="Login" />
       </div>
     </header>
   );

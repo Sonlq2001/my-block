@@ -1,0 +1,17 @@
+.latestArticles {
+  margin-top: 11.2rem;
+
+  .latestArticlesHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .carouselGroup {
+    margin-top: 7rem;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    height: 41.4rem;
+  }
+}

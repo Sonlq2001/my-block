@@ -1,4 +1,4 @@
-// import React from 'react'
+import { Link } from "react-router-dom";
 
 import TitleMain from "components/atoms/TitleMain/TitleMain";
 import { ReactComponent as IconTrending } from "assets/images/trending.svg";
@@ -24,14 +24,16 @@ const TrendingPosts = () => {
           </div>
 
           <div className={styles.postBody}>
-            <h3 className={styles.postTitle}>Eum delectus in minima rem</h3>
+            <h3 className={styles.postTitle}>
+              <Link to="/post/123">Eum delectus in minima rem</Link>
+            </h3>
             <p className={styles.postDes}>
               It has survived not only five centuries, but also the leap into
               electronic typesetting, remaining essentially unchanged. It was
               popularised in the
             </p>
 
-            <PostCardAuth />
+            <PostCardAuth auth="sonel" />
           </div>
 
           <div className="post-footer"></div>

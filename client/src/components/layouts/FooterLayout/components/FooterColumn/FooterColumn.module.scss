@@ -1,0 +1,26 @@
+@import "styles/variables";
+
+.footerColumn {
+  width: 20%;
+
+  .footerLogo {
+    img {
+      width: 8rem;
+    }
+  }
+
+  .listFooter {
+    margin-top: 3rem;
+
+    .linkFooter {
+      font-size: 1.4rem;
+      line-height: 2rem;
+      color: $text-color;
+      display: inline-block;
+    }
+
+    .itemFooter + .itemFooter {
+      margin-top: 1.7rem;
+    }
+  }
+}

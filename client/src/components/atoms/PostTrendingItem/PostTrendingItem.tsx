@@ -17,7 +17,7 @@ const PostTrendingItem: React.FC = () => {
           </p>
         </div>
 
-        <PostCardAuth />
+        <PostCardAuth auth="sonel" />
       </div>
       <div className={styles.postImg}>
         <img

@@ -1,0 +1,36 @@
+@import "styles/variables";
+
+.postHeader {
+  padding: 11rem;
+  background-color: $post-header-color;
+  position: relative;
+  overflow: hidden;
+
+  .postBg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 33%;
+
+    img {
+      height: 100%;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 50%;
+      height: 100%;
+      top: 0;
+      left: -6rem;
+      bottom: 0;
+      right: 0;
+      background-image: linear-gradient(
+        to left,
+        transparent,
+        $post-header-color
+      );
+    }
+  }
+}

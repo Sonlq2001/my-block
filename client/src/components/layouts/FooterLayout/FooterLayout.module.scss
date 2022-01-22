@@ -1,0 +1,11 @@
+@import "styles/variables";
+
+.footer {
+  border-top: 1px solid $gray5-color;
+  padding: 11.2rem 0;
+  margin-top: 6.5rem;
+
+  .footerGroup {
+    display: flex;
+  }
+}

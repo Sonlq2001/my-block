@@ -1,11 +1,18 @@
-import { memo } from "react";
+import React, { memo } from "react";
 
-// import styleButton from "./Button.module.scss";
+import styles from "./Button.module.scss";
 
-const Button = ({ ...rest }) => {
-  const buttonContent = <div>button</div>;
+interface ButtonProps {
+  title: string;
+  onClick?: () => void;
+}
 
-  return buttonContent;
+const Button: React.FC<ButtonProps> = ({ title, ...rest }) => {
+  return (
+    <button className={styles.btnLogin} {...rest}>
+      {title}
+    </button>
+  );
 };
 
 export default memo(Button);

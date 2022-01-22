@@ -1,0 +1,13 @@
+.footerInfo {
+  width: 40%;
+
+  .footerDes {
+    font-size: 1.4rem;
+    line-height: 2rem;
+    margin-top: 3rem;
+  }
+
+  .footerDes + .footerDes {
+    margin-top: 3rem;
+  }
+}

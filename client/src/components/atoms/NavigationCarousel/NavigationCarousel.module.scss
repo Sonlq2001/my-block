@@ -1,0 +1,22 @@
+@import "styles/variables";
+
+.carouselNavigation {
+  .carouselBtn {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background-color: $white-color;
+    border: 1.5px solid $gray2-color;
+
+    i {
+      font-size: 1.5rem;
+    }
+
+    &:hover {
+      border: 1.5px solid $gray3-color;
+    }
+  }
+}
+.carouselBtn:nth-child(2) {
+  margin-left: 0.8rem;
+}

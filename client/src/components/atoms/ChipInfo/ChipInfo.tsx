@@ -7,21 +7,26 @@ interface ChipInfoProps {
   icon?: any;
   total?: number | string;
   download?: boolean;
+  dark?: boolean;
 }
 
 const ChipInfo: React.FC<ChipInfoProps> = ({
   icon,
   total,
   download = false,
+  dark = false,
 }) => {
   return (
     <div
       className={clsx(styles.chipInfo, {
         [styles.iconDownload]: download,
+        [styles.dark]: dark,
       })}
     >
-      {icon && <span className={styles.chipInfoIcon}>{icon}</span>}
-      {total && <span className={styles.chipInfoTotal}>{total}</span>}
+      <div className={styles.chipInfoGroup}>
+        {icon && <span className={styles.chipInfoIcon}>{icon}</span>}
+        {total && <span className={styles.chipInfoTotal}>{total}</span>}
+      </div>
     </div>
   );
 };
