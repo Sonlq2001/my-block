@@ -1,19 +1,17 @@
-import { BrowserRouter as Router } from "react-router-dom";
-import { Provider } from "react-redux";
+import { Suspense, lazy } from "react";
 
-import Routes from "./routes/Routes";
-import { store } from "./redux/store";
+import { BrowserRouter as Router } from "react-router-dom";
+
+const Routes = lazy(() => import("./routes/Routes"));
 
 const App = () => {
-	return (
-		<>
-			<Provider store={store} key="provider">
-				<Router>
-					<Routes />
-				</Router>
-			</Provider>
-		</>
-	);
+  return (
+    <Suspense fallback={null}>
+      <Router>
+        <Routes />
+      </Router>
+    </Suspense>
+  );
 };
 
 export default App;

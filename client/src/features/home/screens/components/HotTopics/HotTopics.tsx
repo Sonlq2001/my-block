@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 
 import TitleMain from "components/atoms/TitleMain/TitleMain";
+import NavigationCarousel from "components/atoms/NavigationCarousel/NavigationCarousel";
 import styles from "./HotTopics.module.scss";
 import HotTopicCarouselItem from "components/atoms/HotTopicCarouselItem/HotTopicCarouselItem";
 import { data } from "features/home/constants/thumy-data";
@@ -34,14 +35,10 @@ const HotTopics: React.FC = () => {
               description="Discover more 200 topics"
             />
 
-            <div className={styles.carouselNavigation}>
-              <button className={styles.carouselBtn} onClick={handlePrev}>
-                <i className="las la-angle-left" />
-              </button>
-              <button className={styles.carouselBtn} onClick={handleNext}>
-                <i className="las la-angle-right" />
-              </button>
-            </div>
+            <NavigationCarousel
+              handlePrev={handlePrev}
+              handleNext={handleNext}
+            />
           </div>
 
           <div className={styles.carouselHotTopic}>

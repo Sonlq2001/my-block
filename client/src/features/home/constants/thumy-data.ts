@@ -21,7 +21,23 @@ export const data = [
   },
   {
     id: 6,
-    img: "https://cdn.pixabay.com/photo/2018/03/07/17/15/balloon-3206530_960_720.jpg",
+    img: "https://cdn.pixabay.com/photo/2020/04/20/21/13/tree-5069941_960_720.jpg",
+  },
+  {
+    id: 7,
+    img: "https://cdn.pixabay.com/photo/2021/12/12/22/15/red-squirrel-6867103_960_720.jpg",
+  },
+  {
+    id: 8,
+    img: "https://cdn.pixabay.com/photo/2022/01/03/05/45/sunset-6911736_960_720.jpg",
+  },
+  {
+    id: 9,
+    img: "https://cdn.pixabay.com/photo/2020/05/17/19/01/pray-5183171_960_720.jpg",
+  },
+  {
+    id: 10,
+    img: "https://cdn.pixabay.com/photo/2021/12/28/14/30/bird-6899457_960_720.jpg",
   },
 ];
 

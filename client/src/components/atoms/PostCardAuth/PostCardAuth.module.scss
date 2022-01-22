@@ -3,6 +3,7 @@
 .authGroup {
   display: flex;
   align-items: center;
+  color: $text-color;
 
   .authInfo {
     img {
@@ -10,12 +11,16 @@
       width: 2.8rem;
       height: 2.8rem;
     }
+  }
 
-    .authInfoName {
-      font-size: 1.2rem;
-      font-weight: 600;
-      padding-left: 1.5rem;
-    }
+  .medium > img {
+    width: 3.6rem;
+    height: 3.6rem;
+  }
+
+  .large > img {
+    width: 4rem;
+    height: 4rem;
   }
 
   .dot {
@@ -38,4 +43,40 @@
     font-size: 1.2rem;
     color: $text-title-color;
   }
+
+  .boxGroup {
+    display: flex;
+    align-items: center;
+
+    &.activeColumn {
+      flex-direction: column;
+      align-items: flex-start;
+      margin-left: 1.2rem;
+
+      .authInfoName {
+        padding: 0;
+        font-size: 1.4rem;
+      }
+
+      > div {
+        flex-direction: row;
+        margin-top: 8px;
+      }
+    }
+
+    > div {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .authInfoName {
+      font-size: 1.2rem;
+      font-weight: 600;
+      padding-left: 1.5rem;
+    }
+  }
+}
+
+.color {
+  color: $white-color;
 }

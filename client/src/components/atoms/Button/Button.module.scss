@@ -1,4 +1,15 @@
-.wrapBtn {
-	width: 28px;
-	height: 28px;
+@import "styles/variables";
+
+.btnLogin {
+  padding: 1.2rem 2.4rem;
+  border-radius: 2.5rem;
+  background-color: $blue-color;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: $white-color;
+  line-height: 2rem;
+
+  &:hover {
+    background-color: $blue2-color;
+  }
 }

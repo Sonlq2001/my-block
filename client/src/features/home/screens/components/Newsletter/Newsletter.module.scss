@@ -1,23 +1,94 @@
+@import "styles/variables";
+
 .newsletter {
-	margin-top: 11.2rem;
-	display: flex;
-	justify-content: space-between;
+  margin-top: 11.2rem;
+  display: flex;
+  justify-content: space-between;
 
-	.newsletterLeft {
-		width: 40%;
-		margin: 7rem 4rem 0 0;
+  .newsletterLeft {
+    width: 40%;
+    margin: 7rem 4rem 0 0;
 
-		.listNote {
-			margin-top: 4.4rem;
-		}
+    .listNote {
+      margin-top: 4.4rem;
+    }
 
-		.listNoteItem {
-			display: flex;
-			font-size: 1.4rem;
-		}
-	}
+    .listNoteItem {
+      display: flex;
+      font-size: 1.4rem;
+      align-items: center;
 
-	.newsletterRight {
-		width: 60%;
-	}
+      .listNoteIndex {
+        margin-right: 1.7rem;
+        font-size: 1.2rem;
+        padding: 4px 1rem;
+        border-radius: 1rem;
+        color: $red1-color;
+        background-color: $red2-color;
+      }
+
+      .listNoteIndex2 {
+        color: $green2-color;
+        background-color: $green3-color;
+      }
+
+      .listNoteContent {
+        font-size: 1.6rem;
+        font-weight: 600;
+        line-height: 2.4rem;
+        color: $gray4-color;
+      }
+    }
+
+    .listNoteItem + .listNoteItem {
+      margin-top: 1.8rem;
+    }
+
+    .formBox {
+      margin-top: 4rem;
+      max-width: 38.3rem;
+
+      .formGroup {
+        position: relative;
+        width: 100%;
+
+        .formInput {
+          width: 100%;
+          padding: 1.2rem 4rem 1.2rem 1.6rem;
+          border-radius: 2rem;
+          border: 1px solid $gray3-color;
+          font-size: 1.5rem;
+
+          &::placeholder {
+            color: $gray4-color;
+          }
+
+          &:focus {
+            border: 1px solid $blue-color;
+            box-shadow: 0 0 1rem #e3e8fe;
+          }
+        }
+
+        .formBtn {
+          position: absolute;
+          background-color: $blue-color;
+          border-radius: 50%;
+          width: 3.6rem;
+          height: 3.6rem;
+          right: 5px;
+          top: 50%;
+          transform: translateY(-50%);
+
+          i {
+            font-size: 1.5rem;
+            color: $gray3-color;
+          }
+        }
+      }
+    }
+  }
+
+  .newsletterRight {
+    width: 60%;
+  }
 }
