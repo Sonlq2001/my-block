@@ -1,0 +1,16 @@
+@import "styles/variables";
+
+.itemTag {
+  background-color: $white-color;
+  display: inline-block;
+  padding: 1rem 1.6rem;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  border: 1px solid $gray1-color;
+  margin: 0 8px 8px 0;
+  line-height: 1.7rem;
+
+  &:hover {
+    border: 1px solid $gray5-color;
+  }
+}

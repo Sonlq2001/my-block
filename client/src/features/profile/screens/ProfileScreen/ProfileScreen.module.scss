@@ -1,0 +1,94 @@
+@import "styles/variables";
+
+.groupPost {
+  margin-top: 18rem;
+
+  .navigationTabs {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .groupSelect {
+      position: relative;
+    }
+
+    .btnAction {
+      display: flex;
+      align-items: center;
+      border: 1px solid $gray2-color;
+      padding: 1rem 1.6rem;
+      border-radius: 2rem;
+
+      &:hover {
+        border: 1px solid $gray3-color;
+      }
+
+      .btnActionTxt {
+        font-size: 1.4rem;
+        flex-grow: 1;
+        padding-right: 3rem;
+      }
+
+      .btnActionIcon {
+        font-size: 2rem;
+        width: 1.5rem;
+      }
+    }
+
+    .listSelect {
+      position: absolute;
+      bottom: -9rem;
+      right: 0;
+      width: auto;
+      border: 1px solid $gray2-color;
+      border-radius: 1rem;
+      padding: 5px 0;
+      background-color: $white-color;
+      z-index: 5;
+
+      .itemSelect {
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding: 8px 16px 8px 4.5rem;
+        cursor: default;
+        font-size: 1.4rem;
+        line-height: 2rem;
+
+        &:hover {
+          background-color: $blue3-color;
+          color: $blue-color;
+        }
+
+        .iconSelect {
+          position: absolute;
+          width: 2rem;
+          left: 2rem;
+        }
+
+        span {
+          white-space: nowrap;
+        }
+      }
+
+      .itemSelect.active > .iconSelect {
+        color: $blue-color;
+      }
+    }
+  }
+
+  .groupTabs {
+    margin-top: 3.2rem;
+
+    .itemTab {
+      display: flex;
+      flex-wrap: wrap;
+      margin-right: -3.5rem;
+    }
+  }
+
+  .groupBtn {
+    text-align: center;
+    margin-top: 2.5rem;
+  }
+}

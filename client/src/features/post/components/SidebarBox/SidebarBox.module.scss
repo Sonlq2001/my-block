@@ -1,0 +1,12 @@
+@import "styles/variables";
+
+.sidebarBox {
+  background-color: $gray1-color;
+  border-radius: 2rem;
+  overflow: hidden;
+
+  .sidebarHeader {
+    padding: 2rem;
+    border-bottom: 1px solid $gray5-color;
+  }
+}

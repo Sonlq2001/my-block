@@ -31,6 +31,11 @@ const HeaderLayout: React.FC = () => {
             Blog
           </Link>
         </li>
+        <li className="header-li">
+          <Link to="/explore" className={styles.headerLink}>
+            Khám phá
+          </Link>
+        </li>
       </ul>
 
       <div className={styles.headerOption}>
@@ -46,7 +51,7 @@ const HeaderLayout: React.FC = () => {
           </span>
         </button>
 
-        <Button title="Login" />
+        <Button title="Login" to="/login" />
       </div>
     </header>
   );

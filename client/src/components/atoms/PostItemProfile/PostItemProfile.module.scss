@@ -1,0 +1,60 @@
+@import "styles/variables";
+
+.postItem {
+  position: relative;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  border: 1px solid $gray5-color;
+  width: calc(25% - 3.5rem);
+  margin-right: 3.5rem;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 3.5rem;
+
+  .postHeader {
+    img {
+      width: 100%;
+      height: 22.1rem;
+      flex-shrink: 0;
+    }
+  }
+
+  .postBody {
+    padding: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    .postFooter {
+      margin-top: auto;
+    }
+
+    .postAuth {
+      margin-bottom: 1.5rem;
+    }
+
+    .postTitle {
+      font-size: 1.5rem;
+      line-height: 2.4rem;
+      margin-bottom: 1.5rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+
+  .postTag {
+    position: absolute;
+    top: 0;
+    margin: 1.3rem;
+  }
+
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+  }
+}
+
+.postItem:nth-child(4) {
+  margin-right: 0;
+}

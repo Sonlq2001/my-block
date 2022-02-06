@@ -1,0 +1,85 @@
+@import "styles/variables";
+
+.headerPost {
+  display: flex;
+  justify-content: space-between;
+  margin: 3rem 0;
+
+  .headerPostInfo,
+  .headerPostPreview {
+    width: 49%;
+  }
+
+  .headerPostBox {
+    display: flex;
+    flex-direction: column;
+
+    .headerPostTitle {
+      font-size: 2rem;
+    }
+
+    textarea {
+      resize: none;
+      border: none;
+      font-size: 1.5rem;
+      background-color: $gray1-color;
+      padding: 1rem;
+      border-radius: 5px;
+    }
+  }
+
+  .headerPostBox + .headerPostBox {
+    margin-top: 1.5rem;
+  }
+
+  // preview post
+  .headerPostPreview {
+    display: flex;
+    justify-content: flex-end;
+
+    .postPreview {
+      overflow: hidden;
+      width: 50%;
+      border-radius: 1.5rem;
+      background: $gray1-color;
+
+      .postPreviewImg {
+        width: 100%;
+        height: 22rem;
+
+        img {
+          height: 100%;
+        }
+      }
+
+      .postPreviewBody {
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        height: 11rem;
+
+        .postPreviewTitle,
+        .postPreviewDes {
+          font-size: 1.6rem;
+          word-break: break-all;
+          line-height: 2rem;
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          color: $text-color;
+        }
+
+        .postPreviewTitle {
+          margin-bottom: 0.5rem;
+        }
+
+        .postPreviewDes {
+          font-size: 1.3rem;
+          margin-top: auto;
+          color: $text-title-color;
+        }
+      }
+    }
+  }
+}

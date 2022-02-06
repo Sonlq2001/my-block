@@ -1,0 +1,36 @@
+@import "styles/variables";
+
+.profileContentHeader {
+  width: 80%;
+  display: flex;
+  align-items: center;
+
+  .authAvatar {
+    border-radius: 50%;
+    overflow: hidden;
+    min-width: 14.4rem;
+    height: 14.4rem;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .authContent {
+    margin-left: 3.2rem;
+    width: 50%;
+
+    .authName {
+      font-size: 3rem;
+      line-height: 4rem;
+      margin-bottom: 2rem;
+    }
+
+    .authDes {
+      font-size: 1.6rem;
+      line-height: 2.4rem;
+      color: $gray4-color;
+    }
+  }
+}

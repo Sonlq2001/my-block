@@ -1,0 +1,31 @@
+@import "styles/variables";
+
+.profileHeader {
+  max-width: 152.3rem;
+  margin: 0 auto;
+  position: relative;
+
+  .profileHeaderImg {
+    width: 100%;
+    height: 47.4rem;
+    overflow: hidden;
+    border-radius: 2.5rem;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .profileAuthInfo {
+    position: absolute;
+    padding: 6.4rem;
+    border-radius: 3rem;
+    background-color: $white-color;
+    bottom: -16%;
+    width: 84%;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+  }
+}

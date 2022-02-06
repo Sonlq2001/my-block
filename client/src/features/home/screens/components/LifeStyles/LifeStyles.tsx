@@ -4,6 +4,8 @@ import clsx from "clsx";
 import TitleMain from "components/atoms/TitleMain/TitleMain";
 import { ReactComponent as IconStyle } from "assets/images/icon-palette.svg";
 import styles from "./LifeStyles.module.scss";
+import stylesCommon from "styles/common.module.scss";
+
 import LifeStyleItem from "components/atoms/LifeStyleItem/LifeStyleItem";
 import { dataLifeStyles } from "features/home/constants/thumy-data";
 
@@ -23,24 +25,24 @@ const LifeStyles: React.FC = () => {
           <div className={styles.navigationTab}>
             <div>
               <button
-                className={clsx(styles.navigationTabItem, {
-                  [styles.active]: tabIndex === 1,
+                className={clsx(stylesCommon.navigationTabItem, {
+                  [stylesCommon.active]: tabIndex === 1,
                 })}
                 onClick={() => setTabIndex(1)}
               >
                 All
               </button>
               <button
-                className={clsx(styles.navigationTabItem, {
-                  [styles.active]: tabIndex === 2,
+                className={clsx(stylesCommon.navigationTabItem, {
+                  [stylesCommon.active]: tabIndex === 2,
                 })}
                 onClick={() => setTabIndex(2)}
               >
                 Toys
               </button>
               <button
-                className={clsx(styles.navigationTabItem, {
-                  [styles.active]: tabIndex === 3,
+                className={clsx(stylesCommon.navigationTabItem, {
+                  [stylesCommon.active]: tabIndex === 3,
                 })}
                 onClick={() => setTabIndex(3)}
               >
@@ -48,7 +50,7 @@ const LifeStyles: React.FC = () => {
               </button>
             </div>
 
-            <button className={styles.btnViewAll}>
+            <button className={stylesCommon.btnViewAll}>
               <span>View All</span>
               <i className="las la-arrow-right" />
             </button>
