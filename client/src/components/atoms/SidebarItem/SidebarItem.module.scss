@@ -1,0 +1,32 @@
+@import "styles/variables";
+
+.sidebarItem {
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+
+  .sidebarItemHeader {
+    border-radius: 8px;
+    overflow: hidden;
+    margin-right: 1.5rem;
+    img {
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+  .sidebarItemCate {
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+
+  .sidebarItemTotal {
+    font-size: 1.1rem;
+    margin-top: 1rem;
+    color: $gray4-color;
+  }
+
+  &:hover {
+    background-color: $gray5-color;
+  }
+}

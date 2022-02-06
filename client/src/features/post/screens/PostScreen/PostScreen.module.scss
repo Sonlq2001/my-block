@@ -1,0 +1,32 @@
+@import "styles/variables";
+
+.rowPost {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4rem;
+
+  .rowPostLeft {
+    width: 65%;
+    font-size: 1.8rem;
+    line-height: 3.2rem;
+    margin-right: 8rem;
+    text-align: justify;
+
+    .rowPostFooter {
+      margin-top: 4rem;
+    }
+
+    .rowPostTags {
+      margin-bottom: 3rem;
+    }
+
+    .rowPostInfo {
+      padding-bottom: 3rem;
+      border-bottom: 1px solid $gray5-color;
+    }
+  }
+
+  .rowPostRight {
+    width: 35%;
+  }
+}

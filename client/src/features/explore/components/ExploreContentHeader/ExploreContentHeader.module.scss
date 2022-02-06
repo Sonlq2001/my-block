@@ -1,0 +1,87 @@
+@import "styles/variables";
+
+.exploreContentHeader {
+  max-width: 60%;
+  margin: 0 auto;
+
+  .exploreGroupIntro {
+    text-align: center;
+
+    .exploreTitle {
+      font-size: 3.5rem;
+      line-height: 4rem;
+    }
+
+    .exploreCaption {
+      font-size: 1.4rem;
+      color: $text-card-color;
+      margin-top: 2rem;
+    }
+  }
+
+  .formSearch {
+    margin-top: 3.7rem;
+    width: 100%;
+
+    .formSearchGroup {
+      position: relative;
+
+      .searchInput {
+        width: 100%;
+        padding: 2rem 2rem 2rem 6.4rem;
+        border: 1px solid $gray3-color;
+        border-radius: 3rem;
+        font-size: 1.5rem;
+      }
+
+      .searchBtn {
+        position: absolute;
+        top: 50%;
+        right: 8px;
+        transform: translateY(-50%);
+        border-radius: 50%;
+        width: 4.4rem;
+        height: 4.4rem;
+        background-color: $blue-color;
+        font-size: 2rem;
+        color: $white-color;
+
+        &:hover {
+          background-color: $blue2-color;
+        }
+      }
+
+      .searchIcon {
+        position: absolute;
+        left: 2rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: $gray4-color;
+      }
+    }
+
+    .searchSuggest {
+      margin-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      font-size: 1.4rem;
+
+      .searchSuggestTitle {
+        margin-right: 1rem;
+      }
+
+      .suggestList {
+        display: flex;
+        align-items: center;
+
+        .suggestItem {
+          color: $blue-color;
+        }
+
+        .suggestItem + .suggestItem {
+          margin-left: 1.5rem;
+        }
+      }
+    }
+  }
+}

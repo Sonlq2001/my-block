@@ -1,0 +1,15 @@
+.sidebarTitle {
+  display: flex;
+  align-items: center;
+
+  .sidebarTitleIcon {
+    width: 1.8rem;
+    height: 1.8rem;
+    margin-right: 1rem;
+  }
+
+  .sidebarTitleTxt {
+    font-size: 1.6rem;
+    font-weight: 600;
+  }
+}
