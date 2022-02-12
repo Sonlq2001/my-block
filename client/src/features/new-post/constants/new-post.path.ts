@@ -1,3 +1,3 @@
-export enum NewPostEnumPaths {
-  NEW_POST = "/new-post",
+export enum NewPostPathsEnum {
+  NEW_POST = '/new-post',
 }

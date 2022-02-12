@@ -38,8 +38,9 @@ export const register = async (req, res) => {
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: false,
-      path: "/api/refresh_token",
+      path: "/",
       sameSite: "strict",
+      maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
     return res.status(200).json({
@@ -79,8 +80,9 @@ export const login = async (req, res) => {
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: false,
-      path: "/api/refresh_token",
+      path: "/",
       sameSite: "strict",
+      maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
     const { password: hiddenPassword, ...other } = userUnique._doc;
@@ -98,12 +100,11 @@ export const login = async (req, res) => {
 export const logout = async (req, res) => {
   try {
     const token = req.cookies.refreshToken;
-
     if (!token) {
       return res.status(401).json({ msg: "Không có refresh token để logout" });
     }
 
-    res.clearCookie("refreshToken", { path: "/api/refresh_token" });
+    res.clearCookie("refreshToken", { path: "/" });
 
     const refreshTokenDb = await RefreshToken.findOne({ refreshToken: token });
     if (!refreshTokenDb) {

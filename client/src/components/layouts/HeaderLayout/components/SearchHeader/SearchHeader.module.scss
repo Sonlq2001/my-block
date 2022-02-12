@@ -1,0 +1,33 @@
+@import 'styles/variables';
+
+.groupSearch {
+  position: relative;
+
+  .fromSearch {
+    top: 6rem;
+    position: absolute;
+    right: 0;
+    z-index: 10;
+    overflow: hidden;
+    border-radius: 2.2rem;
+    background-color: rgba(67, 56, 202, 0.2);
+    padding: 3px;
+    opacity: 0;
+    visibility: hidden;
+    transition: ease-in-out 0.3s;
+
+    .inputSearch {
+      background-color: $white-color;
+      border-radius: 2rem;
+      padding: 1rem 1.5rem;
+      border: 1px solid $blue2-color;
+      width: 30rem;
+    }
+  }
+
+  .fromSearch.active {
+    top: 4rem;
+    opacity: 1;
+    visibility: visible;
+  }
+}
