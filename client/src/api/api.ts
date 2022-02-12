@@ -1,21 +1,13 @@
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
 import { store } from 'redux/store';
-// import jwt_decode from 'jwt-decode';
 
 import { authRefreshToken } from 'features/auth/redux/auth.slice';
 
 const requestInterceptor = (req: AxiosRequestConfig) => {
-  // const date = new Date();
   const { accessToken } = store.getState().auth;
 
   if (accessToken) {
-    // const result: any = jwt_decode(accessToken);
-    // console.log(result);
-    // if (result.exp < date.getTime() / 1000) {
-    //   console.log(date.getTime() / 1000);
-    // }
-
     req.headers!.Authorization = `Bearer ${accessToken}`;
   }
 
