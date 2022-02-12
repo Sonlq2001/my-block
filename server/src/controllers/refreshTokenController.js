@@ -12,7 +12,7 @@ export const refreshToken = async (req, res) => {
 
     if (!token) {
       return res
-        .status(401)
+        .status(400)
         .json({ msg: "Bạn cần đăng nhập, không được phép refresh token" });
     }
 
@@ -40,7 +40,7 @@ export const refreshToken = async (req, res) => {
       res.cookie("refreshToken", newRefreshToken, {
         httpOnly: true,
         secure: false,
-        path: "/api/refresh_token",
+        path: "/",
         sameSite: "strict",
       });
 

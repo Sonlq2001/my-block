@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import RichEditor from "../../components/RichEditor/RichEditor";
-import HeaderPost from "../../components/HeaderPost/HeaderPost";
+import RichEditor from '../../components/RichEditor/RichEditor';
+import HeaderPost from '../../components/HeaderPost/HeaderPost';
 
-const NewPostScreen = () => {
-  const [value, setValue] = useState("");
+const NewPostScreen = (props: any) => {
+  const [value, setValue] = useState('');
 
   const handleSubmit = () => {
     console.log(value);

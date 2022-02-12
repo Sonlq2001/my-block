@@ -1,4 +1,4 @@
-@import "styles/variables";
+@import 'styles/variables';
 
 .headerGroup {
   padding: $spacing-4 0;
@@ -12,7 +12,6 @@
   }
 
   .headerNav {
-    flex-grow: 1;
     display: flex;
     font-size: 1.6rem;
     margin-left: 5.6rem;
@@ -25,6 +24,9 @@
 
   .headerOption {
     display: flex;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: flex-end;
 
     .headerBtn {
       display: flex;
@@ -43,17 +45,49 @@
       }
     }
 
-    .headerBtn:nth-child(2) {
+    .btnSearch {
       margin-right: 1.5rem;
     }
 
-    .headerOptionIcon {
-      width: 2.8rem;
-      height: 2.8rem;
-    }
+    // user after login
+    .userOption {
+      position: relative;
 
-    .headerIconSearch {
-      font-size: 2.7rem;
+      .userAvatar {
+        font-size: 2.6rem;
+      }
+
+      .listAction {
+        position: absolute;
+        top: 6rem;
+        right: 0;
+        background-color: $white-color;
+        box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+        width: 22rem;
+        z-index: 5;
+        border-radius: 1rem;
+        padding: 1rem 2rem;
+        opacity: 0;
+        visibility: hidden;
+        transition: ease-in-out 0.3s;
+
+        .linkAction {
+          display: block;
+          padding: 1rem 0;
+          font-size: 1.5rem;
+          color: $text-color;
+        }
+
+        .btnLogout {
+          cursor: pointer;
+        }
+      }
+
+      .listAction.active {
+        top: 4rem;
+        opacity: 1;
+        visibility: visible;
+      }
     }
   }
 }

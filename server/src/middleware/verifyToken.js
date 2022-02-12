@@ -8,7 +8,7 @@ export const verifyToken = (req, res, next) => {
     if (token) {
       jwt.verify(token, process.env.ACCESS_TOKEN, (err, data) => {
         if (err) {
-          return res.status(403).json({ message: "Token đã hết hạn" });
+          return res.status(408).json({ message: "Token đã hết hạn" });
         }
         req.id = data.id;
         next();

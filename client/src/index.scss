@@ -6,7 +6,7 @@
 
 html {
   font-size: 62.5%;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   line-height: 1.5rem;
 }
 
@@ -46,7 +46,7 @@ img {
 input,
 textarea {
   outline: none;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 // reset bg input default google chrome
@@ -55,4 +55,10 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
+}
+
+@import './styles/common.module';
+
+.header {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }

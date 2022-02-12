@@ -8,14 +8,21 @@ import routes from "./routes/app.routes";
 import db from "./config/connectDB";
 
 const app = express();
+const corsOptions = {
+  origin: "http://localhost:3000",
+  optionsSuccessStatus: 200,
+  credentials: true,
+};
+
 dotenv.config();
 db.connect();
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(cors());
 app.use(cookieParser());
+app.use(cors(corsOptions));
 
-const port = 4000;
+const port = 5000;
 
 app.use("/api", routes.authRoute);
 app.use("/api", routes.refreshTokenRoute);

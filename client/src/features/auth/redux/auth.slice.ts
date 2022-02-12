@@ -23,7 +23,18 @@ export const authRefreshToken = createAsyncThunk(
   async (_params, { rejectWithValue }) => {
     try {
       const res = await authApi.authRefreshToken();
-      console.log(res, 'o day');
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response.data.message);
+    }
+  }
+);
+
+export const authLogout = createAsyncThunk(
+  'authLogout',
+  async (_params, { rejectWithValue }) => {
+    try {
+      const res = await authApi.authLogout();
       return res.data;
     } catch (err: any) {
       return rejectWithValue(err.response.data.message);
@@ -48,6 +59,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
+    // login
     [authLogin.pending.type]: (state) => {
       state.isLoadingLogin = true;
     },
@@ -57,6 +69,19 @@ const authSlice = createSlice({
     },
     [authLogin.rejected.type]: (state) => {
       state.isLoadingLogin = false;
+    },
+
+    // refresh token
+    [authRefreshToken.fulfilled.type]: (state, action) => {
+      state.accessToken = action.payload.accessToken;
+    },
+    [authRefreshToken.rejected.type]: (state, action) => {
+      state.accessToken = null;
+    },
+
+    // logout
+    [authLogout.fulfilled.type]: (state) => {
+      state.accessToken = null;
     },
   },
 });
