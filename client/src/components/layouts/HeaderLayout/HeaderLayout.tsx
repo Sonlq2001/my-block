@@ -16,9 +16,15 @@ import { NewPostPathsEnum } from 'features/new-post/new-post';
 
 interface HeaderLayoutProps {
   showMenu?: boolean;
+  setPublish?: (value: boolean) => void;
+  isActive?: boolean;
 }
 
-const HeaderLayout: React.FC<HeaderLayoutProps> = ({ showMenu = false }) => {
+const HeaderLayout: React.FC<HeaderLayoutProps> = ({
+  showMenu = false,
+  setPublish,
+  isActive,
+}) => {
   const [isToggleUser, setIsToggleUser] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector((state) => !!state.auth.accessToken);
@@ -59,7 +65,16 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({ showMenu = false }) => {
       )}
 
       <div className={styles.headerOption}>
-        {!showMenu && <button className="">Xuất bản</button>}
+        {!showMenu && (
+          <button
+            className={clsx(styles.btnPublish, {
+              [styles.activePublish]: isActive,
+            })}
+            onClick={() => isActive && setPublish && setPublish(true)}
+          >
+            Xuất bản
+          </button>
+        )}
 
         <button className={styles.headerBtn}>
           <SearchHeader />

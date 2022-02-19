@@ -1,8 +1,10 @@
-.groupMasonry {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
+.wrapMasonry {
   margin-top: 18rem;
+  .groupMasonry {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+  }
 }

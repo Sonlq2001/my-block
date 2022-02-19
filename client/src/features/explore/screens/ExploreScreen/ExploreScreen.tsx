@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useAppDispatch } from 'redux/store';
+import { useAppDispatch, useAppSelector } from 'redux/store';
 
 import ExploreHeader from './../../components/ExploreHeader/ExploreHeader';
 import ExploreContentHeader from './../../components/ExploreContentHeader/ExploreContentHeader';
@@ -8,15 +8,21 @@ import ExploreItem from './../../components/ExploreItem/ExploreItem';
 
 import styles from './ExploreScreen.module.scss';
 
-import { DATA } from './../../constants/explore.constants';
-import { fetchData } from './../../redux/explore.slice';
+// import { DATA } from './../../constants/explore.constants';
+import { getExplores } from './../../redux/explore.slice';
 
 const ExploreScreen = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchData());
+    dispatch(getExplores());
   }, [dispatch]);
+
+  const { listPost, isLoadingListPost } = useAppSelector((state) => ({
+    listPost: state.explore.listPost,
+    isLoadingListPost: state.explore.isLoadingListPost,
+  }));
+
   return (
     <div>
       <ExploreHeader>
@@ -24,10 +30,16 @@ const ExploreScreen = () => {
       </ExploreHeader>
 
       <div className="container">
-        <div className={styles.groupMasonry}>
-          {DATA.map((item) => (
-            <ExploreItem key={item.img} img={item.img} />
-          ))}
+        <div className={styles.wrapMasonry}>
+          {isLoadingListPost ? (
+            <div>Loading...</div>
+          ) : (
+            <div className={styles.groupMasonry}>
+              {listPost.map((item) => (
+                <ExploreItem key={item._id} {...item} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

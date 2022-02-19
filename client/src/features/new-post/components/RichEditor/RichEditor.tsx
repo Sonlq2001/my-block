@@ -1,14 +1,17 @@
-import React, { useState, useMemo, useCallback } from "react";
-import JoditEditor from "jodit-react";
+import React, { useMemo, useCallback } from 'react';
+import JoditEditor from 'jodit-react';
+import { useFormikContext } from 'formik';
 
-import styles from "./RichEditor.module.scss";
+import styles from './RichEditor.module.scss';
+
+import { PostType } from './../../types/new-post.types';
 
 const config = {
   readonly: false,
   toolbar: true,
   spellcheck: true,
-  language: "en",
-  toolbarButtonSize: "medium",
+  language: 'en',
+  toolbarButtonSize: 'medium',
   toolbarAdaptive: false,
   showCharsCounter: true,
   showWordsCounter: true,
@@ -16,25 +19,26 @@ const config = {
   askBeforePasteHTML: true,
   askBeforePasteFromWord: true,
   addNewLineOnDBLClick: false,
+  placeholder: 'Nội dung bài viết',
 
   uploader: {
-    url: "https://api.cloudinary.com/v1_1/sonel/image/upload",
+    url: process.env.REACT_APP_API_CLOUDINARY,
     filesVariableName: function () {
       return `file`;
     },
     headers: null,
     data: null,
-    imagesExtensions: ["jpg", "png", "jpeg"],
+    imagesExtensions: ['jpg', 'png', 'jpeg'],
     withCredentials: false,
-    pathVariableName: "path",
-    format: "json",
-    method: "POST",
+    pathVariableName: 'path',
+    format: 'json',
+    method: 'POST',
     prepareData: function (formData: any) {
       var files = formData.getAll(`file`);
       for (const fileImage of files) {
-        formData.append("file", fileImage);
+        formData.append('file', fileImage);
       }
-      formData.append("upload_preset", "my-block");
+      formData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_KEY);
 
       return formData;
     },
@@ -42,7 +46,7 @@ const config = {
       return !res.error;
     },
     getMessage: function (res: any) {
-      return res.msgs.join("n");
+      return res.msgs.join('n');
     },
     process: function (res: any) {
       let files = [];
@@ -60,33 +64,28 @@ const config = {
   height: 600,
 };
 
-interface RichEditorProps {
-  handleGetValueEditor: (html: string) => void;
-}
-
-const RichEditor: React.FC<RichEditorProps> = ({ handleGetValueEditor }) => {
-  const [valueEditor, setValueEditor] = useState<string>("");
+const RichEditor: React.FC = () => {
+  const { values, setFieldValue } = useFormikContext<PostType>();
 
   const handleChangeEditor = useCallback(
     (html: string) => {
-      setValueEditor(html);
-      handleGetValueEditor(html);
+      setFieldValue('content', html);
     },
-    [handleGetValueEditor]
+    [setFieldValue]
   );
 
   const WrapEditor = useMemo(() => {
     return (
       <div className={styles.richEditor}>
         <JoditEditor
-          value={valueEditor}
+          value={values.content}
           config={config}
           onBlur={handleChangeEditor}
           onChange={handleChangeEditor}
         />
       </div>
     );
-  }, [valueEditor, handleChangeEditor]);
+  }, [handleChangeEditor, values]);
 
   return WrapEditor;
 };

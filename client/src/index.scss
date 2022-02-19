@@ -13,10 +13,17 @@ html {
 .container {
   width: 1280px;
   margin: 0 auto;
+  padding: 0 3rem;
 }
 
 .container-full {
   width: 100%;
+  padding: 0 3rem;
+}
+
+.container-editor {
+  max-width: 180rem;
+  margin: 0 auto;
   padding: 0 3rem;
 }
 
@@ -34,6 +41,7 @@ button {
   border: none;
   cursor: pointer;
   background-color: transparent;
+  user-select: none;
 }
 
 img {
@@ -61,4 +69,14 @@ input:-webkit-autofill:active {
 
 .header {
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  background-color: $white-color;
+  z-index: 15;
+}
+
+.mr-fix {
+  padding-top: 8rem;
 }

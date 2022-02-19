@@ -26,6 +26,8 @@ const port = 5000;
 
 app.use("/api", routes.authRoute);
 app.use("/api", routes.refreshTokenRoute);
+app.use("/api", routes.topicRoute);
+app.use("/api", routes.postRoute);
 
 app.listen(port, () => {
   console.log(`Server running ${port}`);

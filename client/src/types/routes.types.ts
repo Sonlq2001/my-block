@@ -1,5 +1,5 @@
-import { FC, ComponentType } from "react";
-import { RouteComponentProps } from "react-router-dom";
+import { FC, ComponentType } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 
 export type RouteItemDef = {
   // phải là id duy nhất
