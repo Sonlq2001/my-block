@@ -7,15 +7,23 @@ import ChipTag from 'components/atoms/ChipTag/ChipTag';
 import ChipInfo from 'components/atoms/ChipInfo/ChipInfo';
 import styles from './ExploreItem.module.scss';
 
+// import {PostType} from 'features/new-post/new-post'
+
 interface ExploreItemProps {
-  img: string;
+  _id: string;
+  titleInside: string;
+  content: string;
+  avatar: any;
+  titleOutside: string;
+  description: string;
+  tags: string[];
 }
 
-const ExploreItem: React.FC<ExploreItemProps> = ({ img }) => {
+const ExploreItem: React.FC<ExploreItemProps> = ({ avatar }) => {
   return (
     <div className={styles.itemExplore}>
       <div className={styles.itemExploreImg}>
-        <img src={img} alt="" />
+        <img src={avatar.img} alt="" />
       </div>
 
       <div className={styles.itemInfo}>

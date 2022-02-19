@@ -89,5 +89,22 @@
         visibility: visible;
       }
     }
+
+    .btnPublish {
+      background-color: $gray5-color;
+      font-size: 1.4rem;
+      padding: 8px 1.2rem;
+      border-radius: 1.7rem;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .activePublish {
+      background-color: $green1-color;
+      border: 2px solid $text-card-color;
+      opacity: 1;
+      pointer-events: auto;
+      color: $white-color;
+    }
   }
 }

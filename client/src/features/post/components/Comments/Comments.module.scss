@@ -1,0 +1,62 @@
+@import 'styles/variables';
+
+.comments {
+  margin-top: 2rem;
+
+  .inputComment {
+    // header comment
+    .headerComment {
+      display: flex;
+      align-items: center;
+
+      .contentComment {
+        font-size: 1.5rem;
+        padding: 5px 3rem 5px 5px;
+        border-bottom: 1px solid $gray2-color;
+        width: 100%;
+      }
+
+      img {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 5px;
+        margin-right: 1rem;
+      }
+    }
+
+    // cancel, send comment
+    .actionComment {
+      margin-top: 1.5rem;
+      text-align: right;
+
+      .btnComment {
+        padding: 1rem 1.6rem;
+        font-size: 1.7rem;
+        border-radius: 2rem;
+        font-weight: 550;
+      }
+
+      .cancelComment {
+        color: $text-card-color;
+        margin-right: 1rem;
+        &:hover {
+          background: $gray1-color;
+        }
+      }
+
+      .sendComment {
+        background-color: $gray3-color;
+        color: $white-color;
+        pointer-events: none;
+      }
+
+      .sendComment.active {
+        background-color: $blue-color;
+        pointer-events: auto;
+        &:hover {
+          background: $blue2-color;
+        }
+      }
+    }
+  }
+}

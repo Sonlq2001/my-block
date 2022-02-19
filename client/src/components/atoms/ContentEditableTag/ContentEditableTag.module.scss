@@ -1,0 +1,8 @@
+.contentEditable {
+  outline: none;
+}
+
+[data-content]:empty::before {
+  content: attr(data-content);
+  cursor: text;
+}

@@ -18,12 +18,13 @@ export const refreshToken = async (req, res) => {
 
     const refreshTokenDb = await RefreshToken.findOne({ refreshToken: token });
     if (!refreshTokenDb) {
-      return res.status(401).json({ msg: "refresh token không tồn tại" });
+      // client logout
+      return res.status(401).json({ msg: "yes" });
     }
 
     jwt.verify(token, process.env.REFRESH_TOKEN, async (err, data) => {
       if (err) {
-        return res.status(403).json({ msg: "Token không hợp lệ" });
+        return res.status(403).json({ msg: "yes" });
       }
 
       const newAccessToken = generateToken(data.id);

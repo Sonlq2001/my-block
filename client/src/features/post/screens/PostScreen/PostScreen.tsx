@@ -1,15 +1,16 @@
-import PostHeader from "./../../components/PostHeader/PostHeader";
-import PostContentHeader from "./../../components/PostContentHeader/PostContentHeader";
-import SidebarBox from "./../../components/SidebarBox/SidebarBox";
-import SidebarTag from "./../../components/SidebarTag/SidebarTag";
-import SidebarItemTag from "components/atoms/SidebarItemTag/SidebarItemTag";
-import ChipInfo from "components/atoms/ChipInfo/ChipInfo";
+import PostHeader from './../../components/PostHeader/PostHeader';
+import PostContentHeader from './../../components/PostContentHeader/PostContentHeader';
+import SidebarBox from './../../components/SidebarBox/SidebarBox';
+import SidebarTag from './../../components/SidebarTag/SidebarTag';
+import SidebarItemTag from 'components/atoms/SidebarItemTag/SidebarItemTag';
+import ChipInfo from 'components/atoms/ChipInfo/ChipInfo';
+import Comments from './../../components/Comments/Comments';
 
-import { ReactComponent as IconStar } from "assets/images/icon-star.svg";
-import { ReactComponent as IconChat } from "assets/images/icon-chat.svg";
-import { ReactComponent as IconHeart } from "assets/images/icon-heart.svg";
+import { ReactComponent as IconStar } from 'assets/images/icon-star.svg';
+import { ReactComponent as IconChat } from 'assets/images/icon-chat.svg';
+import { ReactComponent as IconHeart } from 'assets/images/icon-heart.svg';
 
-import styles from "./PostScreen.module.scss";
+import styles from './PostScreen.module.scss';
 
 const PostScreen = () => {
   return (
@@ -50,6 +51,10 @@ const PostScreen = () => {
                 <ChipInfo icon={<IconHeart />} total="29" />
                 <ChipInfo icon={<IconChat />} total="0" />
               </div>
+
+              {/* comment */}
+
+              <Comments />
             </div>
           </div>
           <div className={styles.rowPostRight}>
