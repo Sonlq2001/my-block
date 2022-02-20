@@ -81,6 +81,7 @@ export const login = async (req, res) => {
       secure: false,
       path: "/",
       sameSite: "strict",
+      // maxAge: accessToken.
     });
 
     const { password: hiddenPassword, ...other } = userUnique._doc;

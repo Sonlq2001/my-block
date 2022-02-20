@@ -1,7 +1,7 @@
-import React from "react";
-import clsx from "clsx";
+import React from 'react';
+import clsx from 'clsx';
 
-import styles from "./PostCardAuth.module.scss";
+import styles from './PostCardAuth.module.scss';
 
 interface PostCardAuthProps {
   column?: boolean;
@@ -15,7 +15,7 @@ interface PostCardAuthProps {
 const PostCardAuth: React.FC<PostCardAuthProps> = ({
   column = false,
   minute,
-  size = "small",
+  size = 'small',
   title,
   auth,
   color,
@@ -28,8 +28,8 @@ const PostCardAuth: React.FC<PostCardAuthProps> = ({
     >
       <div
         className={clsx(styles.authInfo, {
-          [styles.medium]: size === "medium",
-          [styles.large]: size === "large",
+          [styles.medium]: size === 'medium',
+          [styles.large]: size === 'large',
         })}
       >
         <img
@@ -40,8 +40,8 @@ const PostCardAuth: React.FC<PostCardAuthProps> = ({
       <div
         className={clsx(styles.boxGroup, {
           [styles.activeColumn]: column,
-          [styles.medium]: size === "medium",
-          [styles.large]: size === "large",
+          [styles.medium]: size === 'medium',
+          [styles.large]: size === 'large',
         })}
       >
         {!auth && <span className={styles.authInfoName}>{title}</span>}

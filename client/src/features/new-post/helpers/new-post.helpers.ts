@@ -6,5 +6,7 @@ export const initNewPost: PostType = {
   avatar: '',
   titleOutside: '',
   description: '',
+  topic: '',
   tags: [],
+  user: '',
 };

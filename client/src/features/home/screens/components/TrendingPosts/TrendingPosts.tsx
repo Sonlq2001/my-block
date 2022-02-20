@@ -1,20 +1,20 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
-import TitleMain from "components/atoms/TitleMain/TitleMain";
-import { ReactComponent as IconTrending } from "assets/images/trending.svg";
-import styles from "./TrendingPosts.module.scss";
+import TitleMain from 'components/atoms/TitleMain/TitleMain';
+import { ReactComponent as IconTrending } from 'assets/images/trending.svg';
+import styles from './TrendingPosts.module.scss';
 
-import Post1 from "assets/images/post-1.jpg";
-import PostTrendingItem from "components/atoms/PostTrendingItem/PostTrendingItem";
-import PostCardAuth from "components/atoms/PostCardAuth/PostCardAuth";
+import Post1 from 'assets/images/post-1.jpg';
+import PostTrendingItem from 'components/atoms/PostTrendingItem/PostTrendingItem';
+import PostCardAuth from 'components/atoms/PostCardAuth/PostCardAuth';
 
 const TrendingPosts = () => {
   return (
     <div className="container">
       <TitleMain
-        title={"Trending Posts"}
+        title={'Trending Posts'}
         icon={<IconTrending />}
-        description={"Dolorem rerum error assumenda temporibus quo voluptas"}
+        description={'Dolorem rerum error assumenda temporibus quo voluptas'}
       />
 
       <div className={styles.trendingGroup}>

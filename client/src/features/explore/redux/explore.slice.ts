@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { exploreApi } from './../api/explore.api';
-import { Response } from 'features/new-post/new-post';
+import { PostTypeItem } from 'features/new-post/new-post';
 
 export const getExplores = createAsyncThunk(
   `getExplores`,
@@ -16,7 +16,7 @@ export const getExplores = createAsyncThunk(
 );
 
 interface ExploreSlice {
-  listPost: Response[];
+  listPost: PostTypeItem[];
   isLoadingListPost: boolean;
 }
 

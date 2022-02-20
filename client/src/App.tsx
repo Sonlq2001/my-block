@@ -1,13 +1,15 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy } from 'react';
 
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router } from 'react-router-dom';
 
-const Routes = lazy(() => import("./routes/Routes"));
+import ScrollToTop from './helpers/ScrollToTop';
+const Routes = lazy(() => import('./routes/Routes'));
 
 const App = () => {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<div>Loading...</div>}>
       <Router>
+        <ScrollToTop />
         <Routes />
       </Router>
     </Suspense>

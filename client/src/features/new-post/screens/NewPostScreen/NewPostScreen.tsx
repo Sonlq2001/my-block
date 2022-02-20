@@ -1,5 +1,7 @@
-import { useState, memo } from 'react';
+import { useState, memo, useEffect } from 'react';
 import { Formik } from 'formik';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { useHistory } from 'react-router-dom';
 
 import styles from './NewPostScreen.module.scss';
 import RichEditor from '../../components/RichEditor/RichEditor';
@@ -10,15 +12,33 @@ import PopupPost from './../../components/PopupPost/PopupPost';
 import { initNewPost } from './../../helpers/new-post.helpers';
 import { PostType } from './../../types/new-post.types';
 import { postArticle } from './../../redux/new-post.slice';
-import { useAppDispatch } from 'redux/store';
+import { useAppDispatch, useAppSelector } from 'redux/store';
+import { PostPathsEnum } from 'features/post/post';
 
 const NewPostScreen = () => {
   const dispatch = useAppDispatch();
+  const history = useHistory();
   const [publish, setPublish] = useState<boolean>(false);
+  const [loaded, setLoaded] = useState<boolean>(false);
 
-  const handleSubmit = (value: PostType) => {
-    dispatch(postArticle({ data: value }));
+  const { user } = useAppSelector((state) => ({ user: state.auth.user }));
+  console.log(user);
+  const handleSubmit = async (value: PostType) => {
+    setLoaded(true);
+    dispatch(postArticle({ data: value }))
+      .then(unwrapResult)
+      .then((res) =>
+        history.push(PostPathsEnum.POST.replace(/:post_id/, res.post._id))
+      )
+      .catch((err) => console.log(err.response))
+      .finally(() => setLoaded(false));
   };
+
+  useEffect(() => {
+    return () => {
+      setLoaded(false);
+    };
+  }, []);
 
   return (
     <Formik initialValues={initNewPost} onSubmit={handleSubmit}>
@@ -42,7 +62,11 @@ const NewPostScreen = () => {
             </div>
 
             {publish && (
-              <PopupPost setPublish={setPublish} handleSubmit={handleSubmit} />
+              <PopupPost
+                setPublish={setPublish}
+                handleSubmit={handleSubmit}
+                loaded={loaded}
+              />
             )}
           </>
         );

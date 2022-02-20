@@ -20,12 +20,17 @@ const responseInterceptor = (res: AxiosResponse) => {
 
 const errorInterceptor = async (axiosError: AxiosError) => {
   if (axiosError && axiosError.response) {
-    const { status, msg } = axiosError.response.data;
+    const { msg } = axiosError.response.data;
+    const { status } = axiosError.response;
     if (status === 401 && msg === 'yes') {
       store.dispatch(authLogout());
       localStorage.clear();
-      return window.location.reload();
+      window.location.reload();
     }
+    if (status === 404) {
+      window.location.href = '/';
+    }
+    return Promise.reject(axiosError.response);
   }
   return Promise.reject(axiosError);
 };
