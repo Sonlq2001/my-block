@@ -1,4 +1,4 @@
-@import "styles/variables";
+@import 'styles/variables';
 
 .chipTag {
   display: inline-block;
@@ -6,6 +6,7 @@
   padding: 4px 1rem;
   font-weight: 600;
   background-color: $red2-color;
+  color: $red1-color;
 
   & + & {
     margin-left: 0.8rem;
@@ -14,4 +15,9 @@
   span {
     font-size: 1.2rem;
   }
+}
+
+.green {
+  background-color: $green3-color;
+  color: $green2-color;
 }

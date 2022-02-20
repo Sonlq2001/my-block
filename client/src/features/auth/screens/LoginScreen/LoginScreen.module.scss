@@ -1,7 +1,7 @@
-@import "styles/variables";
+@import 'styles/variables';
 
 .authBg {
-  background-image: url("https://images6.alphacoders.com/110/1107859.png");
+  background-image: url('https://images6.alphacoders.com/110/1107859.png');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -13,7 +13,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 25%;
+  width: 45rem;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   border-radius: 2rem;
   padding: 4rem;
@@ -21,7 +21,7 @@
   color: $gray4-color;
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     width: 100%;
     height: 100%;
@@ -100,7 +100,7 @@
       font-size: 1.6rem;
       background-color: $blue-color;
       color: $white-color;
-      border-radius: 1rem ;
+      border-radius: 1rem;
 
       &:hover {
         background-color: $blue2-color;
