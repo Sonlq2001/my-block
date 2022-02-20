@@ -24,7 +24,7 @@ export const refreshToken = async (req, res) => {
 
     jwt.verify(token, process.env.REFRESH_TOKEN, async (err, data) => {
       if (err) {
-        return res.status(403).json({ msg: "yes" });
+        return res.status(401).json({ msg: "yes" });
       }
 
       const newAccessToken = generateToken(data.id);

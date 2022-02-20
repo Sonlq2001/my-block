@@ -1,0 +1,14 @@
+.loadingCircle {
+  position: relative;
+  border-radius: 100%;
+  animation: loading 0.5s linear infinite;
+  margin-right: 6px;
+}
+@keyframes loading {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

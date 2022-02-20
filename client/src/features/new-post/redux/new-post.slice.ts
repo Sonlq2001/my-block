@@ -32,9 +32,15 @@ const newPostSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [postArticle.pending.type]: (state, action) => {
+    [postArticle.pending.type]: (state) => {
+      state.istLoadingListPost = true;
+    },
+    [postArticle.fulfilled.type]: (state, action) => {
       state.istLoadingListPost = false;
       state.listPost = action.payload;
+    },
+    [postArticle.rejected.type]: (state) => {
+      state.istLoadingListPost = false;
     },
   },
 });

@@ -1,21 +1,29 @@
-import ChipTag from "components/atoms/ChipTag/ChipTag";
-import ChipInfo from "components/atoms/ChipInfo/ChipInfo";
-import PostCardAuth from "components/atoms/PostCardAuth/PostCardAuth";
-import { ReactComponent as IconEye } from "assets/images/icon-eye.svg";
-import { ReactComponent as IconHeart } from "assets/images/icon-heart.svg";
-import { ReactComponent as IconChat } from "assets/images/icon-chat.svg";
-import { ReactComponent as IconDownload } from "assets/images/icon-download.svg";
+import ChipTag from 'components/atoms/ChipTag/ChipTag';
+import ChipInfo from 'components/atoms/ChipInfo/ChipInfo';
+import PostCardAuth from 'components/atoms/PostCardAuth/PostCardAuth';
 
-import styles from "./PostContentHeader.module.scss";
+import { ReactComponent as IconEye } from 'assets/images/icon-eye.svg';
+import { ReactComponent as IconHeart } from 'assets/images/icon-heart.svg';
+import { ReactComponent as IconChat } from 'assets/images/icon-chat.svg';
+import { ReactComponent as IconDownload } from 'assets/images/icon-download.svg';
 
-const PostContentHeader = () => {
+import styles from './PostContentHeader.module.scss';
+// import { PostTypeItem } from 'features/new-post/new-post';
+
+interface PostContentHeaderProps {
+  titleInside: string;
+  avatar: any;
+}
+
+const PostContentHeader: React.FC<PostContentHeaderProps> = ({
+  titleInside,
+  avatar,
+}) => {
   return (
     <div className={styles.postContentHeader}>
       <ChipTag title="Category" />
 
-      <h1 className={styles.postTitle}>
-        Sint est autem quibusdam asperiores occaecati voluptatem
-      </h1>
+      <h1 className={styles.postTitle}>{titleInside}</h1>
 
       <div className={styles.postInfo}>
         <div className={styles.postInfoGroup}>

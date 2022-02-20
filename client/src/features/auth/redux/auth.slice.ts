@@ -4,11 +4,11 @@ import storage from 'redux-persist/lib/storage';
 
 import { authApi } from './../api/auth.api';
 
-import { UserLogin } from './../types/auth.types';
+import { User, UserItem } from './../types/auth.types';
 
 export const authLogin = createAsyncThunk(
   'authLogin',
-  async (data: any, { rejectWithValue }) => {
+  async (data: User, { rejectWithValue }) => {
     try {
       const res = await authApi.authLogin(data);
       return res.data;
@@ -43,7 +43,7 @@ export const authLogout = createAsyncThunk(
 );
 
 interface AuthState {
-  user: UserLogin | null;
+  user: UserItem | null;
   isLoadingLogin: boolean;
   accessToken: string | null;
 }
@@ -66,6 +66,7 @@ const authSlice = createSlice({
     [authLogin.fulfilled.type]: (state, action) => {
       state.isLoadingLogin = false;
       state.accessToken = action.payload.accessToken;
+      state.user = action.payload.user;
     },
     [authLogin.rejected.type]: (state) => {
       state.isLoadingLogin = false;

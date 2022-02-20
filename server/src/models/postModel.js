@@ -29,6 +29,8 @@ const postSchema = new mongoose.Schema(
       default: [],
       required: true,
     },
+    topic: { type: mongoose.Types.ObjectId, ref: "topics" },
+    user: { type: mongoose.Types.ObjectId, ref: "users" },
   },
   { timestamps: true }
 );

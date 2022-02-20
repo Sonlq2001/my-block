@@ -126,8 +126,6 @@
     }
 
     .postBox {
-      margin-top: 5rem;
-      text-align: right;
       label {
         font-size: 1.4rem;
         display: block;
@@ -156,9 +154,17 @@
       background-color: $green1-color;
       color: $gray1-color;
       font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+
       &:hover {
         background: #3a978e;
       }
     }
+  }
+
+  .postBox + .postBox {
+    margin-top: 5rem;
   }
 }

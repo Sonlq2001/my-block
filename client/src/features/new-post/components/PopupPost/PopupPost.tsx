@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import clsx from 'clsx';
 import { ContentEditableEvent } from 'react-contenteditable';
 import { useFormikContext } from 'formik';
@@ -9,13 +9,23 @@ import IconClose from 'assets/images/close.png';
 import IconImage from 'assets/images/image.png';
 import ContentEditableTag from 'components/atoms/ContentEditableTag/ContentEditableTag';
 import { PostType } from './../../types/new-post.types';
+import LoadingCircle from 'components/loading/LoadingCircle/LoadingCircle';
+
+import { useAppDispatch, useAppSelector } from 'redux/store';
+import { getTopics } from 'features/master-data/master-data';
 
 interface PopupPostProps {
   setPublish: (publish: boolean) => void;
   handleSubmit: (value: PostType) => void;
+  loaded: boolean;
 }
 
-const PopupPost: React.FC<PopupPostProps> = ({ setPublish, handleSubmit }) => {
+const PopupPost: React.FC<PopupPostProps> = ({
+  setPublish,
+  handleSubmit,
+  loaded,
+}) => {
+  const dispatch = useAppDispatch();
   const { values, setFieldValue } = useFormikContext<PostType>();
   const handleChangeTitleOutside = (e: ContentEditableEvent) => {
     setFieldValue('titleOutside', e.target.value);
@@ -41,6 +51,14 @@ const PopupPost: React.FC<PopupPostProps> = ({ setPublish, handleSubmit }) => {
     }
     setFieldValue('tags', tags);
   };
+
+  useEffect(() => {
+    dispatch(getTopics());
+  }, [dispatch]);
+
+  const { topics } = useAppSelector((state) => ({
+    topics: state.masterData.topics,
+  }));
 
   return (
     <div className={styles.popupPost}>
@@ -91,6 +109,20 @@ const PopupPost: React.FC<PopupPostProps> = ({ setPublish, handleSubmit }) => {
 
         <div className={styles.popupContentRight}>
           <div className={styles.postBox}>
+            <label>Chọn danh mục cho bài viết.</label>
+            <select
+              name="topic"
+              id=""
+              onChange={(e) => setFieldValue('topic', e.target.value)}
+            >
+              {topics?.map((option) => (
+                <option key={option._id} value={option._id}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className={styles.postBox}>
             <label>
               Thêm tối đa 5 thẻ để độc giả biết bài viết của bạn nói về điều gì.
             </label>
@@ -112,6 +144,7 @@ const PopupPost: React.FC<PopupPostProps> = ({ setPublish, handleSubmit }) => {
               className={styles.btnPublish}
               onClick={() => handleSubmit(values)}
             >
+              {loaded && <LoadingCircle />}
               Xuất bản ngay
             </button>
           </div>
