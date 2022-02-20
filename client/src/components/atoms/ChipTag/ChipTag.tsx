@@ -1,13 +1,23 @@
-import React from "react";
+import React from 'react';
+import clsx from 'clsx';
 
-import styles from "./ChipTag.module.scss";
+import styles from './ChipTag.module.scss';
 
 interface ChipTagProps {
-	title: string;
+  title: string;
+  color?: string;
 }
 
-const ChipTag: React.FC<ChipTagProps> = ({ title }) => {
-	return <div className={styles.chipTag}>{title && <span>{title}</span>}</div>;
+const ChipTag: React.FC<ChipTagProps> = ({ title, color }) => {
+  return (
+    <div
+      className={clsx(styles.chipTag, {
+        [styles.green]: color === 'green',
+      })}
+    >
+      {title && <span>{title}</span>}
+    </div>
+  );
 };
 
 export default ChipTag;

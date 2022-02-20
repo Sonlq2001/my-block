@@ -43,11 +43,9 @@ const PostScreen = () => {
       {isLoadingPost && <LoadingPostDetail />}
       {!isLoadingPost && (
         <>
-          {postItem && (
-            <PostHeader avatar={postItem?.avatar}>
-              <PostContentHeader {...postItem} />
-            </PostHeader>
-          )}
+          <PostHeader avatar={postItem?.avatar}>
+            <PostContentHeader {...postItem} />
+          </PostHeader>
 
           <div className="container">
             <div className={styles.rowPost}>

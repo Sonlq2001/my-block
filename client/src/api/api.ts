@@ -22,6 +22,7 @@ const errorInterceptor = async (axiosError: AxiosError) => {
   if (axiosError && axiosError.response) {
     const { msg } = axiosError.response.data;
     const { status } = axiosError.response;
+    console.log(msg);
     if (status === 401 && msg === 'yes') {
       store.dispatch(authLogout());
       localStorage.clear();

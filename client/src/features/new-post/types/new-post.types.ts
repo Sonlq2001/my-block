@@ -1,4 +1,5 @@
 import { TopicType } from 'features/master-data/master-data';
+import { UserItem } from 'features/auth/auth';
 
 export interface PostType {
   titleInside: string;
@@ -8,7 +9,7 @@ export interface PostType {
   description: string;
   tags: string[];
   topic: string | TopicType;
-  user: string;
+  user: string | UserItem;
 }
 
 export interface PostTypeItem extends PostType {
@@ -16,4 +17,5 @@ export interface PostTypeItem extends PostType {
   createdAt: string;
   updatedAt: string;
   topic: TopicType;
+  user: UserItem;
 }

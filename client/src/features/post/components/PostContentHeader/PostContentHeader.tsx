@@ -8,27 +8,30 @@ import { ReactComponent as IconChat } from 'assets/images/icon-chat.svg';
 import { ReactComponent as IconDownload } from 'assets/images/icon-download.svg';
 
 import styles from './PostContentHeader.module.scss';
-// import { PostTypeItem } from 'features/new-post/new-post';
+import { UserItem } from 'features/auth/auth';
+import { TopicType } from 'features/master-data/master-data';
 
 interface PostContentHeaderProps {
-  titleInside: string;
-  avatar: any;
+  titleInside?: string;
+  user?: UserItem;
+  topic?: TopicType;
 }
 
 const PostContentHeader: React.FC<PostContentHeaderProps> = ({
   titleInside,
-  avatar,
+  user,
+  topic,
 }) => {
   return (
     <div className={styles.postContentHeader}>
-      <ChipTag title="Category" />
+      {topic && <ChipTag title={topic.name} />}
 
       <h1 className={styles.postTitle}>{titleInside}</h1>
 
       <div className={styles.postInfo}>
         <div className={styles.postInfoGroup}>
           <PostCardAuth
-            auth="sonel"
+            auth={user?.name}
             column
             size="large"
             minute="2"

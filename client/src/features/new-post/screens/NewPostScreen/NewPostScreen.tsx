@@ -2,6 +2,7 @@ import { useState, memo, useEffect } from 'react';
 import { Formik } from 'formik';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useHistory } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
 
 import styles from './NewPostScreen.module.scss';
 import RichEditor from '../../components/RichEditor/RichEditor';
@@ -21,17 +22,25 @@ const NewPostScreen = () => {
   const [publish, setPublish] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
 
-  const { user } = useAppSelector((state) => ({ user: state.auth.user }));
-  console.log(user);
+  const { accessToken } = useAppSelector((state) => ({
+    accessToken: state.auth.accessToken,
+  }));
+
+  const dataDecoded =
+    accessToken &&
+    jwt_decode<{ _id: string; name: string; email: string }>(accessToken);
+
   const handleSubmit = async (value: PostType) => {
-    setLoaded(true);
-    dispatch(postArticle({ data: value }))
-      .then(unwrapResult)
-      .then((res) =>
-        history.push(PostPathsEnum.POST.replace(/:post_id/, res.post._id))
-      )
-      .catch((err) => console.log(err.response))
-      .finally(() => setLoaded(false));
+    if (dataDecoded) {
+      setLoaded(true);
+      dispatch(postArticle({ data: { ...value, user: dataDecoded._id } }))
+        .then(unwrapResult)
+        .then((res) =>
+          history.push(PostPathsEnum.POST.replace(/:post_id/, res.post._id))
+        )
+        .catch((err) => console.log(err.response))
+        .finally(() => setLoaded(false));
+    }
   };
 
   useEffect(() => {
