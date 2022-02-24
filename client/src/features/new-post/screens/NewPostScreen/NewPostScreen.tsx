@@ -15,6 +15,7 @@ import { PostType } from './../../types/new-post.types';
 import { postArticle } from './../../redux/new-post.slice';
 import { useAppDispatch, useAppSelector } from 'redux/store';
 import { PostPathsEnum } from 'features/post/post';
+import { AccessTokenType } from 'types/access-token.types';
 
 const NewPostScreen = () => {
   const dispatch = useAppDispatch();
@@ -26,9 +27,7 @@ const NewPostScreen = () => {
     accessToken: state.auth.accessToken,
   }));
 
-  const dataDecoded =
-    accessToken &&
-    jwt_decode<{ _id: string; name: string; email: string }>(accessToken);
+  const dataDecoded = accessToken && jwt_decode<AccessTokenType>(accessToken);
 
   const handleSubmit = async (value: PostType) => {
     if (dataDecoded) {

@@ -9,9 +9,9 @@ import db from "./config/connectDB";
 
 const app = express();
 const corsOptions = {
-  origin: "http://localhost:3000",
-  optionsSuccessStatus: 200,
-  credentials: true,
+	origin: "http://localhost:3000",
+	optionsSuccessStatus: 200,
+	credentials: true,
 };
 
 dotenv.config();
@@ -28,7 +28,8 @@ app.use("/api", routes.authRoute);
 app.use("/api", routes.refreshTokenRoute);
 app.use("/api", routes.topicRoute);
 app.use("/api", routes.postRoute);
+app.use("/api", routes.commentRoute);
 
 app.listen(port, () => {
-  console.log(`Server running ${port}`);
+	console.log(`Server running ${port}`);
 });

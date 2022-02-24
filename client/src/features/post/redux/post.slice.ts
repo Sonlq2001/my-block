@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { PostTypeItem } from 'features/new-post/types/new-post.types';
+import { PostItemType } from 'features/new-post/types/new-post.types';
 import { postApi } from './../api/post.api';
 
 export const getPost = createAsyncThunk(
@@ -15,8 +15,20 @@ export const getPost = createAsyncThunk(
   }
 );
 
+export const postComment = createAsyncThunk(
+  'postComment',
+  async (data: any, { rejectWithValue }) => {
+    try {
+      const res = await postApi.postCommentApi(data);
+      return res.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.msg);
+    }
+  }
+);
+
 interface PostSlice {
-  post: PostTypeItem | null;
+  post: PostItemType | null;
   isLoadingPost: boolean;
 }
 
@@ -28,8 +40,13 @@ const initialState: PostSlice = {
 const postSlice = createSlice({
   name: 'post',
   initialState,
-  reducers: {},
+  reducers: {
+    updateCommentPost: (state, action) => {
+      state.post = action.payload;
+    },
+  },
   extraReducers: {
+    // get post
     [getPost.pending.type]: (state) => {
       state.isLoadingPost = true;
     },
@@ -44,3 +61,4 @@ const postSlice = createSlice({
 });
 
 export const postReducer = postSlice.reducer;
+export const { updateCommentPost } = postSlice.actions;

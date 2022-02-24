@@ -9,11 +9,9 @@ import {
 export const refreshToken = async (req, res) => {
 	try {
 		const token = req.cookies.refreshToken;
-
+		// logout
 		if (!token) {
-			return res
-				.status(400)
-				.json({ msg: "Bạn cần đăng nhập, không được phép refresh token" });
+			return res.status(401).json({ msg: "res" });
 		}
 
 		const refreshTokenDb = await RefreshToken.findOne({ refreshToken: token });

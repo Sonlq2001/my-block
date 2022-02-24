@@ -14,7 +14,15 @@ export const createPost = async (req, res) => {
 
 export const getPosts = async (req, res) => {
 	try {
-		const listPost = await Post.find().populate("topic user");
+		const listPost = await Post.find()
+			.populate({
+				path: "topic user",
+				select: "-password",
+			})
+			.populate({
+				path: "comments",
+				populate: { path: "user", select: "-password" },
+			});
 		return res.status(200).json({ msg: "Danh sách bài viết !", listPost });
 	} catch (err) {
 		return res.status(500).json({ msg: err.message });
@@ -24,10 +32,15 @@ export const getPosts = async (req, res) => {
 export const getPost = async (req, res) => {
 	try {
 		const { post_id } = req.params;
-		const postItem = await Post.findOne({ _id: post_id }).populate(
-			"topic user"
-		);
-
+		const postItem = await Post.findOne({ _id: post_id })
+			.populate({
+				path: "topic user",
+				select: "-password",
+			})
+			.populate({
+				path: "comments",
+				populate: { path: "user", select: "-password" },
+			});
 		if (!postItem) {
 			return res.status(404).json({ msg: "Không tìm thấy bài viết !" });
 		}
