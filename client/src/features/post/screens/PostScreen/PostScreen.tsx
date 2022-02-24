@@ -7,8 +7,9 @@ import SidebarBox from './../../components/SidebarBox/SidebarBox';
 import SidebarTag from './../../components/SidebarTag/SidebarTag';
 import SidebarItemTag from 'components/atoms/SidebarItemTag/SidebarItemTag';
 import ChipInfo from 'components/atoms/ChipInfo/ChipInfo';
-import Comments from './../../components/Comments/Comments';
+import InputComment from './../../components/Comments/InputComment';
 import LoadingPostDetail from 'components/loading/LoadingPostDetail/LoadingPostDetail';
+import Comments from './../../components/Comments/Comments';
 
 import { ReactComponent as IconStar } from 'assets/images/icon-star.svg';
 import { ReactComponent as IconChat } from 'assets/images/icon-chat.svg';
@@ -66,7 +67,12 @@ const PostScreen = () => {
                   </div>
 
                   {/* comment */}
-                  <Comments />
+                  {postItem && (
+                    <>
+                      <InputComment postItem={postItem} />
+                      <Comments postItem={postItem} />
+                    </>
+                  )}
                 </div>
               </div>
               <div className={styles.rowPostRight}>

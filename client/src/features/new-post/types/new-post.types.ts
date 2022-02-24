@@ -12,10 +12,11 @@ export interface PostType {
   user: string | UserItem;
 }
 
-export interface PostTypeItem extends PostType {
+export interface PostItemType extends PostType {
   _id: string;
   createdAt: string;
   updatedAt: string;
   topic: TopicType;
   user: UserItem;
+  comments: any[];
 }
