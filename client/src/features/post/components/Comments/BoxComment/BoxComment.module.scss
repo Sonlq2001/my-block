@@ -1,0 +1,38 @@
+@import 'styles/variables';
+
+.boxComment {
+  line-height: 2rem;
+  .commentRoot {
+    background-color: $gray1-color;
+    border-radius: 1.5rem;
+    padding: 1rem;
+    width: max-content;
+  }
+  .userNameComment {
+    font-weight: 600;
+  }
+  .contentComment {
+    font-size: 1.4rem;
+    margin-top: 1rem;
+  }
+  // reaction comment
+  .groupReaction {
+    margin-top: 1rem;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    span {
+      cursor: pointer;
+    }
+    span + span {
+      padding-left: 2rem;
+    }
+    span {
+      color: $blue-color;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

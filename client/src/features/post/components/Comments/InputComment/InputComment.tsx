@@ -1,48 +1,32 @@
 import { useState } from 'react';
 import clsx from 'clsx';
-import jwt_decode from 'jwt-decode';
+
+import styles from './InputComment.module.scss';
 
 import ContentEditableTag from 'components/atoms/ContentEditableTag/ContentEditableTag';
-import styles from './Comments.module.scss';
-import { useAppSelector, useAppDispatch } from 'redux/store';
-import { AccessTokenType } from 'types/access-token.types';
-import { postComment } from './../../redux/post.slice';
-import { PostItemType } from 'features/new-post/new-post';
 
 interface CommentsProps {
-  postItem: PostItemType;
+  getValue: (value: string) => void;
+  isReply?: boolean;
+  setIsReply?: (value: boolean) => void;
 }
 
-const InputComment: React.FC<CommentsProps> = ({ children, postItem }) => {
-  const dispatch = useAppDispatch();
+const InputComment: React.FC<CommentsProps> = ({
+  getValue,
+  isReply,
+  setIsReply,
+}) => {
   const [isToggleComment, setIsToggleComment] = useState<boolean>(false);
   const [valueComment, setValueComment] = useState<string>('');
 
-  const { accessToken } = useAppSelector((state) => ({
-    accessToken: state.auth.accessToken,
-  }));
-
-  const dataDecoded = accessToken && jwt_decode<AccessTokenType>(accessToken);
-
   const handlePostComment = async () => {
-    if (dataDecoded) {
-      if (!valueComment.trim()) return;
-
-      const newComment = {
-        content: valueComment,
-        user: dataDecoded._id,
-        likes: [],
-        postId: postItem._id,
-        createdAt: new Date().toISOString(),
-      };
-
-      await dispatch(postComment(newComment));
-    }
+    if (!valueComment.trim()) return;
+    getValue(valueComment);
+    setValueComment('');
   };
 
   return (
     <div className={styles.comments}>
-      {children}
       <div className={styles.inputComment}>
         <div className={styles.headerComment}>
           <img
@@ -58,11 +42,15 @@ const InputComment: React.FC<CommentsProps> = ({ children, postItem }) => {
           />
         </div>
 
-        {isToggleComment && (
+        {(isToggleComment || isReply) && (
           <div className={styles.actionComment}>
             <button
               className={clsx(styles.cancelComment, styles.btnComment)}
-              onClick={() => setIsToggleComment(false)}
+              onClick={() => {
+                setIsToggleComment(false);
+                setValueComment('');
+                setIsReply && setIsReply(false);
+              }}
             >
               Hủy
             </button>

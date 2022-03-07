@@ -1,62 +1,42 @@
 @import 'styles/variables';
 
-.comments {
+.commentGroup {
+  display: flex;
   margin-top: 2rem;
+  width: 100%;
+  font-size: 1.5rem;
 
-  .inputComment {
-    // header comment
-    .headerComment {
-      display: flex;
-      align-items: center;
+  .listBoxComment {
+    width: 100%;
 
-      .contentComment {
-        font-size: 1.5rem;
-        padding: 5px 3rem 5px 5px;
-        border-bottom: 1px solid $gray2-color;
-        width: 100%;
-      }
-
-      img {
-        width: 4rem;
-        height: 4rem;
-        border-radius: 5px;
-        margin-right: 1rem;
-      }
+    .moreComment {
+      margin-top: 1.5rem;
+      cursor: pointer;
+      user-select: none;
     }
 
-    // cancel, send comment
-    .actionComment {
-      margin-top: 1.5rem;
-      text-align: right;
+    .groupReply {
+      border-left: 1px solid $text-card-color;
+      padding-left: 2rem;
+      margin-bottom: 1rem;
+    }
+  }
+}
 
-      .btnComment {
-        padding: 1rem 1.6rem;
-        font-size: 1.7rem;
-        border-radius: 2rem;
-        font-weight: 550;
-      }
+.groupReplyComment {
+  display: flex;
+  margin-top: 2rem;
 
-      .cancelComment {
-        color: $text-card-color;
-        margin-right: 1rem;
-        &:hover {
-          background: $gray1-color;
-        }
-      }
+  .replyComment {
+    background-color: $gray1-color;
+    border-radius: 1.5rem;
+    padding: 1rem;
 
-      .sendComment {
-        background-color: $gray3-color;
-        color: $white-color;
-        pointer-events: none;
-      }
-
-      .sendComment.active {
-        background-color: $blue-color;
-        pointer-events: auto;
-        &:hover {
-          background: $blue2-color;
-        }
-      }
+    .replyCommentUserName {
+      font-weight: 600;
+    }
+    .replyCommentContent {
+      margin-top: 1rem;
     }
   }
 }

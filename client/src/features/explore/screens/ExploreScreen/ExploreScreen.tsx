@@ -14,14 +14,14 @@ import { getExplores } from './../../redux/explore.slice';
 const ExploreScreen = () => {
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(getExplores());
-  }, [dispatch]);
-
   const { listPost, isLoadingListPost } = useAppSelector((state) => ({
     listPost: state.explore.listPost,
     isLoadingListPost: state.explore.isLoadingListPost,
   }));
+
+  useEffect(() => {
+    dispatch(getExplores());
+  }, [dispatch]);
 
   return (
     <div>
