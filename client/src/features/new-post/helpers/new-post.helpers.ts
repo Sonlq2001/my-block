@@ -8,5 +8,5 @@ export const initNewPost: PostType = {
   description: '',
   topic: '',
   tags: [],
-  user: '',
+  authPost: '',
 };

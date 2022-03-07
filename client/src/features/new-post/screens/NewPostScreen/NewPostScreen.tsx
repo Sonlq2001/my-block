@@ -32,7 +32,7 @@ const NewPostScreen = () => {
   const handleSubmit = async (value: PostType) => {
     if (dataDecoded) {
       setLoaded(true);
-      dispatch(postArticle({ data: { ...value, user: dataDecoded._id } }))
+      dispatch(postArticle({ data: { ...value, authPost: dataDecoded._id } }))
         .then(unwrapResult)
         .then((res) =>
           history.push(PostPathsEnum.POST.replace(/:post_id/, res.post._id))

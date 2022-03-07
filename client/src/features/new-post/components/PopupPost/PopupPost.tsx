@@ -38,6 +38,7 @@ const PopupPost: React.FC<PopupPostProps> = ({
   const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
     setFieldValue('avatar', file);
+    setFieldValue('previewImage', URL.createObjectURL(file as Blob));
   };
 
   const handleChangeTag = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,6 +56,12 @@ const PopupPost: React.FC<PopupPostProps> = ({
   useEffect(() => {
     dispatch(getTopics());
   }, [dispatch]);
+
+  useEffect(() => {
+    return () => {
+      values.previewImage && URL.revokeObjectURL(values.previewImage);
+    };
+  }, [values.previewImage]);
 
   const { topics } = useAppSelector((state) => ({
     topics: state.masterData.topics,
@@ -79,9 +86,9 @@ const PopupPost: React.FC<PopupPostProps> = ({
               </div>
 
               {/* preview image */}
-              {values.avatar && (
+              {values.previewImage && (
                 <div className={styles.renderImage}>
-                  <img src={URL.createObjectURL(values.avatar) || ''} alt="" />
+                  <img src={values.previewImage} alt="" />
                 </div>
               )}
             </div>

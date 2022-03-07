@@ -11,7 +11,6 @@ const HeaderPost: React.FC = () => {
   const handleChangeTitle = (e: ContentEditableEvent) => {
     setFieldValue('titleInside', e.target.value);
   };
-
   return (
     <div className={styles.headerPost}>
       <ContentEditableTag

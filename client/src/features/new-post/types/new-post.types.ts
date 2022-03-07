@@ -9,7 +9,8 @@ export interface PostType {
   description: string;
   tags: string[];
   topic: string | TopicType;
-  user: string | UserItem;
+  authPost: string | UserItem;
+  previewImage?: string;
 }
 
 export interface PostItemType extends PostType {
@@ -17,6 +18,5 @@ export interface PostItemType extends PostType {
   createdAt: string;
   updatedAt: string;
   topic: TopicType;
-  user: UserItem;
-  comments: any[];
+  authPost: UserItem;
 }

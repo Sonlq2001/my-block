@@ -1,4 +1,5 @@
-import React, { useRef } from 'react';
+// import ReactDOM from 'react-dom';
+import React, { useRef, memo } from 'react';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 import clsx from 'clsx';
 
@@ -18,11 +19,15 @@ const ContentEditableTag: React.FC<ContentEditableTagProps> = ({
   onFocus,
   ...rest
 }) => {
-  const refContent = useRef();
+  const refContent = useRef(null);
+
+  // useEffect(() => {
+  //   ReactDOM.findDOMNode(refContent?.current).focus();
+  // }, [refContent]);
 
   return (
     <ContentEditable
-      innerRef={refContent.current}
+      innerRef={refContent}
       className={clsx(className, styles.contentEditable)}
       html={html}
       onChange={onChange}
@@ -37,4 +42,4 @@ const ContentEditableTag: React.FC<ContentEditableTagProps> = ({
   );
 };
 
-export default ContentEditableTag;
+export default memo(ContentEditableTag);

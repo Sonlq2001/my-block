@@ -5,6 +5,7 @@ import { authReducer } from 'features/auth/redux/auth.slice';
 import { masterDataReducer } from 'features/master-data/master-data';
 import { exploreReducer } from 'features/explore/explore';
 import { postReducer } from 'features/post/post';
+import { socketReducer } from './slices/socket.slice';
 
 const rootReducer = combineReducers({
   common: commonReducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   masterData: masterDataReducer,
   explore: exploreReducer,
   post: postReducer,
+  socket: socketReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
