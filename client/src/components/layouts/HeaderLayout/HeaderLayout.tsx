@@ -2,17 +2,20 @@ import React, { useState } from 'react';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 import OutsideClickHandler from 'react-outside-click-handler';
+import jwt_decode from 'jwt-decode';
 
 import Logo from 'assets/images/logo.png';
 import Button from 'components/atoms/Button/Button';
 import NotiFicationHeader from './components/NotiFicationHeader/NotiFicationHeader';
 import SearchHeader from './components/SearchHeader/SearchHeader';
+import { NewPostPathsEnum } from 'features/new-post/new-post';
+import { authLogout } from 'features/auth/auth';
+import { ProfilePathsEnum } from 'features/profile/profile';
 
 import styles from './HeaderLayout.module.scss';
+import { AccessTokenType } from 'types/access-token.types';
 
 import { useAppSelector, useAppDispatch } from 'redux/store';
-import { authLogout } from 'features/auth/auth';
-import { NewPostPathsEnum } from 'features/new-post/new-post';
 
 interface HeaderLayoutProps {
   showMenu?: boolean;
@@ -27,7 +30,9 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({
 }) => {
   const [isToggleUser, setIsToggleUser] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const accessToken = useAppSelector((state) => !!state.auth.accessToken);
+  const { accessToken } = useAppSelector((state) => ({
+    accessToken: state.auth.accessToken,
+  }));
 
   const handleLogoutUser = async () => {
     const response = await dispatch(authLogout());
@@ -35,6 +40,8 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({
       window.location.reload();
     }
   };
+
+  const decodeData = accessToken && jwt_decode<AccessTokenType>(accessToken);
 
   return (
     <header className={styles.headerGroup}>
@@ -111,16 +118,20 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({
                     Viết blog
                   </Link>
                 </li>
-                <li className={styles.itemAction}>
-                  <Link to="" className={styles.linkAction}>
-                    Bài viết của tôi
-                  </Link>
-                </li>
-                <li className={styles.itemAction}>
-                  <Link to="" className={styles.linkAction}>
-                    Bài viết đã lưu
-                  </Link>
-                </li>
+                {decodeData && (
+                  <li className={styles.itemAction}>
+                    <Link
+                      to={ProfilePathsEnum.PROFILE.replace(
+                        /:user_id/,
+                        decodeData._id
+                      )}
+                      className={styles.linkAction}
+                    >
+                      Thông tin cá nhân
+                    </Link>
+                  </li>
+                )}
+
                 <li className={styles.itemAction} onClick={handleLogoutUser}>
                   <span className={clsx(styles.linkAction, styles.btnLogout)}>
                     Đăng xuất

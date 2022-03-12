@@ -5,7 +5,6 @@ import io from 'socket.io-client';
 import ScrollToTop from './helpers/ScrollToTop';
 import { getSocket } from 'redux/slices/socket.slice';
 import { useAppDispatch } from 'redux/store';
-import { store } from 'redux/store';
 
 const Routes = lazy(() => import('./routes/Routes'));
 
@@ -21,21 +20,6 @@ const App = () => {
       socket.close();
     };
   }, [dispatch]);
-
-  useEffect(() => {
-    const accessToken = !!store.getState().auth.accessToken;
-    const listenStorage = (storageEvent: StorageEvent) => {
-      console.log(storageEvent, 'storageEvent day nhe');
-      if (!accessToken) {
-        window.location.reload();
-      }
-    };
-    window.addEventListener('storage', listenStorage);
-
-    return () => {
-      window.removeEventListener('storage', listenStorage);
-    };
-  }, []);
 
   return (
     <Suspense fallback={null}>

@@ -3,6 +3,7 @@ import refreshTokenRoute from "./refresh-token.routes";
 import topicRoute from "./topic.routes";
 import postRoute from "./post.routes";
 import commentRoute from "./comment.routes";
+import userRoute from "./user.routes";
 
 const routes = {
 	authRoute,
@@ -10,6 +11,7 @@ const routes = {
 	topicRoute,
 	postRoute,
 	commentRoute,
+	userRoute,
 };
 
 export default routes;

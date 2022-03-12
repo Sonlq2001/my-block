@@ -1,9 +1,10 @@
-import { RouteItemDef } from "types/routes.types";
-import ProfileScreen from "./../screens/ProfileScreen/ProfileScreen";
+import { RouteItemDef } from 'types/routes.types';
+import ProfileScreen from './../screens/ProfileScreen/ProfileScreen';
+import { ProfilePathsEnum } from './../constants/profile.paths';
 
 const PROFILE_SCREEN: RouteItemDef = {
-  id: "id_profile",
-  path: "/profile/:id",
+  id: 'id_profile',
+  path: ProfilePathsEnum.PROFILE,
   component: ProfileScreen,
 };
 

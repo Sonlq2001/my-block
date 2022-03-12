@@ -19,4 +19,5 @@ export interface PostItemType extends PostType {
   updatedAt: string;
   topic: TopicType;
   authPost: UserItem;
+  totalComment: number;
 }

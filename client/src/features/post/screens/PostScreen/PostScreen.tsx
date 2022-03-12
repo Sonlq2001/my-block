@@ -98,7 +98,10 @@ const PostScreen = () => {
                   <div className={styles.rowPostInfo}>
                     <div>
                       <ChipInfo icon={<IconHeart />} total="29" />
-                      <ChipInfo icon={<IconChat />} total="0" />
+                      <ChipInfo
+                        icon={<IconChat />}
+                        total={postItem?.totalComment}
+                      />
                     </div>
 
                     <SharePost />

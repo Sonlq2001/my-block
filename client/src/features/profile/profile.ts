@@ -1,1 +1,8 @@
-export * from "./routes/profile.routes";
+// routes
+export * from './routes/profile.routes';
+
+// constants
+export * from './constants/profile.paths';
+
+// redux
+export * from './redux/profile.slice';

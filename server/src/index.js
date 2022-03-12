@@ -13,9 +13,9 @@ import SocketServer from "./config/socket";
 const app = express();
 const port = 5000;
 const corsOptions = {
-  origin: "http://localhost:3000",
-  optionsSuccessStatus: 200,
-  credentials: true,
+	origin: "http://localhost:3000",
+	optionsSuccessStatus: 200,
+	credentials: true,
 };
 
 dotenv.config();
@@ -31,15 +31,16 @@ app.use("/api", routes.refreshTokenRoute);
 app.use("/api", routes.topicRoute);
 app.use("/api", routes.postRoute);
 app.use("/api", routes.commentRoute);
+app.use("/api", routes.userRoute);
 
 // socket
 const http = createServer(app);
 export const io = new Server(http);
 
 io.on("connection", (socket) => {
-  SocketServer(socket);
+	SocketServer(socket);
 });
 
 http.listen(port, () => {
-  console.log(`Server running ${port}`);
+	console.log(`Server running ${port}`);
 });

@@ -1,6 +1,14 @@
-import styles from "./ProfileContentHeader.module.scss";
+import styles from './ProfileContentHeader.module.scss';
 
-const ProfileContentHeader = () => {
+import { ProfileUser } from './../../types/profile.types';
+
+interface ProfileContentHeaderProps {
+  profileUser: ProfileUser;
+}
+
+const ProfileContentHeader: React.FC<ProfileContentHeaderProps> = ({
+  profileUser,
+}) => {
   return (
     <div className={styles.profileContentHeader}>
       <div className={styles.authAvatar}>
@@ -11,7 +19,7 @@ const ProfileContentHeader = () => {
       </div>
 
       <div className={styles.authContent}>
-        <h2 className={styles.authName}>LE QUANG SON</h2>
+        <h2 className={styles.authName}>{profileUser.name}</h2>
         <div className={styles.authDes}>
           <p>
             Amet maxime est nostrum molestiae dolorem ipsum nisi. Placeat eos
