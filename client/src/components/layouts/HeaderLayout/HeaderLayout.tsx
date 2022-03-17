@@ -102,7 +102,13 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({
                 className={styles.userAvatar}
                 onClick={() => setIsToggleUser(!isToggleUser)}
               >
-                <i className="lar la-user-circle" />
+                {decodeData && (
+                  <img
+                    src={decodeData.avatar}
+                    alt=""
+                    className={styles.avatar}
+                  />
+                )}
               </button>
 
               <ul

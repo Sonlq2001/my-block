@@ -49,6 +49,20 @@ export const postReplyComment = createAsyncThunk(
   }
 );
 
+export const patchReaction = createAsyncThunk(
+  `patchReaction`,
+  async (
+    data: { type: string; commentReaction: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      await postApi.patchReactionApi(data);
+    } catch (error: any) {
+      return rejectWithValue(error.response.msg);
+    }
+  }
+);
+
 interface PostSlice {
   // post item
   post: PostItemType | null;
@@ -79,7 +93,10 @@ const postSlice = createSlice({
     updateCommentReply: (state, action) => {
       state.comments = state.comments.map((item) => ({
         ...item,
-        replyComment: [...item.replyComment, action.payload],
+        replyComment:
+          action.payload.rootComment === item._id
+            ? [...item.replyComment, action.payload]
+            : item.replyComment,
       }));
     },
   },

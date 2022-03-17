@@ -1,7 +1,7 @@
 @import 'styles/variables';
 
 .authBg {
-  background-image: url('https://images6.alphacoders.com/110/1107859.png');
+  background-image: url('https://b-f17-zpc.zdn.vn/2318057077340578627/613882f1b8e577bb2ef4.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -14,7 +14,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 45rem;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   border-radius: 2rem;
   padding: 4rem;
   overflow: hidden;
@@ -30,81 +30,7 @@
     bottom: 0;
     right: 0;
     background-color: $gray2-color;
-    filter: blur(7rem);
+    filter: blur(30rem);
     z-index: -1;
-  }
-
-  .formTitle {
-    font-size: 2.5rem;
-    line-height: 4rem;
-  }
-
-  .formDes {
-    margin-top: 1.5rem;
-
-    .formCaption {
-      font-size: 1.9rem;
-      font-weight: 500;
-    }
-
-    p {
-      font-size: 1.3rem;
-      margin-top: 1rem;
-
-      .register {
-        font-size: 1.5rem;
-        font-weight: 600;
-      }
-    }
-  }
-
-  .formBox {
-    margin-top: 4rem;
-
-    .formGroup + .formGroup {
-      margin-top: 3rem;
-    }
-
-    .formLabel {
-      display: block;
-      font-size: 1.6rem;
-      margin-bottom: 8px;
-    }
-
-    .formInput {
-      border: none;
-      background-color: transparent;
-      padding: 1.5rem 3.5rem 1.5rem 0;
-      width: 100%;
-      color: $text-color;
-      font-size: 1.6rem;
-      border-bottom: 1px solid $text-title-color;
-    }
-
-    .formGroupPassword {
-      position: relative;
-
-      .formIconEye {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 2rem;
-        right: 0;
-        cursor: pointer;
-      }
-    }
-
-    .formBtn {
-      width: 100%;
-      padding: 1.5rem 0;
-      font-size: 1.6rem;
-      background-color: $blue-color;
-      color: $white-color;
-      border-radius: 1rem;
-
-      &:hover {
-        background-color: $blue2-color;
-      }
-    }
   }
 }

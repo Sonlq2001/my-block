@@ -10,7 +10,12 @@ export const verifyToken = (req, res, next) => {
 				if (err) {
 					return res.status(408).json({ message: "Token đã hết hạn" });
 				}
-				req.user = { _id: data._id, email: data.email, name: data.name };
+				req.user = {
+					_id: data._id,
+					email: data.email,
+					name: data.name,
+					avatar: data.picture,
+				};
 				next();
 			});
 		} else {

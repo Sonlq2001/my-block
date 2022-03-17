@@ -3,4 +3,5 @@ export enum PostEndpointsEnum {
   POST_COMMENT = '/comment',
   GET_COMMENTS = '/comments/:post_id',
   POST_REPLY_COMMENT = '/reply',
+  PATCH_REACTION = '/reaction/:comment_id',
 }

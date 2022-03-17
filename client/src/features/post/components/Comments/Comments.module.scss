@@ -5,16 +5,13 @@
   margin-top: 2rem;
   width: 100%;
   font-size: 1.5rem;
-
   .listBoxComment {
     width: 100%;
-
     .moreComment {
       margin-top: 1.5rem;
       cursor: pointer;
       user-select: none;
     }
-
     .groupReply {
       border-left: 1px solid $text-card-color;
       padding-left: 2rem;
@@ -26,12 +23,14 @@
 .groupReplyComment {
   display: flex;
   margin-top: 2rem;
-
+  .boxReply {
+    width: 100%;
+  }
   .replyComment {
     background-color: $gray1-color;
     border-radius: 1.5rem;
     padding: 1rem;
-
+    width: max-content;
     .replyCommentUserName {
       font-weight: 600;
     }

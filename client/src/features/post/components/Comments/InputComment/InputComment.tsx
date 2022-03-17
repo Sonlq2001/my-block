@@ -23,6 +23,8 @@ const InputComment: React.FC<CommentsProps> = ({
     if (!valueComment.trim()) return;
     getValue(valueComment);
     setValueComment('');
+    setIsToggleComment(false);
+    setIsReply && setIsReply(false);
   };
 
   return (
@@ -42,7 +44,7 @@ const InputComment: React.FC<CommentsProps> = ({
           />
         </div>
 
-        {(isToggleComment || isReply) && (
+        {(isToggleComment || !!isReply) && (
           <div className={styles.actionComment}>
             <button
               className={clsx(styles.cancelComment, styles.btnComment)}

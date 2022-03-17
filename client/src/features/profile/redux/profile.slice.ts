@@ -30,11 +30,17 @@ export const getPostUser = createAsyncThunk(
 interface ProfileSlice {
   profileUser: ProfileUser | null;
   isLoadingProfileUser: boolean;
+
+  isLoadingPostUser: boolean;
+  postUser: any;
 }
 
 const initialState: ProfileSlice = {
   profileUser: null,
   isLoadingProfileUser: false,
+
+  isLoadingPostUser: false,
+  postUser: [],
 };
 
 const profileSlice = createSlice({
@@ -56,14 +62,14 @@ const profileSlice = createSlice({
 
     // get post user
     [getPostUser.pending.type]: (state) => {
-      state.isLoadingProfileUser = true;
+      state.isLoadingPostUser = true;
     },
     [getPostUser.fulfilled.type]: (state, action) => {
-      state.isLoadingProfileUser = false;
-      state.profileUser = action.payload.data;
+      state.isLoadingPostUser = false;
+      state.postUser = action.payload.data;
     },
     [getPostUser.rejected.type]: (state) => {
-      state.isLoadingProfileUser = false;
+      state.isLoadingPostUser = false;
     },
   },
 });
