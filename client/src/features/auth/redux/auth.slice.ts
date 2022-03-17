@@ -42,6 +42,18 @@ export const authLogout = createAsyncThunk(
   }
 );
 
+export const authLoginGoogle = createAsyncThunk(
+  `authLoginGoogle`,
+  async (token: string, { rejectWithValue }) => {
+    try {
+      const res = await authApi.authLoginGoogle(token);
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response.data.message);
+    }
+  }
+);
+
 interface AuthState {
   isLoadingLogin: boolean;
   accessToken: string | null;
@@ -80,6 +92,18 @@ const authSlice = createSlice({
     // logout
     [authLogout.fulfilled.type]: (state) => {
       state.accessToken = null;
+    },
+
+    // login google
+    [authLoginGoogle.pending.type]: (state) => {
+      state.isLoadingLogin = true;
+    },
+    [authLoginGoogle.fulfilled.type]: (state, action) => {
+      state.isLoadingLogin = false;
+      state.accessToken = action.payload.accessToken;
+    },
+    [authLoginGoogle.rejected.type]: (state) => {
+      state.isLoadingLogin = false;
     },
   },
 });

@@ -19,9 +19,20 @@ const postReplyCommentApi = (comment: any): Promise<AxiosResponse> => {
   return api.post(PostEndpointsEnum.POST_REPLY_COMMENT, comment);
 };
 
+const patchReactionApi = (data: any): Promise<AxiosResponse> => {
+  return api.patch(
+    PostEndpointsEnum.PATCH_REACTION.replace(
+      /:comment_id/,
+      data.commentReaction
+    ),
+    data
+  );
+};
+
 export const postApi = {
   getPostApi,
   postCommentApi,
   getCommentApi,
   postReplyCommentApi,
+  patchReactionApi,
 };

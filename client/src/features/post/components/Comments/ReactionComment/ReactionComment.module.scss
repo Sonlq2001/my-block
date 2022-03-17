@@ -1,0 +1,74 @@
+@import 'styles/variables';
+
+.btnLike {
+  position: relative;
+  .btnLikeText {
+    color: $blue-color;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  &:hover .boxEmoji {
+    display: block;
+  }
+  &:hover .itemIcon {
+    animation: AnimatedEmoji 0.8s ease-in-out;
+  }
+}
+
+.boxEmoji {
+  padding-bottom: 1.3rem;
+  position: absolute;
+  top: -6rem;
+  left: -2rem;
+  display: none;
+}
+.groupIcon {
+  background: $gray2-color;
+  padding: 8px;
+  border-radius: 2.5rem;
+  display: flex;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  .itemIcon {
+    width: 35px;
+    cursor: pointer;
+    transition: linear 0.1s;
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+  .itemIcon + .itemIcon {
+    margin-left: 0.8rem;
+  }
+  .itemIcon:nth-child(1) {
+    animation-delay: calc(0.1s * (1));
+  }
+  .itemIcon:nth-child(2) {
+    animation-delay: calc(0.1s * (2));
+  }
+  .itemIcon:nth-child(3) {
+    animation-delay: calc(0.1s * (3));
+  }
+  .itemIcon:nth-child(4) {
+    animation-delay: calc(0.1s * (4));
+  }
+  .itemIcon:nth-child(5) {
+    animation-delay: calc(0.1s * (5));
+  }
+}
+
+@keyframes AnimatedEmoji {
+  0% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(-10px);
+  }
+  40%,
+  100% {
+    transform: translateY(0);
+  }
+}

@@ -12,10 +12,7 @@ const ProfileContentHeader: React.FC<ProfileContentHeaderProps> = ({
   return (
     <div className={styles.profileContentHeader}>
       <div className={styles.authAvatar}>
-        <img
-          src="https://ncmaz.chisnghiax.com/wp-content/uploads/2021/09/if9tk5uy-ki-1-e1633222611780.jpg"
-          alt=""
-        />
+        <img src={profileUser.avatar} alt="" />
       </div>
 
       <div className={styles.authContent}>

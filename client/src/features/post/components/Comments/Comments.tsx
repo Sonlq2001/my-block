@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import AvatarComment from './AvatarComment/AvatarComment';
 import BoxComment from './BoxComment/BoxComment';
+import FeedbackComment from './FeedbackComment/FeedbackComment';
 
 import styles from './Comments.module.scss';
 interface CommentsProps {
@@ -10,6 +11,7 @@ interface CommentsProps {
 
 const Comments: React.FC<CommentsProps> = ({ comment }) => {
   const [showMoreComment, setShowMoreComment] = useState<boolean>(false);
+
   return (
     <div className={styles.commentGroup}>
       <AvatarComment />
@@ -24,19 +26,23 @@ const Comments: React.FC<CommentsProps> = ({ comment }) => {
             </div>
           )}
 
+          {/* show list reply comment */}
           {showMoreComment && (
             <div className={styles.groupReply}>
               {comment.replyComment.map((reply: any) => {
                 return (
                   <div className={styles.groupReplyComment} key={reply._id}>
                     <AvatarComment />
-                    <div className={styles.replyComment}>
-                      <div className={styles.replyCommentUserName}>
-                        {reply.userComment.name}
+                    <div className={styles.boxReply}>
+                      <div className={styles.replyComment}>
+                        <div className={styles.replyCommentUserName}>
+                          {reply.userComment.name}
+                        </div>
+                        <div className={styles.replyCommentContent}>
+                          {reply.content}
+                        </div>
                       </div>
-                      <div className={styles.replyCommentContent}>
-                        {reply.content}
-                      </div>
+                      <FeedbackComment comment={comment} />
                     </div>
                   </div>
                 );
