@@ -10,6 +10,7 @@ interface PostCardAuthProps {
   title?: string;
   auth?: string;
   color?: string;
+  avatar?: string;
 }
 
 const PostCardAuth: React.FC<PostCardAuthProps> = ({
@@ -19,6 +20,7 @@ const PostCardAuth: React.FC<PostCardAuthProps> = ({
   title,
   auth,
   color,
+  avatar,
 }) => {
   return (
     <div
@@ -32,10 +34,7 @@ const PostCardAuth: React.FC<PostCardAuthProps> = ({
           [styles.large]: size === 'large',
         })}
       >
-        <img
-          src="https://ncmaz.chisnghiax.com/wp-content/uploads/2021/09/if9tk5uy-ki-1-e1633222611780.jpg"
-          alt=""
-        />
+        {avatar && <img src={avatar} alt="" />}
       </div>
       <div
         className={clsx(styles.boxGroup, {

@@ -110,7 +110,7 @@ export const createComment = async (req, res) => {
 		await newComment.save();
 		const dataComment = await newComment.populate({
 			path: "userComment",
-			select: "name email",
+			select: "name email avatar",
 		});
 		io.to(postId).emit("createComment", dataComment);
 		return res.status(200).json({ dataComment });
@@ -142,7 +142,7 @@ export const replyComment = async (req, res) => {
 
 		const dataReplyComment = await newComment.populate({
 			path: "userComment replyUser",
-			select: "name email",
+			select: "name email avatar",
 		});
 		io.to(postId).emit("replyComment", dataReplyComment);
 		return res.status(200).json({ dataReplyComment });

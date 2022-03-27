@@ -15,9 +15,15 @@ interface ExploreItemProps {
   _id: string;
   avatar: any;
   topic: TopicType;
+  totalComment: number;
 }
 
-const ExploreItem: React.FC<ExploreItemProps> = ({ _id, avatar, topic }) => {
+const ExploreItem: React.FC<ExploreItemProps> = ({
+  _id,
+  avatar,
+  topic,
+  totalComment,
+}) => {
   return (
     <Link
       to={PostPathsEnum.POST.replace(/:post_id/, _id)}
@@ -33,7 +39,7 @@ const ExploreItem: React.FC<ExploreItemProps> = ({ _id, avatar, topic }) => {
             <ChipTag title={topic.name} />
           </div>
           <ChipInfo total="10" icon={<IconHeart />} />
-          <ChipInfo total="10" icon={<IconChat />} />
+          <ChipInfo total={totalComment} icon={<IconChat />} />
         </div>
       </div>
     </Link>

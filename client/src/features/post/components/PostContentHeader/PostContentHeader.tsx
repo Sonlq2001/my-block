@@ -12,15 +12,17 @@ import { UserItem } from 'features/auth/auth';
 import { TopicType } from 'features/master-data/master-data';
 
 interface PostContentHeaderProps {
-  titleInside?: string;
-  user?: UserItem;
-  topic?: TopicType;
+  titleInside: string;
+  authPost: UserItem;
+  topic: TopicType;
+  totalComment: number;
 }
 
 const PostContentHeader: React.FC<PostContentHeaderProps> = ({
   titleInside,
-  user,
+  authPost,
   topic,
+  totalComment,
 }) => {
   return (
     <div className={styles.postContentHeader}>
@@ -31,7 +33,8 @@ const PostContentHeader: React.FC<PostContentHeaderProps> = ({
       <div className={styles.postInfo}>
         <div className={styles.postInfoGroup}>
           <PostCardAuth
-            auth={user?.name}
+            auth={authPost?.name}
+            avatar={authPost?.avatar}
             column
             size="large"
             minute="2"
@@ -40,7 +43,7 @@ const PostContentHeader: React.FC<PostContentHeaderProps> = ({
 
           <div className={styles.postInfoBox}>
             <ChipInfo total="20" icon={<IconEye />} dark />
-            <ChipInfo total="20" icon={<IconChat />} dark />
+            <ChipInfo total={totalComment} icon={<IconChat />} dark />
             <div className={styles.postInfoLine}></div>
             <ChipInfo total="20" icon={<IconHeart />} dark />
             <ChipInfo icon={<IconDownload />} download dark />

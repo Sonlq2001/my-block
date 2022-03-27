@@ -78,9 +78,11 @@ const PostScreen = () => {
       {isLoadingPost && <LoadingPostDetail />}
       {!isLoadingPost && (
         <>
-          <PostHeader avatar={postItem?.avatar}>
-            <PostContentHeader {...postItem} />
-          </PostHeader>
+          {postItem && (
+            <PostHeader avatar={postItem?.avatar}>
+              <PostContentHeader {...postItem} />
+            </PostHeader>
+          )}
 
           <div className="container">
             <div className={styles.rowPost}>
@@ -91,8 +93,9 @@ const PostScreen = () => {
 
                 <div className={styles.rowPostFooter}>
                   <div className={styles.rowPostTags}>
-                    <SidebarItemTag tag="dev" />
-                    <SidebarItemTag tag="javascript" />
+                    {postItem?.tags.map((tag) => (
+                      <SidebarItemTag tag={`#${tag}`} key={tag} />
+                    ))}
                   </div>
 
                   <div className={styles.rowPostInfo}>

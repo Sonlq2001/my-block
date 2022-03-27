@@ -1,5 +1,6 @@
+import mongoose from "mongoose";
+
 import Post from "./../models/postModel";
-import Comment from "./../models/commentModel";
 
 export const createPost = async (req, res) => {
 	try {
@@ -15,10 +16,45 @@ export const createPost = async (req, res) => {
 
 export const getPosts = async (req, res) => {
 	try {
-		const listPost = await Post.find().populate({
-			path: "topic authPost",
-			select: "name email",
-		});
+		const listPost = await Post.aggregate([
+			{
+				// topic
+				$lookup: {
+					from: "topics",
+					localField: "topic",
+					foreignField: "_id",
+					as: "topic",
+				},
+			},
+			// array -> object
+			{ $unwind: "$topic" },
+			// auth post
+			{
+				$lookup: {
+					from: "users",
+					localField: "authPost",
+					foreignField: "_id",
+					as: "authPost",
+				},
+			},
+			// array -> object
+			{ $unwind: "$authPost" },
+			// sorting
+			{ $sort: { createdAt: -1 } },
+			// total comment
+			{
+				$lookup: {
+					from: "comments",
+					localField: "_id",
+					foreignField: "postId",
+					as: "totalComment",
+				},
+			},
+			// count comment
+			{ $addFields: { totalComment: { $size: "$totalComment" } } },
+			// remove data unnecessary
+			{ $unset: ["authPost.password", "authPost.email"] },
+		]);
 		return res.status(200).json({ msg: "Danh sách bài viết !", listPost });
 	} catch (err) {
 		return res.status(500).json({ msg: err.message });
@@ -28,19 +64,55 @@ export const getPosts = async (req, res) => {
 export const getPost = async (req, res) => {
 	try {
 		const { post_id } = req.params;
-		const postItem = await Post.findOne({ _id: post_id }).populate({
-			path: "topic authPost",
-			select: "name email",
-		});
-
-		const totalComment = await Comment.count({ postId: post_id });
+		const postItem = await Post.aggregate([
+			{
+				$match: {
+					_id: mongoose.Types.ObjectId(post_id),
+				},
+			},
+			// topic
+			{
+				$lookup: {
+					from: "topics",
+					localField: "topic",
+					foreignField: "_id",
+					as: "topic",
+				},
+			},
+			// array -> object
+			{ $unwind: "$topic" },
+			// auth post
+			{
+				$lookup: {
+					from: "users",
+					localField: "authPost",
+					foreignField: "_id",
+					as: "authPost",
+				},
+			},
+			// array -> object
+			{ $unwind: "$authPost" },
+			// total comment
+			{
+				$lookup: {
+					from: "comments",
+					localField: "_id",
+					foreignField: "postId",
+					as: "totalComment",
+				},
+			},
+			// count comment
+			{ $addFields: { totalComment: { $size: "$totalComment" } } },
+			// remove data unnecessary
+			{ $unset: ["authPost.password", "authPost.email"] },
+		]);
 
 		if (!postItem) {
 			return res.status(404).json({ msg: "Không tìm thấy bài viết !" });
 		}
 
 		return res.status(200).json({
-			postItem: { ...postItem._doc, totalComment },
+			postItem: postItem[0],
 		});
 	} catch (err) {
 		return res.status(500).json({ msg: err.message });
