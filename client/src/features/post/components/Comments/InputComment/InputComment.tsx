@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import clsx from 'clsx';
+import jwt_decode from 'jwt-decode';
 
 import styles from './InputComment.module.scss';
-
+import { useAppSelector } from 'redux/store';
 import ContentEditableTag from 'components/atoms/ContentEditableTag/ContentEditableTag';
+
+import { AccessTokenType } from 'types/access-token.types';
 
 interface CommentsProps {
   getValue: (value: string) => void;
@@ -27,14 +30,18 @@ const InputComment: React.FC<CommentsProps> = ({
     setIsReply && setIsReply(false);
   };
 
+  const { accessToken } = useAppSelector((state) => ({
+    accessToken: state.auth.accessToken,
+  }));
+
+  const decodeData = accessToken && jwt_decode<AccessTokenType>(accessToken);
+
   return (
     <div className={styles.comments}>
       <div className={styles.inputComment}>
         <div className={styles.headerComment}>
-          <img
-            src="https://cdn.pixabay.com/photo/2021/08/21/10/36/mountains-6562436_960_720.jpg"
-            alt=""
-          />
+          {decodeData && <img src={decodeData.avatar} alt="" />}
+
           <ContentEditableTag
             html={valueComment}
             onChange={(e) => setValueComment(e.target.value)}

@@ -14,7 +14,7 @@ export const verifyToken = (req, res, next) => {
 					_id: data._id,
 					email: data.email,
 					name: data.name,
-					avatar: data.picture,
+					avatar: data.avatar,
 				};
 				next();
 			});

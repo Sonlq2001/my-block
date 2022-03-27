@@ -1,7 +1,7 @@
-import React from "react";
-import clsx from "clsx";
+import React from 'react';
+import clsx from 'clsx';
 
-import styles from "./ChipInfo.module.scss";
+import styles from './ChipInfo.module.scss';
 
 interface ChipInfoProps {
   icon?: any;
@@ -25,7 +25,7 @@ const ChipInfo: React.FC<ChipInfoProps> = ({
     >
       <div className={styles.chipInfoGroup}>
         {icon && <span className={styles.chipInfoIcon}>{icon}</span>}
-        {total && <span className={styles.chipInfoTotal}>{total}</span>}
+        <span className={styles.chipInfoTotal}>{total}</span>
       </div>
     </div>
   );

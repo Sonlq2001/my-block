@@ -24,16 +24,17 @@ export const refreshToken = async (req, res) => {
 			if (err) {
 				return res.status(401).json({ msg: "yes" });
 			}
-
 			const newAccessToken = generateToken({
 				_id: data._id,
 				email: data.email,
 				name: data.name,
+				avatar: data.picture || data.avatar,
 			});
 			const newRefreshToken = generateRefreshToken({
 				_id: data._id,
 				email: data.email,
 				name: data.name,
+				avatar: data.picture || data.avatar,
 			});
 
 			await RefreshToken.findOneAndUpdate(
