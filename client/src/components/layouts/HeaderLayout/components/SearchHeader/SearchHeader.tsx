@@ -8,31 +8,36 @@ import styles from './SearchHeader.module.scss';
 const SearchHeader = () => {
   const [isToggleSearch, setIsToggleSearch] = useState<boolean>(false);
   return (
-    <div
-      className={clsx(`headerOptionIcon headerIconSearch`, styles.groupSearch)}
-    >
+    <button className="headerBtn" onClick={() => setIsToggleSearch(true)}>
       <OutsideClickHandler
         onOutsideClick={() => {
           setIsToggleSearch(false);
         }}
       >
-        <span onClick={() => setIsToggleSearch(!isToggleSearch)}>
-          <i className="las la-search" />
-        </span>
-
         <div
-          className={clsx(styles.fromSearch, {
-            [styles.active]: isToggleSearch,
-          })}
+          className={clsx(
+            `headerOptionIcon headerIconSearch`,
+            styles.groupSearch
+          )}
         >
-          <input
-            type="text"
-            placeholder="Tìm kiếm các bài viết..."
-            className={styles.inputSearch}
-          />
+          <span>
+            <i className="las la-search" />
+          </span>
+          <div
+            className={clsx(styles.fromSearch, {
+              [styles.active]: isToggleSearch,
+            })}
+          >
+            <input
+              type="text"
+              autoFocus
+              placeholder="Tìm kiếm các bài viết..."
+              className={styles.inputSearch}
+            />
+          </div>
         </div>
       </OutsideClickHandler>
-    </div>
+    </button>
   );
 };
 

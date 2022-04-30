@@ -22,12 +22,14 @@ import { useAppDispatch, useAppSelector } from 'redux/store';
 import { getPost, getComments } from './../../redux/post.slice';
 import { postComment } from './../../redux/post.slice';
 import { usePostSocket } from './../../socket/post.socket';
+import { createNotify } from 'features/notify/notify';
 interface PostParams {
   post_id: string;
 }
 
 const PostScreen = () => {
   const dispatch = useAppDispatch();
+  usePostSocket();
   const { post_id } = useParams<PostParams>();
 
   const { postItem, isLoadingPost, isLoadingComments, comments, socketData } =
@@ -53,25 +55,38 @@ const PostScreen = () => {
     }
   }, [post_id, fetchPostAndComments]);
 
+  // join room socket
   useEffect(() => {
     if (!post_id || !socketData) return;
 
-    socketData.emit('joinRoom', post_id);
+    socketData.emit('joinPostDetail', post_id);
     return () => {
-      socketData.emit('outRoom', post_id);
+      socketData.emit('outPostDetail', post_id);
     };
   }, [post_id, socketData]);
 
   const handleComment = async (value: string) => {
-    await dispatch(
+    const res = await dispatch(
       postComment({
         content: value,
         authPost: postItem?.authPost._id,
         postId: postItem?._id,
       })
     );
+
+    // dispatch notify
+    if (postComment.fulfilled.match(res)) {
+      dispatch(
+        createNotify({
+          id: res.payload.dataComment._id,
+          text: `${res.payload.dataComment.userComment.name} đã bình luận về bài viết của bạn.`,
+          content: value,
+          recipients: [postItem?.authPost._id],
+          image: res.payload.dataComment.userComment.avatar,
+        })
+      );
+    }
   };
-  usePostSocket();
 
   return (
     <div>

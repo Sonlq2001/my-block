@@ -2,8 +2,9 @@ import { useState } from 'react';
 
 import ReactionComment from '../ReactionComment/ReactionComment';
 import InputComment from './../InputComment/InputComment';
-import { useAppDispatch } from 'redux/store';
+import { useAppDispatch, useAppSelector } from 'redux/store';
 import { postReplyComment } from 'features/post/post';
+import { createNotify } from 'features/notify/redux/notify.slice';
 
 import styles from './FeedbackComment.module.scss';
 
@@ -13,10 +14,13 @@ interface FeedbackCommentProps {
 
 const FeedbackComment: React.FC<FeedbackCommentProps> = ({ comment }) => {
   const dispatch = useAppDispatch();
+  const { socketData } = useAppSelector((state) => ({
+    socketData: state.socket.socketData,
+  }));
   const [isReply, setIsReply] = useState<boolean>(false);
 
   const handleReply = async (value: string) => {
-    await dispatch(
+    const res = await dispatch(
       postReplyComment({
         content: value,
         postId: comment.postId,
@@ -25,6 +29,20 @@ const FeedbackComment: React.FC<FeedbackCommentProps> = ({ comment }) => {
         replyUser: comment.userComment._id,
       })
     );
+
+    // dispatch notify
+    if (postReplyComment.fulfilled.match(res)) {
+      const resData = await dispatch(
+        createNotify({
+          id: res.payload.data.dataReplyComment._id,
+          text: `${res.payload.data.dataReplyComment.userComment.name} đã trả lời bình luận của bạn.`,
+          content: value,
+          recipients: [comment.userComment._id],
+          image: res.payload.data.dataReplyComment.userComment.avatar,
+        })
+      );
+      socketData && socketData.emit('createNotify', resData.payload.resNotify);
+    }
   };
 
   return (

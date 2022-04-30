@@ -19,7 +19,8 @@ export const postComment = createAsyncThunk(
   'postComment',
   async (data: any, { rejectWithValue }) => {
     try {
-      await postApi.postCommentApi(data);
+      const res = await postApi.postCommentApi(data);
+      return res.data;
     } catch (error: any) {
       return rejectWithValue(error.response.msg);
     }
@@ -42,7 +43,8 @@ export const postReplyComment = createAsyncThunk(
   'postReplyComment',
   async (comment: any, { rejectWithValue }) => {
     try {
-      await postApi.postReplyCommentApi(comment);
+      const res = await postApi.postReplyCommentApi(comment);
+      return res;
     } catch (error: any) {
       return rejectWithValue(error.response.msg);
     }
@@ -91,6 +93,7 @@ const postSlice = createSlice({
       state.comments = [action.payload, ...state.comments];
     },
     updateCommentReply: (state, action) => {
+      console.log(action.payload);
       state.comments = state.comments.map((item) => ({
         ...item,
         replyComment:
