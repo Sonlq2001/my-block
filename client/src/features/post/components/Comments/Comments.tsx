@@ -31,17 +31,18 @@ const Comments: React.FC<CommentsProps> = ({ comment }) => {
               {comment.replyComment.map((reply: any) => {
                 return (
                   <div className={styles.groupReplyComment} key={reply._id}>
-                    <AvatarComment avatar={reply.userComment.avatar} />
+                    <AvatarComment avatar={reply.userComment?.avatar} />
                     <div className={styles.boxReply}>
                       <div className={styles.replyComment}>
                         <div className={styles.replyCommentUserName}>
                           {reply.userComment.name}
                         </div>
                         <div className={styles.replyCommentContent}>
+                          <span>{reply.replyUser.name}</span>
                           {reply.content}
                         </div>
                       </div>
-                      <FeedbackComment comment={comment} />
+                      <FeedbackComment comment={reply} />
                     </div>
                   </div>
                 );

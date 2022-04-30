@@ -9,13 +9,20 @@ import { useAppDispatch } from 'redux/store';
 import { getSearchPost } from './../../redux/explore.slice';
 import React from 'react';
 
-const ExploreContentHeader = () => {
+interface ExploreContentHeaderProps {
+  setIsSearch: (status: boolean) => void;
+}
+
+const ExploreContentHeader: React.FC<ExploreContentHeaderProps> = ({
+  setIsSearch,
+}) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const [querySearch, setQuerySearch] = useState<string>('');
 
   const handleSubmitSearch = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSearch(true);
     history.push({
       pathname: '/explore',
       search: `?q=${querySearch}`,

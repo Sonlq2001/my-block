@@ -133,18 +133,3 @@ export const searchPost = async (req, res) => {
 		return res.status(500).json({ msg: err.message });
 	}
 };
-
-export const getPostUser = async (req, res) => {
-	try {
-		const data = await Post.find({ authPost: req.params.user_id });
-
-		// result.map(async (item) => {
-		// 	const comment = await Comment.find({ postId: item });
-		// 	dataComment.push(comment);
-		// });
-
-		return res.status(200).json({ data });
-	} catch (error) {
-		return res.status(500).json({ msg: err.message });
-	}
-};

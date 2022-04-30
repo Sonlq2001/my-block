@@ -83,13 +83,9 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({
           </button>
         )}
 
-        <button className={styles.headerBtn}>
-          <SearchHeader />
-        </button>
+        <SearchHeader />
 
-        <button className={clsx(styles.headerBtn, styles.btnSearch)}>
-          <NotiFicationHeader />
-        </button>
+        <NotiFicationHeader />
 
         {accessToken ? (
           <OutsideClickHandler

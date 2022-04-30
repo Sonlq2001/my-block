@@ -36,6 +36,11 @@
     }
     .replyCommentContent {
       margin-top: 1rem;
+      > span {
+        font-weight: 600;
+        padding-right: 1rem;
+        color: $green2-color;
+      }
     }
   }
 }

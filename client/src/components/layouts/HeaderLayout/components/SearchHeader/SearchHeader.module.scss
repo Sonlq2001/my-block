@@ -2,7 +2,6 @@
 
 .groupSearch {
   position: relative;
-
   .fromSearch {
     top: 6rem;
     position: absolute;
@@ -15,7 +14,6 @@
     opacity: 0;
     visibility: hidden;
     transition: ease-in-out 0.3s;
-
     .inputSearch {
       background-color: $white-color;
       border-radius: 2rem;
@@ -24,7 +22,6 @@
       width: 30rem;
     }
   }
-
   .fromSearch.active {
     top: 4rem;
     opacity: 1;

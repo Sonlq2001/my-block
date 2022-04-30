@@ -60,10 +60,10 @@ const exploreSlice = createSlice({
 
     // search post
     [getSearchPost.pending.type]: (state) => {
-      state.isLoadingSearchPost = true;
+      state.isLoadingListPost = false;
     },
     [getSearchPost.fulfilled.type]: (state, action) => {
-      state.isLoadingSearchPost = false;
+      state.isLoadingListPost = false;
       state.listPost = action.payload.listPost;
     },
   },

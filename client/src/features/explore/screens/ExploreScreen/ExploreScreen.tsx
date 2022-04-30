@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from 'redux/store';
 
@@ -13,6 +13,7 @@ import { getExplores } from './../../redux/explore.slice';
 
 const ExploreScreen = () => {
   const dispatch = useAppDispatch();
+  const [isSearch, setIsSearch] = useState<boolean>(false);
 
   const { listPost, isLoadingListPost } = useAppSelector((state) => ({
     listPost: state.explore.listPost,
@@ -20,13 +21,14 @@ const ExploreScreen = () => {
   }));
 
   useEffect(() => {
+    if (isSearch) return;
     dispatch(getExplores());
-  }, [dispatch]);
+  }, [dispatch, isSearch]);
 
   return (
     <div>
       <ExploreHeader>
-        <ExploreContentHeader />
+        <ExploreContentHeader setIsSearch={setIsSearch} />
       </ExploreHeader>
 
       <div className="container">

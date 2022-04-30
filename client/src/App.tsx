@@ -4,7 +4,10 @@ import io from 'socket.io-client';
 
 import ScrollToTop from './helpers/ScrollToTop';
 import { getSocket } from 'redux/slices/socket.slice';
-import { useAppDispatch } from 'redux/store';
+import { useAppDispatch, useAppSelector } from 'redux/store';
+import SocketClient from 'helpers/SocketClient';
+import { getNotifies } from 'features/notify/redux/notify.slice';
+// import { store } from 'redux/store';
 
 const Routes = lazy(() => import('./routes/Routes'));
 
@@ -12,6 +15,8 @@ const SERVER: string = 'http://localhost:5000';
 
 const App = () => {
   const dispatch = useAppDispatch();
+  const accessToken = useAppSelector((state) => state.auth.accessToken);
+
   useEffect(() => {
     const socket = io(SERVER, { transports: ['websocket'] });
     dispatch(getSocket(socket));
@@ -21,9 +26,16 @@ const App = () => {
     };
   }, [dispatch]);
 
+  useEffect(() => {
+    if (accessToken) {
+      dispatch(getNotifies());
+    }
+  }, [dispatch, accessToken]);
+
   return (
     <Suspense fallback={null}>
       <Router>
+        {accessToken && <SocketClient />}
         <ScrollToTop />
         <Routes />
       </Router>

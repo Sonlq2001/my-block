@@ -7,6 +7,7 @@ import { exploreReducer } from 'features/explore/explore';
 import { postReducer } from 'features/post/post';
 import { socketReducer } from './slices/socket.slice';
 import { profileReducer } from 'features/profile/profile';
+import { notifyReducer } from 'features/notify/notify';
 
 const rootReducer = combineReducers({
   common: commonReducer,
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   post: postReducer,
   socket: socketReducer,
   profile: profileReducer,
+  notify: notifyReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
