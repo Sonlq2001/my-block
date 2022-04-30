@@ -4,15 +4,26 @@ import OutsideClickHandler from 'react-outside-click-handler';
 
 import styles from './NotiFicationHeader.module.scss';
 import { useAppSelector } from 'redux/store';
+import { NotifyItem } from 'features/notify/notify';
+import { patchReadNotify } from 'features/notify/notify';
+import { useAppDispatch } from 'redux/store';
 
 const NotiFicationHeader = () => {
   const [isToggleNotify, setIsToggleNotify] = useState<boolean>(false);
   const [isShadow, setIsShadow] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
 
   const { listNotify, istLoadingListNotify } = useAppSelector((state) => ({
     listNotify: state.notify.listNotify,
     istLoadingListNotify: state.notify.istLoadingListNotify,
   }));
+
+  const handleReadNotify = (notifyItem: NotifyItem) => {
+    if (notifyItem.isRead) {
+      return;
+    }
+    dispatch(patchReadNotify(notifyItem._id));
+  };
 
   return (
     <button
@@ -57,13 +68,17 @@ const NotiFicationHeader = () => {
               >
                 {listNotify.map((item) => {
                   return (
-                    <div className={styles.itemNotification} key={item._id}>
+                    <div
+                      className={styles.itemNotification}
+                      key={item._id}
+                      onClick={() => handleReadNotify(item)}
+                    >
                       <img src={item.image} alt="" />
                       <div className={styles.content}>
                         <p>{item.text}</p>
                         <div>1 phút trước</div>
                       </div>
-                      <div className={styles.status}></div>
+                      {!item.isRead && <div className={styles.status}></div>}
                     </div>
                   );
                 })}

@@ -18,14 +18,13 @@ const FeedbackComment: React.FC<FeedbackCommentProps> = ({ comment }) => {
     socketData: state.socket.socketData,
   }));
   const [isReply, setIsReply] = useState<boolean>(false);
-
   const handleReply = async (value: string) => {
     const res = await dispatch(
       postReplyComment({
         content: value,
         postId: comment.postId,
         authPost: comment.authPost,
-        rootComment: comment._id,
+        rootComment: comment.rootComment || comment._id,
         replyUser: comment.userComment._id,
       })
     );

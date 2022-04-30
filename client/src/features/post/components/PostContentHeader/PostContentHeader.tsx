@@ -16,6 +16,7 @@ interface PostContentHeaderProps {
   authPost: UserItem;
   topic: TopicType;
   totalComment: number;
+  view: number;
 }
 
 const PostContentHeader: React.FC<PostContentHeaderProps> = ({
@@ -23,6 +24,7 @@ const PostContentHeader: React.FC<PostContentHeaderProps> = ({
   authPost,
   topic,
   totalComment,
+  view,
 }) => {
   return (
     <div className={styles.postContentHeader}>
@@ -42,7 +44,7 @@ const PostContentHeader: React.FC<PostContentHeaderProps> = ({
           />
 
           <div className={styles.postInfoBox}>
-            <ChipInfo total="20" icon={<IconEye />} dark />
+            <ChipInfo total={view || 0} icon={<IconEye />} dark />
             <ChipInfo total={totalComment} icon={<IconChat />} dark />
             <div className={styles.postInfoLine}></div>
             <ChipInfo total="20" icon={<IconHeart />} dark />

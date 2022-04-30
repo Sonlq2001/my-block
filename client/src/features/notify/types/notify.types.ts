@@ -9,4 +9,6 @@ export type NotifyItem = {
     avatar: string;
     name: string;
   };
+  recipients: string[];
+  createdAt: string;
 };

@@ -29,10 +29,15 @@ const patchReactionApi = (data: any): Promise<AxiosResponse> => {
   );
 };
 
+const patchViewPost = (id: string) => {
+  return api.patch(PostEndpointsEnum.PATCH_VIEW_POST.replace(/:post_id/, id));
+};
+
 export const postApi = {
   getPostApi,
   postCommentApi,
   getCommentApi,
   postReplyCommentApi,
   patchReactionApi,
+  patchViewPost,
 };

@@ -27,6 +27,18 @@ export const getNotifies = createAsyncThunk(
   }
 );
 
+export const patchReadNotify = createAsyncThunk(
+  `notify/patchReadNotify`,
+  async (idNotify: string, { rejectWithValue }) => {
+    try {
+      const res = await notifyApi.pathReadNotifyApi(idNotify);
+      return res.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
 interface NotifySlice {
   listNotify: NotifyItem[];
   istLoadingListNotify: boolean;
@@ -55,6 +67,15 @@ const notifySlice = createSlice({
     },
     [getNotifies.rejected.type]: (state) => {
       state.istLoadingListNotify = false;
+    },
+
+    // update isRead notify
+    [patchReadNotify.fulfilled.type]: (state, action) => {
+      state.listNotify = state.listNotify.map((notify) =>
+        notify._id === action.payload.notify._id
+          ? action.payload.notify
+          : notify
+      );
     },
   },
 });

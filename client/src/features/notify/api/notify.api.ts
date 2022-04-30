@@ -11,7 +11,12 @@ const getNotifiesApi = (): Promise<AxiosResponse> => {
   return api.get(NotifyEndpointsEnum.GET_NOTIFIES);
 };
 
+const pathReadNotifyApi = (idNotify: string): Promise<AxiosResponse> => {
+  return api.patch(NotifyEndpointsEnum.PATCH_NOTIFY, { idNotify });
+};
+
 export const notifyApi = {
   createNotifyApi,
   getNotifiesApi,
+  pathReadNotifyApi,
 };

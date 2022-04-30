@@ -1,29 +1,38 @@
-import React from "react";
+import React from 'react';
+import moment from 'moment';
+import { Link } from 'react-router-dom';
 
-import PostCardAuth from "components/atoms/PostCardAuth/PostCardAuth";
-import styles from "./PostTrendingItem.module.scss";
+import PostCardAuth from 'components/atoms/PostCardAuth/PostCardAuth';
+import styles from './PostTrendingItem.module.scss';
+import { PostItemType } from 'features/new-post/new-post';
+import { PostPathsEnum } from 'features/post/post';
 
-const PostTrendingItem: React.FC = () => {
+interface PostTrendingItemProps {
+  post: PostItemType;
+}
+
+const PostTrendingItem: React.FC<PostTrendingItemProps> = ({ post }) => {
+  console.log(post);
   return (
     <div className={styles.postTrendingItem}>
       <div className={styles.postBody}>
         <div className={styles.postContent}>
           <div className={styles.postTitle}>
-            Rerum hic iusto ut reiciendis maxime
+            <Link to={PostPathsEnum.POST.replace(/:post_id/, post._id)}>
+              {post.titleOutside}
+            </Link>
           </div>
-          <p className={styles.postDes}>
-            It has survived not only five centuries, but also the leap into
-            electronic typesetting, remaining
-          </p>
+          <p className={styles.postDes}>{post.description}</p>
         </div>
 
-        <PostCardAuth auth="sonel" />
+        <PostCardAuth
+          auth="sonel"
+          time={moment(post.createdAt).fromNow()}
+          avatar={post.authPost.avatar}
+        />
       </div>
       <div className={styles.postImg}>
-        <img
-          src="https://ncmaz.chisnghiax.com/wp-content/uploads/2021/09/pexels-photo-5821029-1.jpeg"
-          alt=""
-        />
+        <img src={post.avatar.img} alt="" />
       </div>
     </div>
   );

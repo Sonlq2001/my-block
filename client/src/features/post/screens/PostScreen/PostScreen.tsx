@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 
 import PostHeader from './../../components/PostHeader/PostHeader';
@@ -19,7 +19,7 @@ import { ReactComponent as IconHeart } from 'assets/images/icon-heart.svg';
 import styles from './PostScreen.module.scss';
 
 import { useAppDispatch, useAppSelector } from 'redux/store';
-import { getPost, getComments } from './../../redux/post.slice';
+import { getPost, getComments, patchViewPost } from './../../redux/post.slice';
 import { postComment } from './../../redux/post.slice';
 import { usePostSocket } from './../../socket/post.socket';
 import { createNotify } from 'features/notify/notify';
@@ -30,6 +30,8 @@ interface PostParams {
 const PostScreen = () => {
   const dispatch = useAppDispatch();
   usePostSocket();
+  const [timeView, setTimeView] = useState<number>(0);
+  const idTime = useRef<any>();
   const { post_id } = useParams<PostParams>();
 
   const { postItem, isLoadingPost, isLoadingComments, comments, socketData } =
@@ -76,7 +78,7 @@ const PostScreen = () => {
 
     // dispatch notify
     if (postComment.fulfilled.match(res)) {
-      dispatch(
+      const resData = await dispatch(
         createNotify({
           id: res.payload.dataComment._id,
           text: `${res.payload.dataComment.userComment.name} đã bình luận về bài viết của bạn.`,
@@ -85,8 +87,25 @@ const PostScreen = () => {
           image: res.payload.dataComment.userComment.avatar,
         })
       );
+      socketData && socketData.emit('createNotify', resData.payload.resNotify);
     }
   };
+
+  useEffect(() => {
+    idTime.current = setInterval(() => {
+      setTimeView((pre) => pre + 1);
+    }, 1000);
+    return () => {
+      clearInterval(idTime.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (timeView >= 60) {
+      clearInterval(idTime.current);
+      dispatch(patchViewPost(post_id));
+    }
+  }, [timeView, post_id, dispatch]);
 
   return (
     <div>

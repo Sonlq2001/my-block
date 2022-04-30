@@ -3,7 +3,7 @@ import { PostType } from './../types/new-post.types';
 export const initNewPost: PostType = {
   titleInside: '',
   content: '',
-  avatar: '',
+  image: '',
   titleOutside: '',
   description: '',
   topic: '',

@@ -65,6 +65,18 @@ export const patchReaction = createAsyncThunk(
   }
 );
 
+export const patchViewPost = createAsyncThunk(
+  `post/patchViewPost`,
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const res = await postApi.patchViewPost(id);
+      return res.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.msg);
+    }
+  }
+);
+
 interface PostSlice {
   // post item
   post: PostItemType | null;
@@ -93,7 +105,6 @@ const postSlice = createSlice({
       state.comments = [action.payload, ...state.comments];
     },
     updateCommentReply: (state, action) => {
-      console.log(action.payload);
       state.comments = state.comments.map((item) => ({
         ...item,
         replyComment:

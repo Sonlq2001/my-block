@@ -1,6 +1,6 @@
-export const upLoadImage = async (img: File) => {
+export const upLoadImage = async (img: any) => {
   try {
-    if (img) {
+    if (img instanceof File) {
       const formData = new FormData();
       formData.append('file', img);
       formData.append(

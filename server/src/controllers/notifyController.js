@@ -27,3 +27,16 @@ export const getNotifies = async (req, res) => {
 		return res.status(500).json({ msg: error.message });
 	}
 };
+
+export const patchReadNotify = async (req, res) => {
+	try {
+		const resData = await Notify.findOneAndUpdate(
+			{ _id: req.body.idNotify },
+			{ isRead: true },
+			{ new: true }
+		);
+		return res.status(200).json({ notify: resData });
+	} catch (error) {
+		return res.status(500).json({ msg: error.message });
+	}
+};
