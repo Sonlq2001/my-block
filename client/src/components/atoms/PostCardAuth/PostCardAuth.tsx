@@ -11,6 +11,7 @@ interface PostCardAuthProps {
   auth?: string;
   color?: string;
   avatar?: string;
+  time?: string;
 }
 
 const PostCardAuth: React.FC<PostCardAuthProps> = ({
@@ -21,6 +22,7 @@ const PostCardAuth: React.FC<PostCardAuthProps> = ({
   auth,
   color,
   avatar,
+  time,
 }) => {
   return (
     <div
@@ -51,9 +53,9 @@ const PostCardAuth: React.FC<PostCardAuthProps> = ({
             <span className={styles.authInfoName}>Frederique</span>
           )}
           {!auth && title && <span className={styles.dot}></span>}
-          <span className={styles.postTime}>Sep 30, 2021</span>
+          <span className={styles.postTime}>{time}</span>
           {column && auth && <span className={styles.dot}></span>}
-          {minute && <span className={styles.postTime}>3 minutes</span>}
+          {/* {minute && <span className={styles.postTime}>3 minutes</span>} */}
         </div>
       </div>
     </div>

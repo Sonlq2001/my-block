@@ -4,13 +4,16 @@ import { UserItem } from 'features/auth/auth';
 export interface PostType {
   titleInside: string;
   content: string;
-  avatar: any;
+  image: File | string;
   titleOutside: string;
   description: string;
   tags: string[];
   topic: string | TopicType;
   authPost: string | UserItem;
   previewImage?: string;
+  avatar?: {
+    img: string;
+  };
 }
 
 export interface PostItemType extends PostType {
@@ -20,4 +23,8 @@ export interface PostItemType extends PostType {
   topic: TopicType;
   authPost: UserItem;
   totalComment: number;
+  view: number;
+  avatar: {
+    img: string;
+  };
 }

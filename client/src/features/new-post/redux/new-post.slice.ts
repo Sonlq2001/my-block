@@ -5,11 +5,15 @@ import { postApi } from './../api/new-post.api';
 import { upLoadImage } from 'helpers/uploadImage';
 
 export const postArticle = createAsyncThunk(
-  'postArticle',
+  'new-post/postArticle',
   async ({ data }: { data: PostType }, { rejectWithValue }) => {
     try {
       const imageCloud = await upLoadImage(data.avatar);
-      const res = await postApi.postArticleApi({ ...data, avatar: imageCloud });
+      const res = await postApi.postArticleApi({
+        ...data,
+        image: '',
+        avatar: imageCloud,
+      });
       return res.data;
     } catch (error: any) {
       return rejectWithValue(error.response.mes);

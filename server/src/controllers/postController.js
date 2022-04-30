@@ -133,3 +133,31 @@ export const searchPost = async (req, res) => {
 		return res.status(500).json({ msg: err.message });
 	}
 };
+
+export const viewPost = async (req, res) => {
+	try {
+		const resData = await Post.findOneAndUpdate(
+			{ _id: req.params.post_id },
+			{ $inc: { view: 1 } },
+			{ new: true }
+		);
+		return res.status(200).json({ resData });
+	} catch (error) {
+		return res.status(500).json({ msg: err.message });
+	}
+};
+
+export const getPostsTrending = async (req, res) => {
+	try {
+		const listPostTrending = await Post.find()
+			.populate({
+				path: "authPost",
+				select: "name avatar",
+			})
+			.sort({ view: -1 })
+			.limit(4);
+		return res.status(200).json({ listPostTrending });
+	} catch (error) {
+		return res.status(500).json({ msg: error.message });
+	}
+};
