@@ -29,8 +29,16 @@ const patchReactionApi = (data: any): Promise<AxiosResponse> => {
   );
 };
 
-const patchViewPost = (id: string) => {
+const patchViewPost = (id: string): Promise<AxiosResponse> => {
   return api.patch(PostEndpointsEnum.PATCH_VIEW_POST.replace(/:post_id/, id));
+};
+
+const patchSavePost = (postId: string): Promise<AxiosResponse> => {
+  return api.patch(PostEndpointsEnum.PATCH_SAVE_POST, { postId });
+};
+
+const patchUnSavePost = (postId: string): Promise<AxiosResponse> => {
+  return api.patch(PostEndpointsEnum.PATCH_UN_SAVE_POST, { postId });
 };
 
 export const postApi = {
@@ -40,4 +48,6 @@ export const postApi = {
   postReplyCommentApi,
   patchReactionApi,
   patchViewPost,
+  patchSavePost,
+  patchUnSavePost,
 };

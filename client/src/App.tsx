@@ -6,8 +6,8 @@ import ScrollToTop from './helpers/ScrollToTop';
 import { getSocket } from 'redux/slices/socket.slice';
 import { useAppDispatch, useAppSelector } from 'redux/store';
 import SocketClient from 'helpers/SocketClient';
-import { getNotifies } from 'features/notify/redux/notify.slice';
-// import { store } from 'redux/store';
+import { getNotifies } from 'features/notify/notify';
+import { getUserInfo } from 'features/user/user';
 
 const Routes = lazy(() => import('./routes/Routes'));
 
@@ -29,6 +29,7 @@ const App = () => {
   useEffect(() => {
     if (accessToken) {
       dispatch(getNotifies());
+      dispatch(getUserInfo());
     }
   }, [dispatch, accessToken]);
 

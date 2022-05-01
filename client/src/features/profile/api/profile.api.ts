@@ -1,17 +1,24 @@
+import { AxiosResponse } from 'axios';
+
 import api from 'api/api';
 import { ProfileEndpointsEnum } from './../constants/profile.endpoints';
 
-const getUserApi = (userId: string) => {
+const getUserApi = (userId: string): Promise<AxiosResponse> => {
   return api.get(ProfileEndpointsEnum.GET_PROFILE.replace(/:user_id/, userId));
 };
 
-const getPostUserApi = (userId: string) => {
+const getPostsUserApi = (userId: string): Promise<AxiosResponse> => {
   return api.get(
-    ProfileEndpointsEnum.GET_POST_USER.replace(/:user_id/, userId)
+    ProfileEndpointsEnum.GET_POSTS_USER.replace(/:user_id/, userId)
   );
+};
+
+const getPostsSavedApi = (): Promise<AxiosResponse> => {
+  return api.get(ProfileEndpointsEnum.GET_POSTS_SAVED);
 };
 
 export const profileApi = {
   getUserApi,
-  getPostUserApi,
+  getPostsUserApi,
+  getPostsSavedApi,
 };

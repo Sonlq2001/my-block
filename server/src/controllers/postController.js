@@ -161,3 +161,31 @@ export const getPostsTrending = async (req, res) => {
 		return res.status(500).json({ msg: error.message });
 	}
 };
+
+export const getPostsUser = async (req, res) => {
+	try {
+		const postsUser = await Post.find({
+			authPost: req.params.user_id,
+		}).populate({
+			path: "authPost topic",
+			select: "name",
+		});
+		return res.status(200).json({ postsUser });
+	} catch (error) {
+		return res.status(500).json({ msg: error.message });
+	}
+};
+
+export const getPostsSaved = async (req, res) => {
+	try {
+		const postsSaved = await Post.find({
+			_id: { $in: req.user.savePost },
+		}).populate({
+			path: "authPost topic",
+			select: "name",
+		});
+		return res.status(200).json({ postsSaved });
+	} catch (error) {
+		return res.status(500).json({ msg: error.message });
+	}
+};

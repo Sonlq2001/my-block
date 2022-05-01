@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema(
 		avatar: {
 			type: String,
 		},
+		savePost: [{ type: mongoose.Types.ObjectId, ref: "posts" }],
 	},
 	{ timestamps: true }
 );

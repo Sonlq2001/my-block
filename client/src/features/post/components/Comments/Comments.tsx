@@ -13,7 +13,13 @@ const Comments: React.FC<CommentsProps> = ({ comment }) => {
   const [showMoreComment, setShowMoreComment] = useState<boolean>(false);
   return (
     <div className={styles.commentGroup}>
-      <AvatarComment avatar={comment.userComment.avatar} />
+      {comment && (
+        <AvatarComment
+          avatar={comment.userComment.avatar}
+          userId={comment.userComment._id}
+        />
+      )}
+
       <div className={styles.listBoxComment}>
         <BoxComment comment={comment}>
           {comment.replyComment.length > 0 && (
@@ -31,7 +37,10 @@ const Comments: React.FC<CommentsProps> = ({ comment }) => {
               {comment.replyComment.map((reply: any) => {
                 return (
                   <div className={styles.groupReplyComment} key={reply._id}>
-                    <AvatarComment avatar={reply.userComment?.avatar} />
+                    <AvatarComment
+                      avatar={reply.userComment?.avatar}
+                      userId={reply.userComment._id}
+                    />
                     <div className={styles.boxReply}>
                       <div className={styles.replyComment}>
                         <div className={styles.replyCommentUserName}>

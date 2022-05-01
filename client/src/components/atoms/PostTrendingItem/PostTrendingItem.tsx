@@ -12,7 +12,6 @@ interface PostTrendingItemProps {
 }
 
 const PostTrendingItem: React.FC<PostTrendingItemProps> = ({ post }) => {
-  console.log(post);
   return (
     <div className={styles.postTrendingItem}>
       <div className={styles.postBody}>
