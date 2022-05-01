@@ -77,6 +77,29 @@ export const patchViewPost = createAsyncThunk(
   }
 );
 
+export const patchSavePost = createAsyncThunk(
+  `post/patchSavePost`,
+  async (postId: string, { rejectWithValue }) => {
+    try {
+      const res = await postApi.patchSavePost(postId);
+      return res.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.msg);
+    }
+  }
+);
+export const patchUnSavePost = createAsyncThunk(
+  `post/patchSavePost`,
+  async (postId: string, { rejectWithValue }) => {
+    try {
+      const res = await postApi.patchUnSavePost(postId);
+      return res.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.msg);
+    }
+  }
+);
+
 interface PostSlice {
   // post item
   post: PostItemType | null;

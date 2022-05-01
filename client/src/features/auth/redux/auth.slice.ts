@@ -4,19 +4,7 @@ import storage from 'redux-persist/lib/storage';
 
 import { authApi } from './../api/auth.api';
 
-import { User } from './../types/auth.types';
-
-export const authLogin = createAsyncThunk(
-  'authLogin',
-  async (data: User, { rejectWithValue }) => {
-    try {
-      const res = await authApi.authLogin(data);
-      return res.data;
-    } catch (err: any) {
-      return rejectWithValue(err.response.data.message);
-    }
-  }
-);
+import { UserItem } from './../types/auth.types';
 
 export const authRefreshToken = createAsyncThunk(
   'authRefreshToken',
@@ -57,11 +45,13 @@ export const authLoginGoogle = createAsyncThunk(
 interface AuthState {
   isLoadingLogin: boolean;
   accessToken: string | null;
+  user: UserItem | null;
 }
 
 const initialState: AuthState = {
   isLoadingLogin: false,
   accessToken: null,
+  user: null,
 };
 
 const authSlice = createSlice({
@@ -69,18 +59,6 @@ const authSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    // login
-    [authLogin.pending.type]: (state) => {
-      state.isLoadingLogin = true;
-    },
-    [authLogin.fulfilled.type]: (state, action) => {
-      state.isLoadingLogin = false;
-      state.accessToken = action.payload.accessToken;
-    },
-    [authLogin.rejected.type]: (state) => {
-      state.isLoadingLogin = false;
-    },
-
     // refresh token
     [authRefreshToken.fulfilled.type]: (state, action) => {
       state.accessToken = action.payload.accessToken;
@@ -101,6 +79,7 @@ const authSlice = createSlice({
     [authLoginGoogle.fulfilled.type]: (state, action) => {
       state.isLoadingLogin = false;
       state.accessToken = action.payload.accessToken;
+      state.user = action.payload.user;
     },
     [authLoginGoogle.rejected.type]: (state) => {
       state.isLoadingLogin = false;

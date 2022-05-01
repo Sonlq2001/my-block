@@ -6,6 +6,7 @@ export interface User {
 export interface UserItem extends User {
   _id: string;
   name: string;
+  email: string;
   avatar: string;
   createdAt: string;
   updatedAt: string;
