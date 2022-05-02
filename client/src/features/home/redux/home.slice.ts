@@ -13,14 +13,34 @@ export const getPostsTrending = createAsyncThunk(
   }
 );
 
+export const getPostsNewest = createAsyncThunk(
+  `home/getPostNewest`,
+  async () => {
+    try {
+      const res = await homeApi.getPostsNewestApi();
+      return res.data;
+    } catch (error) {}
+  }
+);
+
 interface HomeSlice {
+  // post trending
   postsTrending: PostItemType[];
   isLoadingPostsTrending: boolean;
+
+  // post newest
+  postsNewest: PostItemType[];
+  isLoadingPostsNewest: boolean;
 }
 
 const initialState: HomeSlice = {
+  // post trending
   postsTrending: [],
   isLoadingPostsTrending: false,
+
+  // post newest
+  postsNewest: [],
+  isLoadingPostsNewest: false,
 };
 
 const homeSlice = createSlice({
@@ -28,6 +48,7 @@ const homeSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
+    // post trending
     [getPostsTrending.pending.type]: (state) => {
       state.isLoadingPostsTrending = true;
     },
@@ -37,6 +58,18 @@ const homeSlice = createSlice({
     },
     [getPostsTrending.rejected.type]: (state) => {
       state.isLoadingPostsTrending = false;
+    },
+
+    // post newest
+    [getPostsNewest.pending.type]: (state) => {
+      state.isLoadingPostsNewest = true;
+    },
+    [getPostsNewest.fulfilled.type]: (state, action) => {
+      state.isLoadingPostsNewest = false;
+      state.postsNewest = action.payload.postsNewest;
+    },
+    [getPostsNewest.rejected.type]: (state) => {
+      state.isLoadingPostsNewest = false;
     },
   },
 });

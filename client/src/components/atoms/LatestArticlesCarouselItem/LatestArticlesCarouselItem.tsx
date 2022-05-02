@@ -1,34 +1,42 @@
-import React from "react";
+import React from 'react';
+import moment from 'moment';
 
-import styles from "./LatestArticlesCarouselItem.module.scss";
-import ChipInfo from "components/atoms/ChipInfo/ChipInfo";
-import ChipTag from "components/atoms/ChipTag/ChipTag";
-import PostCardAuth from "components/atoms/PostCardAuth/PostCardAuth";
-import { ReactComponent as IconHeart } from "assets/images/icon-heart.svg";
+import styles from './LatestArticlesCarouselItem.module.scss';
+import ChipInfo from 'components/atoms/ChipInfo/ChipInfo';
+import ChipTag from 'components/atoms/ChipTag/ChipTag';
+import PostCardAuth from 'components/atoms/PostCardAuth/PostCardAuth';
+import { ReactComponent as IconHeart } from 'assets/images/icon-heart.svg';
+import { PostItemType } from 'features/new-post/new-post';
 
 interface LatestArticlesCarouselItemProps {
-  image: string;
+  post: PostItemType;
 }
 
 const LatestArticlesCarouselItem: React.FC<LatestArticlesCarouselItemProps> = ({
-  image,
+  post,
 }) => {
   return (
     <div className={styles.carouselItem}>
       <a href="/">
         <div className={styles.carouselHeader}>
-          <img src={image} alt="" />
+          <img src={post.avatar.img} alt="" />
         </div>
 
         <div className={styles.carouselBody}>
           <div className={styles.cateGroup}>
-            <ChipTag title="Dev" />
+            <ChipTag title={post.topic.name} />
             <ChipTag title="Dev" />
           </div>
-          <h4>Explicabo reiciendis blanditiis possimus qui ut</h4>
+          <h4>{post.titleOutside}</h4>
 
           <div className={styles.authPost}>
-            <PostCardAuth column minute="3" size="large" auth="sonel" />
+            <PostCardAuth
+              column
+              time={moment(post.createdAt).fromNow()}
+              size="large"
+              auth={post.authPost.name}
+              avatar={post.authPost.avatar}
+            />
           </div>
         </div>
         <div className={styles.interactivePost}>

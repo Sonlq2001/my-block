@@ -42,7 +42,6 @@ export const getUserInfo = async (req, res) => {
 		const userInfo = await User.findOne({ _id: req.user._id }).select(
 			"-password"
 		);
-		console.log(req.user);
 		return res.status(200).json({ userInfo });
 	} catch (error) {
 		return res.status(500).json({ msg: error.message });

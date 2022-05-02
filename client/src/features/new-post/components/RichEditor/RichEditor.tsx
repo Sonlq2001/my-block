@@ -12,7 +12,7 @@ const config = {
   spellcheck: true,
   language: 'en',
   toolbarButtonSize: 'medium',
-  toolbarAdaptive: false,
+  // toolbarAdaptive: false,
   showCharsCounter: true,
   showWordsCounter: true,
   showXPathInStatusbar: false,

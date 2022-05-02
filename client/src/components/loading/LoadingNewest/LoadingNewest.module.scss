@@ -1,0 +1,70 @@
+@import 'styles/variables';
+
+.loadingGroup {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.loadingBox {
+  width: 28rem;
+  height: 41.5rem;
+  background-color: $gray5-color;
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  margin-right: 1.6rem;
+  position: relative;
+  overflow: hidden;
+  .loadingContent {
+    background-color: $bg-gray;
+    position: absolute;
+    width: 25rem;
+    height: 16rem;
+    bottom: 1.7rem;
+    border-radius: 1rem;
+    padding: 2rem;
+    z-index: 100;
+    .loadingCate,
+    .loadingTitle,
+    .loadingAuth {
+      position: relative;
+      width: 100%;
+      height: 3rem;
+      background-color: $gray3-color;
+      border-radius: 1rem;
+      margin-bottom: 1rem;
+    }
+    .loadingTitle {
+      width: 80%;
+    }
+    .loadingAuth {
+      width: 50%;
+    }
+  }
+}
+
+.loadingCate::after,
+.loadingTitle::after,
+.loadingAuth::after,
+.loadingBox::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(
+    to right,
+    $gray5-color 0%,
+    rgba(150, 150, 150, 0.1) 20%,
+    $gray5-color 40%,
+    $gray5-color 100%
+  );
+  background-repeat: no-repeat;
+  animation: loading linear infinite 1s;
+}
+
+@keyframes loading {
+  0% {
+    background-position: -45rem 0;
+  }
+  100% {
+    background-position: 45rem 0;
+  }
+}

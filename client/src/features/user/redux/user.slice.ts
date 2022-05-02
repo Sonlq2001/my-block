@@ -29,7 +29,9 @@ const useSlice = createSlice({
     },
     [getUserInfo.fulfilled.type]: (state, action) => {
       state.isLoadingUser = false;
-      state.userInfo = action.payload.userInfo;
+      if (action.payload) {
+        state.userInfo = action.payload?.userInfo;
+      }
     },
     [getUserInfo.rejected.type]: (state) => {
       state.isLoadingUser = false;

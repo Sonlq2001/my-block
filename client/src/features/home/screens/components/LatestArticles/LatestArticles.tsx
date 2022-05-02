@@ -1,14 +1,18 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from 'react';
 
-import TitleMain from "components/atoms/TitleMain/TitleMain";
-import LatestArticlesCarouselItem from "components/atoms/LatestArticlesCarouselItem/LatestArticlesCarouselItem";
-import NavigationCarousel from "components/atoms/NavigationCarousel/NavigationCarousel";
-import { ReactComponent as IconHappy } from "assets/images/icon-happy.svg";
-import styles from "./LatestArticles.module.scss";
-import { data } from "features/home/constants/thumy-data";
+import TitleMain from 'components/atoms/TitleMain/TitleMain';
+import LatestArticlesCarouselItem from 'components/atoms/LatestArticlesCarouselItem/LatestArticlesCarouselItem';
+import NavigationCarousel from 'components/atoms/NavigationCarousel/NavigationCarousel';
+import { ReactComponent as IconHappy } from 'assets/images/icon-happy.svg';
+import styles from './LatestArticles.module.scss';
+import LoadingNewest from 'components/loading/LoadingNewest/LoadingNewest';
+
+import { getPostsNewest } from 'features/home/home';
+import { useAppDispatch, useAppSelector } from 'redux/store';
 
 const LatestArticles: React.FC = () => {
   const carouselApp = useRef<any>(null);
+  const dispatch = useAppDispatch();
 
   const handleNext = () => {
     const slide = carouselApp.current;
@@ -26,6 +30,15 @@ const LatestArticles: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    dispatch(getPostsNewest());
+  }, [dispatch]);
+
+  const { postsNewest, isLoadingPostsNewest } = useAppSelector((state) => ({
+    postsNewest: state.home.postsNewest,
+    isLoadingPostsNewest: state.home.isLoadingPostsNewest,
+  }));
+
   return (
     <div className="container">
       <div className={styles.latestArticles}>
@@ -40,9 +53,12 @@ const LatestArticles: React.FC = () => {
         </div>
 
         <div className={styles.carouselGroup} ref={carouselApp}>
-          {data.map((item) => (
-            <LatestArticlesCarouselItem key={item.id} image={item.img} />
-          ))}
+          {isLoadingPostsNewest && <LoadingNewest />}
+          {!isLoadingPostsNewest &&
+            postsNewest.length > 0 &&
+            postsNewest.map((post) => {
+              return <LatestArticlesCarouselItem key={post._id} post={post} />;
+            })}
         </div>
       </div>
     </div>

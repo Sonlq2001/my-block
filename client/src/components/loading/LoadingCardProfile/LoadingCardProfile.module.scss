@@ -1,0 +1,71 @@
+@import 'styles/variables';
+.loadingWrap {
+  margin-right: -3.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.loadingGroup {
+  border-radius: 1rem;
+  height: 38rem;
+  width: calc(100% / 4 - 3.5rem);
+  overflow: hidden;
+  background: $gray5-color;
+  margin: 0 3.5rem 3.5rem 0;
+  &:nth-child(4) {
+    margin-right: 0;
+  }
+  .loadingImg {
+    height: 20rem;
+    background: $gray3-color;
+    position: relative;
+  }
+  .loadingBox {
+    padding: 2rem;
+  }
+  .loadingAuth,
+  .loadingTitle {
+    position: relative;
+    width: 60%;
+    height: 35px;
+    background-color: $gray3-color;
+    margin-top: 0.5rem;
+    border-radius: 1rem;
+  }
+  .loadingTitle {
+    margin-top: 2rem;
+    width: 90%;
+    height: 20px;
+
+    &:nth-child(3) {
+      width: 50%;
+    }
+  }
+}
+
+.loadingTitle::after,
+.loadingAuth::after,
+.loadingImg::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(
+    to right,
+    $gray5-color 0%,
+    rgba(150, 150, 150, 0.5) 100%,
+    $gray5-color 100%,
+    $gray5-color 100%
+  );
+  background-repeat: no-repeat;
+  animation: loading linear infinite 1.5s;
+}
+
+@keyframes loading {
+  0% {
+    background-position: -100rem 0;
+  }
+  100% {
+    background-position: 100rem 0;
+  }
+}
