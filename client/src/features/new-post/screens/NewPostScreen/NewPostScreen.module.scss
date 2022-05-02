@@ -1,3 +1,5 @@
+@import 'styles/variables';
+
 .groupContentPost {
   display: flex;
 
@@ -8,5 +10,6 @@
     overflow-y: auto;
     line-height: 2.3rem;
     max-height: 60rem;
+    border-left: 1px solid $gray5-color;
   }
 }

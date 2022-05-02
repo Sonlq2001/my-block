@@ -1,34 +1,7 @@
 @import 'styles/variables';
 
-.jodit-container .jodit .jodit_theme_default .jodit-wysiwyg_mode {
-  border: none !important;
-}
 .richEditor {
   font-size: 1.5rem;
   width: 50%;
   background: $white-color !important;
-
-  & > .jodit-toolbar__box {
-    background: $white-color;
-  }
-
-  & > .jodit-toolbar__box:not(:empty) {
-    background: $white-color;
-  }
-
-  .jodit-container {
-    border: none !important;
-  }
-
-  & > .jodit-container .jodit .jodit_theme_default .jodit-wysiwyg_mode {
-    border: none !important;
-  }
-}
-
-.jodit-ui-group {
-  background: $white-color !important;
-}
-
-.jodit-container:not(.jodit_inline) .jodit-wysiwyg {
-  padding: 1rem !important;
 }

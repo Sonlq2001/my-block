@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import clsx from 'clsx';
 import OutsideClickHandler from 'react-outside-click-handler';
+import moment from 'moment';
 
 import styles from './NotiFicationHeader.module.scss';
 import { useAppSelector } from 'redux/store';
@@ -76,7 +77,7 @@ const NotiFicationHeader = () => {
                       <img src={item.image} alt="" />
                       <div className={styles.content}>
                         <p>{item.text}</p>
-                        <div>1 phút trước</div>
+                        <div>{moment(item.createdAt).fromNow()}</div>
                       </div>
                       {!item.isRead && <div className={styles.status}></div>}
                     </div>

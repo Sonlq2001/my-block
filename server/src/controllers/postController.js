@@ -189,3 +189,17 @@ export const getPostsSaved = async (req, res) => {
 		return res.status(500).json({ msg: error.message });
 	}
 };
+
+export const getPostNewest = async (req, res) => {
+	try {
+		const postsNewest = await Post.find()
+			.populate({
+				path: "authPost topic",
+				select: "avatar name",
+			})
+			.sort({ createdAt: -1 });
+		return res.status(200).json({ postsNewest });
+	} catch (error) {
+		return res.status(500).json({ msg: error.message });
+	}
+};

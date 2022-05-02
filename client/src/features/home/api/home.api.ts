@@ -7,4 +7,8 @@ const getListTrendingApi = (): Promise<AxiosResponse> => {
   return api.get(HomeEnumEndpoints.GET_TRENDING);
 };
 
-export const homeApi = { getListTrendingApi };
+const getPostsNewestApi = (): Promise<AxiosResponse> => {
+  return api.get(HomeEnumEndpoints.GET_POST_NEWEST);
+};
+
+export const homeApi = { getListTrendingApi, getPostsNewestApi };

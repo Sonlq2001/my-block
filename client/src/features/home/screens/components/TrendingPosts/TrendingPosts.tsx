@@ -8,6 +8,7 @@ import styles from './TrendingPosts.module.scss';
 import PostTrendingItem from 'components/atoms/PostTrendingItem/PostTrendingItem';
 import PostCardAuth from 'components/atoms/PostCardAuth/PostCardAuth';
 import { PostPathsEnum } from 'features/post/post';
+import LoadingTrending from 'components/loading/LoadingTrending/LoadingTrending';
 
 import { useAppDispatch, useAppSelector } from 'redux/store';
 import { getPostsTrending } from 'features/home/home';
@@ -32,7 +33,7 @@ const TrendingPosts = () => {
         icon={<IconTrending />}
         description={'Dolorem rerum error assumenda temporibus quo voluptas'}
       />
-
+      {isLoadingPostsTrending && <LoadingTrending />}
       {!isLoadingPostsTrending && (
         <div className={styles.trendingGroup}>
           {listPostTrending.length > 0 && (
@@ -65,9 +66,10 @@ const TrendingPosts = () => {
           )}
 
           <div className={styles.postItemGroup}>
-            {postsTrending.map((post) => (
-              <PostTrendingItem key={post._id} post={post} />
-            ))}
+            {postsTrending.length > 0 &&
+              postsTrending.map((post) => (
+                <PostTrendingItem key={post._id} post={post} />
+              ))}
           </div>
         </div>
       )}

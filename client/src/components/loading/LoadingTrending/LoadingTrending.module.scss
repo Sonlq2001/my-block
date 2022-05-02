@@ -1,0 +1,92 @@
+@import 'styles/variables';
+
+.loadingGroup {
+  display: flex;
+  margin-top: 3rem;
+  .loadingLeft,
+  .loadingRight {
+    width: 50%;
+  }
+  .loadingLeft {
+    margin-right: 3rem;
+  }
+  .loadingImg,
+  .loadingTitle,
+  .loadingAuth {
+    width: 100%;
+    height: 47rem;
+    background: $gray5-color;
+    border-radius: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .loadingTitle {
+    width: 80%;
+    height: 3rem;
+    margin-top: 1.5rem;
+  }
+  .loadingAuth {
+    height: 3rem;
+    width: 55%;
+    margin-top: 1.5rem;
+  }
+  .loadingItem {
+    display: flex;
+    margin-bottom: 2rem;
+    .loadingItemBox {
+      width: 65%;
+      margin-right: 3rem;
+    }
+    .loadingTileItem,
+    .loadingImgItem {
+      width: 100%;
+      height: 30px;
+      background: $gray5-color;
+      border-radius: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .loadingImgItem {
+      width: 35%;
+      height: 15rem;
+    }
+    .loadingTileItem {
+      margin-bottom: 1rem;
+      &:nth-child(2) {
+        width: 75%;
+      }
+      &:nth-child(3) {
+        width: 50%;
+      }
+    }
+  }
+}
+
+.loadingImg::after,
+.loadingTitle::after,
+.loadingAuth::after,
+.loadingTileItem::after,
+.loadingImgItem::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(
+    to right,
+    $gray5-color 0%,
+    rgba(150, 150, 150, 0.1) 20%,
+    $gray5-color 40%,
+    $gray5-color 100%
+  );
+  background-repeat: no-repeat;
+  animation: loading linear infinite 1s;
+}
+
+@keyframes loading {
+  0% {
+    background-position: -45rem 0;
+  }
+  100% {
+    background-position: 45rem 0;
+  }
+}
