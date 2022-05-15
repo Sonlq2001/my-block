@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { ContentEditableEvent } from 'react-contenteditable';
 import { useFormikContext } from 'formik';
@@ -16,16 +16,17 @@ import { getTopics } from 'features/master-data/master-data';
 
 interface PopupPostProps {
   setPublish: (publish: boolean) => void;
-  handleSubmit: (value: PostType) => void;
-  loaded: boolean;
+  handleSubmit: () => void;
+  isSubmitting: boolean;
 }
 
 const PopupPost: React.FC<PopupPostProps> = ({
   setPublish,
   handleSubmit,
-  loaded,
+  isSubmitting,
 }) => {
   const dispatch = useAppDispatch();
+  const [tags, setTags] = useState<string[]>([]);
   const { values, setFieldValue } = useFormikContext<PostType>();
   const handleChangeTitleOutside = (e: ContentEditableEvent) => {
     setFieldValue('titleOutside', e.target.value);
@@ -37,20 +38,26 @@ const PopupPost: React.FC<PopupPostProps> = ({
 
   const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
-    setFieldValue('avatar', file);
-    setFieldValue('previewImage', URL.createObjectURL(file as Blob));
+    if (file) {
+      setFieldValue('avatar', file);
+      setFieldValue('previewImage', URL.createObjectURL(file as Blob));
+    }
   };
 
   const handleChangeTag = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const tags = e.target.value
+    const listTag = e.target.value
       .trim()
-      .replace(/,/g, ' ')
-      .split(' ')
+      .split(',')
       .filter((tag) => tag !== '');
-    if (tags.length >= 4) {
+
+    setTimeout(() => {
+      setTags(listTag);
+    }, 700);
+    setFieldValue('tags', listTag);
+    console.log(listTag);
+    if (listTag.length > 4) {
       return;
     }
-    setFieldValue('tags', tags);
   };
 
   useEffect(() => {
@@ -133,6 +140,16 @@ const PopupPost: React.FC<PopupPostProps> = ({
             <label>
               Thêm tối đa 5 thẻ để độc giả biết bài viết của bạn nói về điều gì.
             </label>
+            <div className={styles.groupTag}>
+              <div>
+                {tags.length > 0 &&
+                  tags.map((tag, index) => (
+                    <span key={index} className={styles.itemTag}>
+                      #{tag.trim()} {index < tags.length - 1 && ','}
+                    </span>
+                  ))}
+              </div>
+            </div>
             <input
               type="text"
               placeholder="Ví dụ: Thiên nhiên, Cuộc sống"
@@ -148,10 +165,13 @@ const PopupPost: React.FC<PopupPostProps> = ({
 
           <div className={styles.postBox}>
             <button
-              className={styles.btnPublish}
-              onClick={() => handleSubmit(values)}
+              className={clsx(
+                styles.btnPublish,
+                isSubmitting && styles.disabled
+              )}
+              onClick={handleSubmit}
             >
-              {loaded && <LoadingCircle />}
+              {isSubmitting && <LoadingCircle />}
               Xuất bản ngay
             </button>
           </div>

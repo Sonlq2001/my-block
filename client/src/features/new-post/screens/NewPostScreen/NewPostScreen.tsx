@@ -1,5 +1,5 @@
 import { useState, memo, useEffect } from 'react';
-import { Formik } from 'formik';
+import { Formik, FormikHelpers } from 'formik';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useHistory } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
@@ -21,7 +21,6 @@ const NewPostScreen = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const [publish, setPublish] = useState<boolean>(false);
-  const [loaded, setLoaded] = useState<boolean>(false);
 
   const { accessToken } = useAppSelector((state) => ({
     accessToken: state.auth.accessToken,
@@ -29,28 +28,30 @@ const NewPostScreen = () => {
 
   const dataDecoded = accessToken && jwt_decode<AccessTokenType>(accessToken);
 
-  const handleSubmit = async (value: PostType) => {
+  const handleSubmitForm = async (
+    values: PostType,
+    { setSubmitting }: FormikHelpers<PostType>
+  ) => {
     if (dataDecoded) {
-      setLoaded(true);
-      dispatch(postArticle({ data: { ...value, authPost: dataDecoded._id } }))
+      dispatch(postArticle({ data: { ...values, authPost: dataDecoded._id } }))
         .then(unwrapResult)
         .then((res) =>
           history.push(PostPathsEnum.POST.replace(/:post_id/, res.post._id))
         )
         .catch((err) => console.log(err.response))
-        .finally(() => setLoaded(false));
+        .finally(() => setSubmitting(false));
     }
   };
 
   useEffect(() => {
     return () => {
-      setLoaded(false);
+      setPublish(false);
     };
   }, []);
 
   return (
-    <Formik initialValues={initNewPost} onSubmit={handleSubmit}>
-      {({ values }) => {
+    <Formik initialValues={initNewPost} onSubmit={handleSubmitForm}>
+      {({ values, handleSubmit, isSubmitting }) => {
         const isActive = values.titleInside !== '' && values.content !== '';
         return (
           <>
@@ -73,7 +74,7 @@ const NewPostScreen = () => {
               <PopupPost
                 setPublish={setPublish}
                 handleSubmit={handleSubmit}
-                loaded={loaded}
+                isSubmitting={isSubmitting}
               />
             )}
           </>

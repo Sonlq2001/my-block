@@ -131,7 +131,22 @@
         display: block;
         text-align: left;
       }
-
+      .groupTag {
+        margin-top: 1rem;
+        font-size: 1.4rem;
+        padding: 1rem 0;
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        > div {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+      }
+      .itemTag + .itemTag {
+        padding-left: 1rem;
+      }
       .postBoxInput {
         border: 1px solid #ddd;
         padding: 1.3rem;
@@ -159,8 +174,14 @@
       margin-left: auto;
 
       &:hover {
-        background: #3a978e;
+        background: $green-bold-hover;
       }
+    }
+    .btnPublish.disabled {
+      cursor: default;
+      pointer-events: none;
+      background-color: $gray2-color;
+      color: $text-card-color;
     }
   }
 

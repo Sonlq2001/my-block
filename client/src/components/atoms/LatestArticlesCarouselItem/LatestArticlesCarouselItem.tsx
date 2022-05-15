@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 import styles from './LatestArticlesCarouselItem.module.scss';
 import ChipInfo from 'components/atoms/ChipInfo/ChipInfo';
@@ -7,6 +8,7 @@ import ChipTag from 'components/atoms/ChipTag/ChipTag';
 import PostCardAuth from 'components/atoms/PostCardAuth/PostCardAuth';
 import { ReactComponent as IconHeart } from 'assets/images/icon-heart.svg';
 import { PostItemType } from 'features/new-post/new-post';
+import { PostPathsEnum } from 'features/post/post';
 
 interface LatestArticlesCarouselItemProps {
   post: PostItemType;
@@ -17,7 +19,7 @@ const LatestArticlesCarouselItem: React.FC<LatestArticlesCarouselItemProps> = ({
 }) => {
   return (
     <div className={styles.carouselItem}>
-      <a href="/">
+      <Link to={PostPathsEnum.POST.replace(/:post_id/, post._id)}>
         <div className={styles.carouselHeader}>
           <img src={post.avatar.img} alt="" />
         </div>
@@ -42,7 +44,7 @@ const LatestArticlesCarouselItem: React.FC<LatestArticlesCarouselItemProps> = ({
         <div className={styles.interactivePost}>
           <ChipInfo icon={<IconHeart />} total={20} />
         </div>
-      </a>
+      </Link>
     </div>
   );
 };
