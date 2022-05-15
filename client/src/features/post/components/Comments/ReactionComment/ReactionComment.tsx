@@ -20,7 +20,6 @@ const ReactionComment: React.FC<ReactionCommentProps> = ({ commentId }) => {
         commentReaction: commentId,
       })
     );
-    // console.log(type);
   };
 
   return (

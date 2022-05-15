@@ -47,7 +47,7 @@ const NewPostScreen = () => {
       setLoaded(false);
     };
   }, []);
-  console.log('vo day nao ahihi');
+
   return (
     <Formik initialValues={initNewPost} onSubmit={handleSubmit}>
       {({ values }) => {
