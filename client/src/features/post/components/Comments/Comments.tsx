@@ -51,7 +51,10 @@ const Comments: React.FC<CommentsProps> = ({ comment }) => {
                           {reply.content}
                         </div>
                       </div>
-                      <FeedbackComment comment={reply} />
+                      <FeedbackComment
+                        comment={reply}
+                        setShowMoreComment={setShowMoreComment}
+                      />
                     </div>
                   </div>
                 );

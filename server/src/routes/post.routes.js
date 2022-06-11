@@ -21,7 +21,7 @@ route.get("/post/:post_id", verifyToken, getPost);
 route.get("/search", verifyToken, searchPost);
 route.patch("/view_post/:post_id", verifyToken, viewPost);
 route.get("/posts_trending", verifyToken, getPostsTrending);
-route.get("/posts_user/:user_id", verifyToken, getPostsUser);
+route.get("/posts_user/:user_id", getPostsUser);
 route.get("/post_saved", verifyToken, getPostsSaved);
 route.get("/post_newest", verifyToken, getPostNewest);
 

@@ -11,6 +11,7 @@ import SearchHeader from './components/SearchHeader/SearchHeader';
 import { NewPostPathsEnum } from 'features/new-post/new-post';
 import { authLogout } from 'features/auth/auth';
 import { ProfilePathsEnum } from 'features/profile/profile';
+import { ChatPathsEnum } from 'features/chat/chat';
 
 import styles from './HeaderLayout.module.scss';
 import { AccessTokenType } from 'types/access-token.types';
@@ -112,6 +113,11 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({
                   [styles.active]: isToggleUser,
                 })}
               >
+                <li className={styles.itemAction}>
+                  <Link to={ChatPathsEnum.CHAT} className={styles.linkAction}>
+                    <i className="lab la-rocketchat" /> Nhắn tin với bạn bè
+                  </Link>
+                </li>
                 <li className={styles.itemAction}>
                   <Link
                     to={NewPostPathsEnum.NEW_POST}

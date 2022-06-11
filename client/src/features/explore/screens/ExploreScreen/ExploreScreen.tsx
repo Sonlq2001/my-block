@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { useAppDispatch, useAppSelector } from 'redux/store';
 
@@ -25,6 +26,10 @@ const ExploreScreen = () => {
     dispatch(getExplores());
   }, [dispatch, isSearch]);
 
+  const handleFetchMoreData = () => {
+    // dispatch(getExplores());
+  };
+
   return (
     <div>
       <ExploreHeader>
@@ -37,11 +42,18 @@ const ExploreScreen = () => {
             <LoadingExplore minWidth="20%" height="240px" count={7} />
           )}
           {!isLoadingListPost && (
-            <div className={styles.groupMasonry}>
-              {listPost.map((item) => (
-                <ExploreItem key={item._id} {...item} />
-              ))}
-            </div>
+            <InfiniteScroll
+              dataLength={20}
+              hasMore={true}
+              next={handleFetchMoreData}
+              loader={<h4>Loading...</h4>}
+            >
+              <div className={styles.groupMasonry}>
+                {listPost.map((item) => (
+                  <ExploreItem key={item._id} {...item} />
+                ))}
+              </div>
+            </InfiniteScroll>
           )}
         </div>
       </div>

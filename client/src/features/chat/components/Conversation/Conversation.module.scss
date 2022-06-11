@@ -1,0 +1,26 @@
+.itemMsg {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background: #eee;
+  border-radius: 5px;
+  margin-bottom: 2px;
+  user-select: none;
+  cursor: pointer;
+  &:hover {
+    background: #ddd;
+  }
+  .itemContent {
+    margin: 0 1.5rem;
+    font-size: 1.3rem;
+    width: 90%;
+    .itemName {
+      margin-bottom: 1rem;
+    }
+  }
+  .itemTime {
+    font-size: 1.2rem;
+    display: flex;
+    margin-bottom: auto;
+  }
+}

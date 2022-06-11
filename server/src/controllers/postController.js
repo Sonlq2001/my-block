@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 import Post from "./../models/postModel";
+import { ApiFeatures } from "../helpers/features.helpers";
 
 export const createPost = async (req, res) => {
 	try {
@@ -55,7 +56,7 @@ export const getPosts = async (req, res) => {
 			// remove data unnecessary
 			{ $unset: ["authPost.password", "authPost.email"] },
 		]);
-		return res.status(200).json({ msg: "Danh sách bài viết !", listPost });
+		return res.status(200).json({ list: listPost });
 	} catch (err) {
 		return res.status(500).json({ msg: err.message });
 	}
@@ -164,9 +165,14 @@ export const getPostsTrending = async (req, res) => {
 
 export const getPostsUser = async (req, res) => {
 	try {
-		const postsUser = await Post.find({
-			authPost: req.params.user_id,
-		}).populate({
+		const features = new ApiFeatures(
+			Post.find({
+				authPost: req.params.user_id,
+			}),
+			req.query
+		).pagination();
+
+		const postsUser = await features.query.populate({
 			path: "authPost topic",
 			select: "name",
 		});
@@ -178,9 +184,15 @@ export const getPostsUser = async (req, res) => {
 
 export const getPostsSaved = async (req, res) => {
 	try {
-		const postsSaved = await Post.find({
-			_id: { $in: req.user.savePost },
-		}).populate({
+		const features = new ApiFeatures(
+			Post.find({
+				_id: { $in: req.user.savePost },
+			}),
+			req.query
+		)
+			.pagination()
+			.sorting();
+		const postsSaved = await features.query.populate({
 			path: "authPost topic",
 			select: "name",
 		});

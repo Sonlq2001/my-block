@@ -52,7 +52,7 @@ const exploreSlice = createSlice({
     },
     [getExplores.fulfilled.type]: (state, action) => {
       state.isLoadingListPost = false;
-      state.listPost = action.payload.listPost;
+      state.listPost = action.payload.list;
     },
     [getExplores.rejected.type]: (state) => {
       state.isLoadingListPost = false;

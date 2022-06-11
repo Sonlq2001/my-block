@@ -25,6 +25,12 @@ const SocketServer = (socket) => {
 		client &&
 			socket.to(`${client.socketId}`).emit("createNotifyToClient", data);
 	});
+
+	// Message
+	socket.on("addMessage", (data) => {
+		const user = users.find((user) => user.id === data.recipient._id);
+		user && socket.to(`${user.socketId}`).emit("addMessageClient", data);
+	});
 };
 
 export default SocketServer;

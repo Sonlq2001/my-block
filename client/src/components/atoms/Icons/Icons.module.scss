@@ -1,0 +1,24 @@
+@import 'styles/variables';
+
+.boxIcon {
+  position: relative;
+  .listIcon {
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    width: 20rem;
+    top: -18rem;
+    left: -9rem;
+    background-color: $white-color;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    padding: 1rem;
+    border-radius: 5px;
+    overflow: auto;
+    height: 16rem;
+  }
+  .icon {
+    line-height: 3rem;
+    padding: 3px;
+    flex-grow: 1;
+  }
+}

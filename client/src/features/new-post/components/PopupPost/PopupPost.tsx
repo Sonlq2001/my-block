@@ -54,7 +54,7 @@ const PopupPost: React.FC<PopupPostProps> = ({
       setTags(listTag);
     }, 700);
     setFieldValue('tags', listTag);
-    console.log(listTag);
+
     if (listTag.length > 4) {
       return;
     }

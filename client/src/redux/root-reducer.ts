@@ -10,6 +10,7 @@ import { profileReducer } from 'features/profile/profile';
 import { notifyReducer } from 'features/notify/notify';
 import { homeReducer } from 'features/home/home';
 import { userReducer } from 'features/user/user';
+import { chatReducer } from 'features/chat/chat';
 
 const rootReducer = combineReducers({
   common: commonReducer,
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   notify: notifyReducer,
   home: homeReducer,
   user: userReducer,
+  chat: chatReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

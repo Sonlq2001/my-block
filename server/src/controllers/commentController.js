@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 import Comment from "./../models/commentModel";
-import { pagination } from "./../helpers/index";
+import { pagination } from "../helpers/features.helpers";
 import { io } from "./../index";
 
 export const getComments = async (req, res) => {
