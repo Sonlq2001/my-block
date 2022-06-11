@@ -4,6 +4,7 @@ import jwt_decode from 'jwt-decode';
 import { useAppSelector, useAppDispatch } from 'redux/store';
 import { AccessTokenType } from 'types/access-token.types';
 import { updateNotify } from 'features/notify/notify';
+import { updateMessage } from 'features/chat/chat';
 
 const SocketClient = () => {
   const dispatch = useAppDispatch();
@@ -30,6 +31,19 @@ const SocketClient = () => {
 
     return () => {
       socketData.off('createNotifyToClient');
+    };
+  }, [socketData, dispatch]);
+
+  // message
+  useEffect(() => {
+    if (!socketData) return;
+
+    socketData.on('addMessageClient', (data) => {
+      dispatch(updateMessage(data));
+    });
+
+    return () => {
+      socketData.off('addMessageClient');
     };
   }, [socketData, dispatch]);
 

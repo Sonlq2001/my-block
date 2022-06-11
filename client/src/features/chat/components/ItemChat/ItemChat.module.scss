@@ -1,0 +1,80 @@
+.itemChat {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 2.5rem;
+  .avatarChat {
+    margin-right: 1rem;
+  }
+}
+.useChatContent {
+  position: relative;
+  .iconDropdown {
+    position: absolute;
+    right: -1.8rem;
+    top: 0;
+    &:hover {
+      cursor: pointer;
+    }
+    > i {
+      font-size: 1.8rem;
+    }
+  }
+}
+.boxChat {
+  position: relative;
+  padding: 1.2rem 2rem;
+  background-color: #eee;
+  border-radius: 7px 7px 7px 0;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  .timeChat {
+    font-size: 1.2rem;
+    text-align: right;
+    margin-top: 5px;
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: -12px;
+    left: 0;
+    border-style: solid;
+    border-width: 6px;
+    border-color: #eee transparent transparent #eee;
+  }
+}
+
+.nameUserChat {
+  font-size: 1.3rem;
+  margin-top: 1.7rem;
+}
+
+// my chat
+.myChat {
+  justify-content: flex-end;
+  .myAvatarChat {
+    order: 1;
+    margin-right: 0;
+    margin-left: 1rem;
+  }
+  .nameUserChat {
+    text-align: right;
+  }
+  .boxChat {
+    border-radius: 5px 5px 0 5px;
+    background: rgb(14, 148, 185);
+    &::after {
+      right: 0;
+      left: auto;
+      border-color: rgb(14, 148, 185) rgb(14, 148, 185) transparent transparent;
+    }
+  }
+  .myBoxChat {
+    background: rgb(14, 148, 185);
+    color: #fff;
+  }
+}
+.myIconDropdown {
+  left: -2rem;
+}

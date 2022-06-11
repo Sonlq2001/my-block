@@ -29,9 +29,16 @@ export const getPostsUser = createAsyncThunk(
 
 export const getPostsSaved = createAsyncThunk(
   `profile/getPostsSaved`,
-  async (_, { rejectWithValue }) => {
+  async (
+    params: {
+      page: number;
+      perPage: number;
+      sort: string;
+    },
+    { rejectWithValue }
+  ) => {
     try {
-      const res = await profileApi.getPostsSavedApi();
+      const res = await profileApi.getPostsSavedApi(params);
       return res.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data.msg);

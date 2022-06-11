@@ -1,0 +1,19 @@
+.useOnline {
+  background: rgb(235, 235, 235);
+  border-radius: 7px;
+  position: relative;
+  width: 7.1rem;
+  text-align: center;
+  padding: 1.3rem;
+  margin-right: 1rem;
+}
+.avatarUser {
+  position: absolute;
+  top: -1.7rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.nameUser {
+  margin-top: 1rem;
+  font-size: 1.4rem;
+}

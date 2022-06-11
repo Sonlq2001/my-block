@@ -33,6 +33,7 @@ app.use("/api", routes.postRoute);
 app.use("/api", routes.commentRoute);
 app.use("/api", routes.userRoute);
 app.use("/api", routes.notiFyRoute);
+app.use("/api", routes.messageRoute);
 
 // socket
 const http = createServer(app);

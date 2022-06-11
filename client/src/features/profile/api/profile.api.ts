@@ -13,8 +13,18 @@ const getPostsUserApi = (userId: string): Promise<AxiosResponse> => {
   );
 };
 
-const getPostsSavedApi = (): Promise<AxiosResponse> => {
-  return api.get(ProfileEndpointsEnum.GET_POSTS_SAVED);
+const getPostsSavedApi = (params: {
+  page: number;
+  perPage: number;
+  sort: string;
+}): Promise<AxiosResponse> => {
+  return api.get(ProfileEndpointsEnum.GET_POSTS_SAVED, {
+    params: {
+      sort: params.sort,
+      page: params.page,
+      per_page: params.perPage,
+    },
+  });
 };
 
 export const profileApi = {

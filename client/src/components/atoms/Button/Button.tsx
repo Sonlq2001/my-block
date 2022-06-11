@@ -1,8 +1,8 @@
-import React, { memo } from "react";
-import clsx from "clsx";
-import { Link } from "react-router-dom";
+import React, { memo } from 'react';
+import clsx from 'clsx';
+import { Link } from 'react-router-dom';
 
-import styles from "./Button.module.scss";
+import styles from './Button.module.scss';
 
 interface ButtonProps {
   title: string;

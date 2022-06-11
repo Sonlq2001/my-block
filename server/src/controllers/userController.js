@@ -47,3 +47,15 @@ export const getUserInfo = async (req, res) => {
 		return res.status(500).json({ msg: error.message });
 	}
 };
+
+export const getUserSearch = async (req, res) => {
+	try {
+		const { q } = req.query;
+		const useSearched = await User.find({
+			name: { $regex: q.trim() },
+		}).select("name avatar email");
+		return res.status(200).json({ useSearched });
+	} catch (error) {
+		return res.status(500).json({ msg: error.message });
+	}
+};

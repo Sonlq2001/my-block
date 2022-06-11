@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import moment from 'moment';
 
 import ReactionComment from '../ReactionComment/ReactionComment';
 import InputComment from './../InputComment/InputComment';
@@ -10,15 +11,20 @@ import styles from './FeedbackComment.module.scss';
 
 interface FeedbackCommentProps {
   comment: any;
+  setShowMoreComment?: Function;
 }
 
-const FeedbackComment: React.FC<FeedbackCommentProps> = ({ comment }) => {
+const FeedbackComment: React.FC<FeedbackCommentProps> = ({
+  comment,
+  setShowMoreComment,
+}) => {
   const dispatch = useAppDispatch();
   const { socketData } = useAppSelector((state) => ({
     socketData: state.socket.socketData,
   }));
   const [isReply, setIsReply] = useState<boolean>(false);
   const handleReply = async (value: string) => {
+    setShowMoreComment && setShowMoreComment(true);
     const res = await dispatch(
       postReplyComment({
         content: value,
@@ -51,7 +57,9 @@ const FeedbackComment: React.FC<FeedbackCommentProps> = ({ comment }) => {
         <span onClick={() => setIsReply(true)} className={styles.btnReply}>
           Trả lời
         </span>
-        <div className={styles.timeCmt}>123</div>
+        <div className={styles.timeCmt}>
+          {moment(comment.createdAt).fromNow()}
+        </div>
       </div>
 
       {isReply && (

@@ -5,6 +5,7 @@ import postRoute from "./post.routes";
 import commentRoute from "./comment.routes";
 import userRoute from "./user.routes";
 import notiFyRoute from "./notify.routes";
+import messageRoute from "./message.routes";
 
 const routes = {
 	authRoute,
@@ -14,6 +15,7 @@ const routes = {
 	commentRoute,
 	userRoute,
 	notiFyRoute,
+	messageRoute,
 };
 
 export default routes;
