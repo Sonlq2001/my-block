@@ -47,6 +47,7 @@ export const getConversations = async (req, res) => {
 				select: "name email avatar",
 			})
 			.sort("-updatedAt");
+
 		return res.status(200).json({ conversations, total: conversations.length });
 	} catch (error) {
 		return res.status(500).json({ msg: error.message });
@@ -55,7 +56,7 @@ export const getConversations = async (req, res) => {
 
 export const getMessages = async (req, res) => {
 	try {
-		const messages = await Message.find({
+		const dataMessages = await Message.find({
 			$or: [
 				{ sender: req.user._id, recipient: req.params.id },
 				{ sender: req.params.id, recipient: req.user._id },
@@ -66,7 +67,13 @@ export const getMessages = async (req, res) => {
 				select: "name email avatar",
 			})
 			.sort("-createdAt");
-		return res.status(200).json({ messages, total: messages.length });
+		return res.status(200).json({
+			listMessage: {
+				list: dataMessages.reverse(),
+				_id: req.params.id,
+			},
+			total: dataMessages.length,
+		});
 	} catch (error) {
 		return res.status(500).json({ msg: error.message });
 	}

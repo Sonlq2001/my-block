@@ -44,7 +44,7 @@ const InputMessage: React.FC<InputMessageProps> = ({ recipientId }) => {
 
     const dataMsg = unwrapResult(resMsg);
     // handle websocket
-    socket && socket.emit('addMessage', dataMsg?.data);
+    socket && socket.emit('addMessage', dataMsg);
   };
 
   const handleSubmitChat = (e: React.KeyboardEvent<HTMLInputElement>) => {

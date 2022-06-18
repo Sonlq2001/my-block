@@ -1,3 +1,5 @@
+@import 'styles/variables';
+
 .itemMsg {
   display: flex;
   align-items: center;
@@ -7,6 +9,7 @@
   margin-bottom: 2px;
   user-select: none;
   cursor: pointer;
+  transition: 0.3s linear;
   &:hover {
     background: #ddd;
   }
@@ -19,8 +22,30 @@
     }
   }
   .itemTime {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     display: flex;
+    flex-direction: column;
+    align-items: flex-end;
     margin-bottom: auto;
+    white-space: nowrap;
+    position: relative;
+    z-index: 0;
   }
+}
+
+.btnConversation {
+  padding-top: 5px;
+  font-size: 1.6rem;
+}
+.listFuture {
+  position: absolute;
+  background-color: $white-color;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: -50px;
+  padding: 1rem;
+  border-radius: 5px;
+  min-width: 20rem;
+  z-index: 200;
 }

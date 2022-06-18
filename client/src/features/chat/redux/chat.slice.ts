@@ -4,13 +4,13 @@ import { chatApi } from '../api/chat.api';
 import {
   ConversationItem,
   PostMessageType,
-  ContentMessage,
-  // MessageResponse,
+  MessageResponse,
+  MessageListResponse,
 } from '../types/chat.types';
 
-export const postMessage = createAsyncThunk(
+export const postMessage = createAsyncThunk<MessageResponse, PostMessageType>(
   'chat/postMessage',
-  async (data: PostMessageType) => {
+  async (data) => {
     try {
       const res = await chatApi.postMessageApi(data);
       return res.data.newMessage;
@@ -38,9 +38,9 @@ export const getConversations = createAsyncThunk(
   }
 );
 
-export const getMessages = createAsyncThunk(
+export const getMessages = createAsyncThunk<MessageListResponse, string>(
   'chat/getMessages',
-  async (id: string) => {
+  async (id) => {
     try {
       const res = await chatApi.getMessages(id);
       return res.data;
@@ -54,10 +54,7 @@ interface initialStateSlice {
     total: number;
   };
   isLoadingConversations: boolean;
-  messages: {
-    list: ContentMessage[];
-    total: number;
-  };
+  messages: MessageListResponse;
   isLoadingMessages: boolean;
 }
 
@@ -68,7 +65,10 @@ const initialState: initialStateSlice = {
   },
   isLoadingConversations: false,
   messages: {
-    list: [],
+    listMessage: {
+      list: [],
+      _id: '',
+    },
     total: 0,
   },
   isLoadingMessages: false,
@@ -79,7 +79,13 @@ const chatSlice = createSlice({
   initialState,
   reducers: {
     updateMessage(state, action) {
-      state.messages.list = [...state.messages.list, action.payload];
+      if (action.payload) {
+        state.messages.listMessage.list =
+          state.messages.listMessage._id === action.payload.recipient._id ||
+          state.messages.listMessage._id === action.payload.sender._id
+            ? [...state.messages.listMessage.list, action.payload]
+            : [...state.messages.listMessage.list];
+      }
     },
   },
   extraReducers: {
@@ -100,7 +106,7 @@ const chatSlice = createSlice({
     },
     [getMessages.fulfilled.type]: (state, action) => {
       state.isLoadingMessages = false;
-      state.messages.list = action.payload.messages;
+      state.messages.listMessage = action.payload.listMessage;
       state.messages.total = action.payload.total;
     },
     [getMessages.rejected.type]: (state) => {
@@ -109,7 +115,11 @@ const chatSlice = createSlice({
 
     [postMessage.fulfilled.type]: (state, action) => {
       if (action.payload) {
-        state.messages.list = [...state.messages.list, action.payload];
+        state.messages.listMessage.list =
+          state.messages.listMessage._id === action.payload.recipient._id ||
+          state.messages.listMessage._id === action.payload.sender._id
+            ? [...state.messages.listMessage.list, action.payload]
+            : [...state.messages.listMessage.list];
       }
     },
   },

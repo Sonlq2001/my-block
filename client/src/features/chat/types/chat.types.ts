@@ -3,14 +3,17 @@ export type ConversationTypes = {
   name: string;
   email: string;
   avatar: string;
-  time?: string;
   message?: string;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type ConversationItem = {
   _id: string;
   message: string;
   recipients: ConversationTypes[];
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type PostMessageType = {
@@ -28,11 +31,17 @@ export type ContentMessage = {
 };
 
 export type MessageResponse = {
-  newMessage: {
-    conversation: string;
-    message: string;
-    recipients: ConversationTypes;
-    sender: ConversationTypes;
+  conversation: string;
+  message: string;
+  recipients: ConversationTypes;
+  sender: ConversationTypes;
+  _id: string;
+};
+
+export type MessageListResponse = {
+  listMessage: {
+    list: ContentMessage[];
     _id: string;
   };
+  total: number;
 };

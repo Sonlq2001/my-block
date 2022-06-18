@@ -1,0 +1,29 @@
+.loadingChat {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(243, 243, 243);
+  padding: 2rem;
+}
+.loadingBox,
+.loadingBox1,
+.loadingBox2 {
+  width: 50%;
+  background-color: #ddd;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+.loadingText {
+  width: 100%;
+  height: 3.5rem;
+  background-color: #eee;
+  border-radius: 5px;
+}
+
+.loadingBox1 {
+  width: 30%;
+}
+
+.loadingBox2 {
+  width: 15%;
+}
