@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { ContentEditableEvent } from 'react-contenteditable';
 import { useFormikContext } from 'formik';
 
@@ -8,9 +10,13 @@ import styles from './HeaderPost.module.scss';
 
 const HeaderPost: React.FC = () => {
   const { values, setFieldValue } = useFormikContext<PostType>();
-  const handleChangeTitle = (e: ContentEditableEvent) => {
-    setFieldValue('titleInside', e.target.value);
-  };
+  const handleChangeTitle = useCallback(
+    (e: ContentEditableEvent) => {
+      setFieldValue('titleInside', e.target.value);
+    },
+    [setFieldValue]
+  );
+
   return (
     <div className={styles.headerPost}>
       <ContentEditableTag

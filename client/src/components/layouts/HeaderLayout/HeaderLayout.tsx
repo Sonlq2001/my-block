@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 import OutsideClickHandler from 'react-outside-click-handler';
-import jwt_decode from 'jwt-decode';
 
 import Logo from 'assets/images/logo.png';
 import Button from 'components/atoms/Button/Button';
@@ -13,8 +12,9 @@ import { authLogout } from 'features/auth/auth';
 import { ProfilePathsEnum } from 'features/profile/profile';
 import { ChatPathsEnum } from 'features/chat/chat';
 
+import { useDataToken } from 'hooks/hooks';
+
 import styles from './HeaderLayout.module.scss';
-import { AccessTokenType } from 'types/access-token.types';
 
 import { useAppSelector, useAppDispatch } from 'redux/store';
 
@@ -39,7 +39,7 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({
     await dispatch(authLogout());
   };
 
-  const decodeData = accessToken && jwt_decode<AccessTokenType>(accessToken);
+  const { avatar, _id: authId } = useDataToken();
 
   return (
     <header className={styles.headerGroup}>
@@ -73,15 +73,15 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({
         {!showMenu && (
           <button
             className={clsx(styles.btnPublish, {
-              [styles.activePublish]: isActive,
+              [styles.activePublish]: !isActive,
             })}
-            onClick={() => isActive && setPublish && setPublish(true)}
+            onClick={() => setPublish && setPublish(true)}
           >
             Xuất bản
           </button>
         )}
 
-        <SearchHeader />
+        {showMenu && <SearchHeader />}
 
         <NotiFicationHeader />
 
@@ -96,12 +96,8 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({
                 className={styles.userAvatar}
                 onClick={() => setIsToggleUser(!isToggleUser)}
               >
-                {decodeData && (
-                  <img
-                    src={decodeData.avatar}
-                    alt=""
-                    className={styles.avatar}
-                  />
+                {avatar && (
+                  <img src={avatar} alt="" className={styles.avatar} />
                 )}
               </button>
 
@@ -123,13 +119,10 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({
                     Viết blog
                   </Link>
                 </li>
-                {decodeData && (
+                {authId && (
                   <li className={styles.itemAction}>
                     <Link
-                      to={ProfilePathsEnum.PROFILE.replace(
-                        /:user_id/,
-                        decodeData._id
-                      )}
+                      to={ProfilePathsEnum.PROFILE.replace(/:user_id/, authId)}
                       className={styles.linkAction}
                     >
                       Thông tin cá nhân
