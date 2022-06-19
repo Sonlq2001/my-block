@@ -1,4 +1,4 @@
 export enum ExploreEndpointsEnum {
-  GET_EXPLORE = '/posts',
+  GET_EXPLORE = '/post_explore',
   GET_SEARCH = '/search',
 }

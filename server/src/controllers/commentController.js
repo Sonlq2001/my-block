@@ -6,8 +6,7 @@ import { io } from "./../index";
 
 export const getComments = async (req, res) => {
 	try {
-		const { limit, skip } = pagination(req);
-
+		const { perPage, skip } = pagination(req);
 		const data = await Comment.aggregate([
 			{
 				$facet: {
@@ -57,7 +56,7 @@ export const getComments = async (req, res) => {
 							},
 						},
 						{ $skip: skip },
-						{ $limit: limit },
+						{ $limit: perPage },
 						{ $sort: { createdAt: -1 } },
 					],
 					totalCount: [
@@ -84,10 +83,10 @@ export const getComments = async (req, res) => {
 		const count = data[0].count;
 
 		let total = 0;
-		if (count % limit === 0) {
-			total = count / limit;
+		if (count % perPage === 0) {
+			total = count / perPage;
 		} else {
-			total = Math.floor(count / limit) + 1;
+			total = Math.floor(count / perPage) + 1;
 		}
 
 		return res.status(200).json({ comments, total });

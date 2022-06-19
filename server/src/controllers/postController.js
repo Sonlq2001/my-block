@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 import Post from "./../models/postModel";
-import { ApiFeatures } from "../helpers/features.helpers";
+import { ApiFeatures, pagination } from "../helpers/features.helpers";
 
 export const createPost = async (req, res) => {
 	try {
@@ -211,6 +211,59 @@ export const getPostNewest = async (req, res) => {
 			})
 			.sort({ createdAt: -1 });
 		return res.status(200).json({ postsNewest });
+	} catch (error) {
+		return res.status(500).json({ msg: error.message });
+	}
+};
+
+export const getPostExplore = async (req, res) => {
+	try {
+		const { skip, perPage } = pagination(req);
+
+		const resData = await Post.aggregate([
+			{
+				$facet: {
+					posts: [
+						{
+							$lookup: {
+								from: "topics",
+								localField: "topic",
+								foreignField: "_id",
+								as: "topic",
+							},
+						},
+						{ $unwind: "$topic" },
+						{
+							$lookup: {
+								from: "comments",
+								localField: "_id",
+								foreignField: "postId",
+								as: "totalComment",
+							},
+						},
+						// count comment
+						{ $addFields: { totalComment: { $size: "$totalComment" } } },
+						{
+							$project: {
+								avatar: 1,
+								topic: 1,
+								totalComment: 1,
+								createdAt: 1,
+								updatedAt: 1,
+							},
+						},
+						{ $skip: skip },
+						{ $limit: perPage },
+						{ $sort: { createdAt: -1 } },
+					],
+					totalCount: [{ $count: "count" }],
+				},
+			},
+		]);
+		const list = resData[0].posts;
+		const total = resData[0].totalCount[0].count;
+
+		return res.status(200).json({ list, total });
 	} catch (error) {
 		return res.status(500).json({ msg: error.message });
 	}
