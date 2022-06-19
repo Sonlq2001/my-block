@@ -46,7 +46,13 @@ const PostScreen = () => {
 
   const fetchPostAndComments = useCallback(
     (postId: string) => {
-      dispatch(getComments(postId));
+      dispatch(
+        getComments({
+          postId,
+          page: 1,
+          perPage: 10,
+        })
+      );
       dispatch(getPost({ post_id: postId }));
     },
     [dispatch]

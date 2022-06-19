@@ -36,10 +36,7 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({
   }));
 
   const handleLogoutUser = async () => {
-    const response = await dispatch(authLogout());
-    if (authLogout.fulfilled.match(response)) {
-      window.location.reload();
-    }
+    await dispatch(authLogout());
   };
 
   const decodeData = accessToken && jwt_decode<AccessTokenType>(accessToken);

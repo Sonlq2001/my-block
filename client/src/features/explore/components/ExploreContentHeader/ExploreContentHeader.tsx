@@ -10,7 +10,7 @@ import { getSearchPost } from './../../redux/explore.slice';
 import React from 'react';
 
 interface ExploreContentHeaderProps {
-  setIsSearch: (status: boolean) => void;
+  setIsSearch?: (status: boolean) => void;
 }
 
 const ExploreContentHeader: React.FC<ExploreContentHeaderProps> = ({
@@ -22,7 +22,6 @@ const ExploreContentHeader: React.FC<ExploreContentHeaderProps> = ({
 
   const handleSubmitSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSearch(true);
     history.push({
       pathname: '/explore',
       search: `?q=${querySearch}`,

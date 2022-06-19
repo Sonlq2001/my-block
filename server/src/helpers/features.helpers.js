@@ -1,9 +1,9 @@
 export const pagination = (req) => {
 	const page = Number(req.query.page) * 1 || 1;
-	const limit = Number(req.query.limit) * 1 || 10;
-	const skip = (page - 1) * limit;
+	const perPage = Number(req.query.per_page) * 1 || 3;
+	const skip = (page - 1) * perPage;
 
-	return { page, limit, skip };
+	return { page, perPage, skip };
 };
 
 export class ApiFeatures {

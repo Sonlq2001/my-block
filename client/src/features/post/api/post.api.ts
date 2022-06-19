@@ -11,8 +11,18 @@ const postCommentApi = (comment: any): Promise<AxiosResponse> => {
   return api.post(PostEndpointsEnum.POST_COMMENT, comment);
 };
 
-const getCommentApi = (postId: string): Promise<AxiosResponse> => {
-  return api.get(PostEndpointsEnum.GET_COMMENTS.replace(/:post_id/, postId));
+const getCommentApi = ({
+  postId,
+  page,
+  perPage,
+}: {
+  postId: string;
+  page: number;
+  perPage: number;
+}): Promise<AxiosResponse> => {
+  return api.get(PostEndpointsEnum.GET_COMMENTS.replace(/:post_id/, postId), {
+    params: { page, per_page: perPage },
+  });
 };
 
 const postReplyCommentApi = (comment: any): Promise<AxiosResponse> => {

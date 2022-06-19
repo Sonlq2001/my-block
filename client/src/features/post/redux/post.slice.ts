@@ -29,9 +29,12 @@ export const postComment = createAsyncThunk(
 
 export const getComments = createAsyncThunk(
   'getComments',
-  async (postId: string, { rejectWithValue }) => {
+  async (
+    params: { postId: string; page: number; perPage: number },
+    { rejectWithValue }
+  ) => {
     try {
-      const res = await postApi.getCommentApi(postId);
+      const res = await postApi.getCommentApi(params);
       return res.data;
     } catch (error: any) {
       return rejectWithValue(error.response.msg);

@@ -10,6 +10,7 @@ import {
 	getPostsUser,
 	getPostsSaved,
 	getPostNewest,
+	getPostExplore,
 } from "./../controllers/postController";
 import { verifyToken } from "./../middleware/verifyToken";
 
@@ -24,5 +25,6 @@ route.get("/posts_trending", verifyToken, getPostsTrending);
 route.get("/posts_user/:user_id", getPostsUser);
 route.get("/post_saved", verifyToken, getPostsSaved);
 route.get("/post_newest", verifyToken, getPostNewest);
+route.get("/post_explore", getPostExplore);
 
 export default route;

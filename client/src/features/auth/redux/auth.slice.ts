@@ -71,6 +71,9 @@ const authSlice = createSlice({
     [authLogout.fulfilled.type]: (state) => {
       state.accessToken = null;
     },
+    [authLogout.rejected.type]: (state) => {
+      state.accessToken = null;
+    },
 
     // login google
     [authLoginGoogle.pending.type]: (state) => {
