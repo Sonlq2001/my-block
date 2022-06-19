@@ -1,32 +1,25 @@
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { ReactComponent as IconSearch } from 'assets/images/icon-search.svg';
 
 import styles from './ExploreContentHeader.module.scss';
 
-import { useAppDispatch } from 'redux/store';
-import { getSearchPost } from './../../redux/explore.slice';
-import React from 'react';
+import { DefaultParams } from '../../types/explore.types';
 
 interface ExploreContentHeaderProps {
-  setIsSearch?: (status: boolean) => void;
+  query: DefaultParams;
+  fetchData: (pageNumber: DefaultParams, hasSearch: boolean) => void;
 }
 
 const ExploreContentHeader: React.FC<ExploreContentHeaderProps> = ({
-  setIsSearch,
+  query,
+  fetchData,
 }) => {
-  const dispatch = useAppDispatch();
-  const history = useHistory();
   const [querySearch, setQuerySearch] = useState<string>('');
 
   const handleSubmitSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    history.push({
-      pathname: '/explore',
-      search: `?q=${querySearch}`,
-    });
-    await dispatch(getSearchPost({ q: querySearch }));
+    fetchData({ ...query, q: querySearch, page: 1 }, true);
   };
 
   return (

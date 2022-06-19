@@ -2,26 +2,14 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { exploreApi } from './../api/explore.api';
 import { PostItemType } from 'features/new-post/new-post';
-import { QuerySearch, DefaultParams } from './../types/explore.types';
+import { DefaultParams } from './../types/explore.types';
 
 export const getExplores = createAsyncThunk(
   `getExplores`,
-  async (params: DefaultParams, { rejectWithValue }) => {
+  async ({ hasSearch, ...rest }: DefaultParams, { rejectWithValue }) => {
     try {
-      const res = await exploreApi.getExploreApi(params);
-      return res.data;
-    } catch (err: any) {
-      return rejectWithValue(err.response.msg);
-    }
-  }
-);
-
-export const getSearchPost = createAsyncThunk(
-  'getSearchPost',
-  async (params: QuerySearch, { rejectWithValue }) => {
-    try {
-      const res = await exploreApi.getSearchPostApi(params);
-      return res.data;
+      const res = await exploreApi.getExploreApi(rest);
+      return { data: res.data, hasSearch };
     } catch (err: any) {
       return rejectWithValue(err.response.msg);
     }
@@ -63,23 +51,19 @@ const exploreSlice = createSlice({
       state.listPost.isLoading = true;
     },
     [getExplores.fulfilled.type]: (state, action) => {
+      const { data, hasSearch } = action.payload;
+      if (!state.listPost.data || hasSearch) {
+        state.listPost.data = data.list;
+      } else {
+        state.listPost.data = [...state.listPost.data, ...data.list];
+      }
       state.listPost.isLoading = false;
-      state.listPost.data = [...state.listPost.data, ...action.payload.list];
-      state.listPost.total = action.payload.total;
+      state.listPost.total = data.total;
       state.listPost.canLoadMore =
         state.listPost.data.length < state.listPost.total;
     },
     [getExplores.rejected.type]: (state) => {
       state.listPost.isLoading = false;
-    },
-
-    // search post
-    [getSearchPost.pending.type]: (state) => {
-      state.listPost.isLoading = false;
-    },
-    [getSearchPost.fulfilled.type]: (state, action) => {
-      state.listPost.isLoading = false;
-      state.listPost = action.payload.listPost;
     },
   },
 });

@@ -17,13 +17,13 @@ import { getTopics } from 'features/master-data/master-data';
 interface PopupPostProps {
   setPublish: (publish: boolean) => void;
   handleSubmit: () => void;
-  isSubmitting: boolean;
+  isSubmit: boolean;
 }
 
 const PopupPost: React.FC<PopupPostProps> = ({
   setPublish,
   handleSubmit,
-  isSubmitting,
+  isSubmit,
 }) => {
   const dispatch = useAppDispatch();
   const [tags, setTags] = useState<string[]>([]);
@@ -165,13 +165,11 @@ const PopupPost: React.FC<PopupPostProps> = ({
 
           <div className={styles.postBox}>
             <button
-              className={clsx(
-                styles.btnPublish,
-                isSubmitting && styles.disabled
-              )}
+              className={clsx(styles.btnPublish, isSubmit && styles.disabled)}
               onClick={handleSubmit}
+              type="submit"
             >
-              {isSubmitting && <LoadingCircle />}
+              {isSubmit && <LoadingCircle size="small" />}
               Xuất bản ngay
             </button>
           </div>

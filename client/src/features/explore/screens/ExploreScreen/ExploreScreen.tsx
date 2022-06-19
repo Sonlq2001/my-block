@@ -19,6 +19,8 @@ const ExploreScreen = () => {
   const [query, setQuery] = useState<DefaultParams>({
     page: 1,
     perPage: 10,
+    q: '',
+    hasSearch: false,
   });
 
   const { listPost, isLoadingListPost, canLoadMore } = useAppSelector(
@@ -29,9 +31,10 @@ const ExploreScreen = () => {
     })
   );
 
-  const fetchData = (pageNumber: number) => {
-    setQuery({ ...query, page: pageNumber });
-    dispatch(getExplores({ ...query, page: pageNumber }));
+  const fetchData = (dataQuery: DefaultParams, hasSearch = false) => {
+    const newQuery = { ...dataQuery, hasSearch };
+    setQuery(newQuery);
+    dispatch(getExplores(newQuery));
   };
 
   useEffect(() => {
@@ -48,7 +51,7 @@ const ExploreScreen = () => {
   return (
     <div>
       <ExploreHeader>
-        <ExploreContentHeader />
+        <ExploreContentHeader query={query} fetchData={fetchData} />
       </ExploreHeader>
 
       <div className="container">
@@ -58,9 +61,11 @@ const ExploreScreen = () => {
           )}
           {!isLoading && (
             <CustomInfiniteScroll
-              dataLength={listPost.length}
+              dataLength={listPost.length || 0}
               hasMore={canLoadMore}
-              fetchMoreData={() => fetchData(query.page + 1)}
+              fetchMoreData={() =>
+                fetchData({ ...query, page: query.page + 1 })
+              }
               loading={isLoadingListPost}
             >
               <div className={styles.groupMasonry}>

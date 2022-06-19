@@ -219,11 +219,18 @@ export const getPostNewest = async (req, res) => {
 export const getPostExplore = async (req, res) => {
 	try {
 		const { skip, perPage } = pagination(req);
-
 		const resData = await Post.aggregate([
 			{
 				$facet: {
 					posts: [
+						{
+							$match: {
+								$or: [
+									{ titleInside: { $regex: req.query.q } },
+									{ titleOutside: { $regex: req.query.q } },
+								],
+							},
+						},
 						{
 							$lookup: {
 								from: "topics",
@@ -250,19 +257,30 @@ export const getPostExplore = async (req, res) => {
 								totalComment: 1,
 								createdAt: 1,
 								updatedAt: 1,
+								titleInside: 1,
+								titleOutside: 1,
 							},
 						},
 						{ $skip: skip },
 						{ $limit: perPage },
 						{ $sort: { createdAt: -1 } },
 					],
-					totalCount: [{ $count: "count" }],
+					totalCount: [
+						{
+							$match: {
+								$or: [
+									{ titleInside: { $regex: req.query.q } },
+									{ titleOutside: { $regex: req.query.q } },
+								],
+							},
+						},
+						{ $count: "count" },
+					],
 				},
 			},
 		]);
 		const list = resData[0].posts;
-		const total = resData[0].totalCount[0].count;
-
+		const total = resData[0].totalCount[0]?.count;
 		return res.status(200).json({ list, total });
 	} catch (error) {
 		return res.status(500).json({ msg: error.message });

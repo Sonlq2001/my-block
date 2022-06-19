@@ -1,46 +1,38 @@
 import { useState, memo, useEffect } from 'react';
-import { Formik, FormikHelpers } from 'formik';
+import { Formik } from 'formik';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useHistory } from 'react-router-dom';
-import jwt_decode from 'jwt-decode';
 
+import { useDataToken } from 'hooks/hooks';
 import styles from './NewPostScreen.module.scss';
 import RichEditor from '../../components/RichEditor/RichEditor';
 import HeaderPost from '../../components/HeaderPost/HeaderPost';
 import HeaderLayout from 'components/layouts/HeaderLayout/HeaderLayout';
 import PopupPost from './../../components/PopupPost/PopupPost';
 
-import { initNewPost } from './../../helpers/new-post.helpers';
+import { initNewPost, schema } from './../../helpers/new-post.helpers';
 import { PostType } from './../../types/new-post.types';
 import { postArticle } from './../../redux/new-post.slice';
-import { useAppDispatch, useAppSelector } from 'redux/store';
+import { useAppDispatch } from 'redux/store';
 import { PostPathsEnum } from 'features/post/post';
-import { AccessTokenType } from 'types/access-token.types';
 
 const NewPostScreen = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const [publish, setPublish] = useState<boolean>(false);
+  const [isSubmit, setIsSubmit] = useState<boolean>(false);
 
-  const { accessToken } = useAppSelector((state) => ({
-    accessToken: state.auth.accessToken,
-  }));
+  const { _id } = useDataToken();
 
-  const dataDecoded = accessToken && jwt_decode<AccessTokenType>(accessToken);
-
-  const handleSubmitForm = async (
-    values: PostType,
-    { setSubmitting }: FormikHelpers<PostType>
-  ) => {
-    if (dataDecoded) {
-      dispatch(postArticle({ data: { ...values, authPost: dataDecoded._id } }))
-        .then(unwrapResult)
-        .then((res) =>
-          history.push(PostPathsEnum.POST.replace(/:post_id/, res.post._id))
-        )
-        .catch((err) => console.log(err.response))
-        .finally(() => setSubmitting(false));
-    }
+  const handleSubmitForm = async (values: PostType) => {
+    setIsSubmit(true);
+    dispatch(postArticle({ data: { ...values, authPost: _id } }))
+      .then(unwrapResult)
+      .then((res) =>
+        history.push(PostPathsEnum.POST.replace(/:post_id/, res.post._id))
+      )
+      .catch((err) => console.log(err.response))
+      .finally(() => setIsSubmit(false));
   };
 
   useEffect(() => {
@@ -50,14 +42,17 @@ const NewPostScreen = () => {
   }, []);
 
   return (
-    <Formik initialValues={initNewPost} onSubmit={handleSubmitForm}>
-      {({ values, handleSubmit, isSubmitting }) => {
-        const isActive = values.titleInside !== '' && values.content !== '';
+    <Formik
+      initialValues={initNewPost}
+      onSubmit={handleSubmitForm}
+      validationSchema={schema}
+    >
+      {({ values, handleSubmit }) => {
         return (
           <>
             <div className="header">
               <div className="container-full">
-                <HeaderLayout setPublish={setPublish} isActive={isActive} />
+                <HeaderLayout setPublish={setPublish} isActive={false} />
               </div>
             </div>
             <div className="container-editor">
@@ -74,7 +69,7 @@ const NewPostScreen = () => {
               <PopupPost
                 setPublish={setPublish}
                 handleSubmit={handleSubmit}
-                isSubmitting={isSubmitting}
+                isSubmit={isSubmit}
               />
             )}
           </>
