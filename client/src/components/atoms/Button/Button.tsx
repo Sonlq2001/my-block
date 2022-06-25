@@ -8,11 +8,20 @@ interface ButtonProps {
   title: string;
   onClick?: () => void;
   to?: string;
+  disabled?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({ to, title, ...rest }) => {
+const Button: React.FC<ButtonProps> = ({
+  to,
+  title,
+  disabled = false,
+  ...rest
+}) => {
   const btn = (
-    <button className={clsx(styles.btnLogin)} {...rest}>
+    <button
+      className={clsx(styles.btnLogin, disabled && styles.btnDisabled)}
+      {...rest}
+    >
       {title}
     </button>
   );

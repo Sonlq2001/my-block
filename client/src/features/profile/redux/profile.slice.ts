@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { profileApi } from './../api/profile.api';
-import { ProfileUser } from './../types/profile.types';
+import { ProfileUser, QueryParams } from './../types/profile.types';
 
 export const getProfile = createAsyncThunk(
   'getProfile',
@@ -17,9 +17,12 @@ export const getProfile = createAsyncThunk(
 
 export const getPostsUser = createAsyncThunk(
   'profile/getPostsUser',
-  async (userId: string, { rejectWithValue }) => {
+  async (
+    params: { userId: string; query: QueryParams },
+    { rejectWithValue }
+  ) => {
     try {
-      const res = await profileApi.getPostsUserApi(userId);
+      const res = await profileApi.getPostsUserApi(params);
       return res.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data.msg);
@@ -29,14 +32,7 @@ export const getPostsUser = createAsyncThunk(
 
 export const getPostsSaved = createAsyncThunk(
   `profile/getPostsSaved`,
-  async (
-    params: {
-      page: number;
-      perPage: number;
-      sort: string;
-    },
-    { rejectWithValue }
-  ) => {
+  async (params: QueryParams, { rejectWithValue }) => {
     try {
       const res = await profileApi.getPostsSavedApi(params);
       return res.data;
@@ -50,8 +46,11 @@ interface ProfileSlice {
   profileUser: ProfileUser | null;
   isLoadingProfileUser: boolean;
 
-  isLoadingPostsUser: boolean;
-  postsUser: any[];
+  postsUser: {
+    list: any[];
+    total: number;
+    isLoadingPostsUser: boolean;
+  };
 
   postsSaved: any[];
   isLoadingPostsSaved: boolean;
@@ -63,8 +62,11 @@ const initialState: ProfileSlice = {
   isLoadingProfileUser: false,
 
   // post user
-  isLoadingPostsUser: false,
-  postsUser: [],
+  postsUser: {
+    list: [],
+    total: 0,
+    isLoadingPostsUser: false,
+  },
 
   // post saved
   postsSaved: [],
@@ -77,6 +79,13 @@ const profileSlice = createSlice({
   reducers: {
     resetProfile: (state) => {
       state.profileUser = null;
+    },
+    resetPostUser: (state) => {
+      state.postsUser = {
+        list: [],
+        total: 0,
+        isLoadingPostsUser: false,
+      };
     },
   },
   extraReducers: {
@@ -94,14 +103,18 @@ const profileSlice = createSlice({
 
     // get post user
     [getPostsUser.pending.type]: (state) => {
-      state.isLoadingPostsUser = true;
+      state.postsUser.isLoadingPostsUser = true;
     },
     [getPostsUser.fulfilled.type]: (state, action) => {
-      state.isLoadingPostsUser = false;
-      state.postsUser = action.payload.postsUser;
+      state.postsUser.isLoadingPostsUser = false;
+      state.postsUser.list = [
+        ...state.postsUser.list,
+        ...action.payload.postsUser,
+      ];
+      state.postsUser.total = action.payload.total;
     },
     [getPostsUser.rejected.type]: (state) => {
-      state.isLoadingPostsUser = false;
+      state.postsUser.isLoadingPostsUser = false;
     },
 
     // get post saved
@@ -119,4 +132,4 @@ const profileSlice = createSlice({
 });
 
 export const profileReducer = profileSlice.reducer;
-export const { resetProfile } = profileSlice.actions;
+export const { resetProfile, resetPostUser } = profileSlice.actions;

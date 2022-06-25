@@ -1,4 +1,4 @@
-@import "styles/variables";
+@import 'styles/variables';
 
 .btnLogin {
   padding: 1.2rem 2.4rem;
@@ -12,4 +12,9 @@
   &:hover {
     background-color: $blue2-color;
   }
+}
+.btnDisabled {
+  opacity: 0.5;
+  cursor: none;
+  pointer-events: none;
 }

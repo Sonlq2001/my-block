@@ -37,7 +37,7 @@ const PostScreen = () => {
   const [loadingComment, setLoadingComment] = useState<boolean>(false);
   const [query, setQuery] = useState<{ page: number; perPage: number }>({
     page: 1,
-    perPage: 1,
+    perPage: 3,
   });
   const idTime = useRef<any>();
   const { post_id } = useParams<PostParams>();

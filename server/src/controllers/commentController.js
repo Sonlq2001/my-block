@@ -78,25 +78,12 @@ export const getComments = async (req, res) => {
 					],
 				},
 			},
-			{
-				$project: {
-					count: { $arrayElemAt: ["$totalCount.count", 0] },
-					totalData: 1,
-				},
-			},
 		]);
 
 		const comments = data[0].totalData;
-		const count = data[0].count;
+		const count = data[0].totalCount[0]?.count;
 
-		let total = 0;
-		if (count % perPage === 0) {
-			total = count / perPage;
-		} else {
-			total = Math.floor(count / perPage) + 1;
-		}
-
-		return res.status(200).json({ comments, total });
+		return res.status(200).json({ comments, total: count });
 	} catch (error) {
 		return res.status(500).json({ msg: error.message });
 	}

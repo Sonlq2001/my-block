@@ -4,3 +4,9 @@ export type ProfileUser = {
   name: string;
   avatar: string;
 };
+
+export type QueryParams = {
+  page: string;
+  perPage: string;
+  sort: string;
+};

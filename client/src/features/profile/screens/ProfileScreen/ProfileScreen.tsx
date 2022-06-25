@@ -21,6 +21,7 @@ import {
   getPostsUser,
   resetProfile,
   getPostsSaved,
+  resetPostUser,
 } from './../../redux/profile.slice';
 
 interface QueryParams {
@@ -32,9 +33,9 @@ const ProfileScreen = () => {
   const { user_id } = useParams<QueryParams>();
   const [toggleSelect, setToggleSelect] = useState<boolean>(false);
   const [tab, setTab] = useState<number>(1);
-  const [params, setPrams] = useState<any>({
+  const [query, setQuery] = useState<any>({
     page: 1,
-    perPage: 4,
+    perPage: 8,
     sort: LIST_SELECT[0].id,
   });
 
@@ -46,14 +47,16 @@ const ProfileScreen = () => {
     userInfo,
     postsSaved,
     isLoadingPostsSaved,
+    totalPostUser,
   } = useAppSelector((state) => ({
     isLoadingProfileUser: state.profile.isLoadingProfileUser,
     profileUser: state.profile.profileUser,
-    postsUser: state.profile.postsUser,
+    postsUser: state.profile.postsUser.list,
     userInfo: state.user.userInfo,
-    isLoadingPostsUser: state.profile.isLoadingPostsUser,
+    isLoadingPostsUser: state.profile.postsUser.isLoadingPostsUser,
     postsSaved: state.profile.postsSaved,
     isLoadingPostsSaved: state.profile.isLoadingPostsSaved,
+    totalPostUser: state.profile.postsUser.total,
   }));
 
   useEffect(() => {
@@ -66,15 +69,25 @@ const ProfileScreen = () => {
   }, [user_id, dispatch, userInfo]);
 
   useEffect(() => {
-    if (tab === 1) dispatch(getPostsUser(user_id));
-    if (tab === 2 && user_id === userInfo?._id) dispatch(getPostsSaved(params));
-  }, [tab, user_id, dispatch, userInfo, params]);
+    if (tab === 1)
+      dispatch(
+        getPostsUser({
+          userId: user_id,
+          query,
+        })
+      );
+    if (tab === 2 && user_id === userInfo?._id) dispatch(getPostsSaved(query));
+  }, [tab, user_id, dispatch, userInfo, query]);
 
   const handleShowMore = () => {
-    if (tab === 2) {
-      setPrams({ ...params, page: ++params.page });
-    }
+    setQuery({ ...query, page: ++query.page });
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetPostUser());
+    };
+  }, [dispatch]);
 
   return (
     <div>
@@ -102,7 +115,11 @@ const ProfileScreen = () => {
                   className={clsx(stylesCommon.navigationTabItem, {
                     [stylesCommon.active]: tab === 2,
                   })}
-                  onClick={() => setTab(2)}
+                  onClick={() => {
+                    setTab(2);
+                    dispatch(resetPostUser());
+                    setQuery({ ...query, page: 1 });
+                  }}
                 >
                   Đã lưu
                 </button>
@@ -114,7 +131,7 @@ const ProfileScreen = () => {
                 onClick={() => setToggleSelect(!toggleSelect)}
               >
                 <span className={styles.btnActionTxt}>
-                  {LIST_SELECT.find((item) => item.id === params.sort)?.name}
+                  {LIST_SELECT.find((item) => item.id === query.sort)?.name}
                 </span>
                 <span className={styles.btnActionIcon}>
                   <IconV />
@@ -126,16 +143,17 @@ const ProfileScreen = () => {
                   {LIST_SELECT.map((item) => (
                     <li
                       className={clsx(styles.itemSelect, {
-                        [styles.active]: params.sort === item.id,
+                        [styles.active]: query.sort === item.id,
                       })}
                       key={item.id}
                       onClick={() => {
-                        setPrams({ ...params, sort: item.id });
+                        setQuery({ ...query, sort: item.id, page: 1 });
                         setToggleSelect(false);
+                        dispatch(resetPostUser());
                       }}
                     >
                       <span className={styles.iconSelect}>
-                        {params.sort === item.id && <IconCheck />}
+                        {query.sort === item.id && <IconCheck />}
                       </span>
                       <span>{item.name}</span>
                     </li>
@@ -148,7 +166,7 @@ const ProfileScreen = () => {
           <div className={styles.groupTabs}>
             {tab === 1 && (
               <div className={styles.itemTab}>
-                {isLoadingPostsUser && <LoadingCardProfile count={4} />}
+                {isLoadingPostsUser && <LoadingCardProfile count={8} />}
                 {!isLoadingPostsUser &&
                   postsUser.length > 0 &&
                   postsUser.map((post: any) => {
@@ -158,7 +176,7 @@ const ProfileScreen = () => {
             )}
             {tab === 2 && (
               <div className={styles.itemTab}>
-                {isLoadingPostsSaved && <LoadingCardProfile count={4} />}
+                {isLoadingPostsSaved && <LoadingCardProfile count={8} />}
                 {!isLoadingPostsSaved &&
                   postsSaved.length > 0 &&
                   postsSaved.map((post) => {
@@ -169,7 +187,11 @@ const ProfileScreen = () => {
           </div>
 
           <div className={styles.groupBtn}>
-            <Button title="Show me more" onClick={handleShowMore} />
+            <Button
+              disabled={postsUser.length === totalPostUser}
+              title="Xem thêm"
+              onClick={handleShowMore}
+            />
           </div>
         </div>
       </div>
