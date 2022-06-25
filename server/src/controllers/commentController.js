@@ -55,6 +55,13 @@ export const getComments = async (req, res) => {
 								as: "replyComment",
 							},
 						},
+						{
+							$project: {
+								"userComment.password": 0,
+								"replyComment.userComment.password": 0,
+								"replyComment.replyUser.password": 0,
+							},
+						},
 						{ $skip: skip },
 						{ $limit: perPage },
 						{ $sort: { createdAt: -1 } },

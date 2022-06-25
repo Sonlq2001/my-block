@@ -11,6 +11,12 @@
       margin-top: 1.5rem;
       cursor: pointer;
       user-select: none;
+      display: flex;
+      align-items: center;
+      font-weight: 550;
+      i {
+        padding-left: 1rem;
+      }
     }
     .groupReply {
       border-left: 1px solid $text-card-color;

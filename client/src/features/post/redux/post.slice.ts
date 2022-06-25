@@ -30,7 +30,7 @@ export const postComment = createAsyncThunk(
 export const getComments = createAsyncThunk(
   'getComments',
   async (
-    params: { postId: string; page: number; perPage: number },
+    params: { postId: string; query?: { page: number; perPage: number } },
     { rejectWithValue }
   ) => {
     try {
@@ -109,8 +109,11 @@ interface PostSlice {
   isLoadingPost: boolean;
 
   // comments
-  comments: any[];
-  isLoadingComments: boolean;
+  comments: {
+    list: any[];
+    total: number;
+    isLoadingComments: boolean;
+  };
 }
 
 const initialState: PostSlice = {
@@ -119,8 +122,11 @@ const initialState: PostSlice = {
   isLoadingPost: false,
 
   // comments
-  comments: [],
-  isLoadingComments: false,
+  comments: {
+    list: [],
+    total: 0,
+    isLoadingComments: false,
+  },
 };
 
 const postSlice = createSlice({
@@ -128,16 +134,23 @@ const postSlice = createSlice({
   initialState,
   reducers: {
     updateComment: (state, action) => {
-      state.comments = [action.payload, ...state.comments];
+      state.comments.list = [action.payload, ...state.comments.list];
     },
     updateCommentReply: (state, action) => {
-      state.comments = state.comments.map((item) => ({
+      state.comments.list = state.comments.list.map((item) => ({
         ...item,
         replyComment:
           action.payload.rootComment === item._id
             ? [...item.replyComment, action.payload]
             : item.replyComment,
       }));
+    },
+    resetComments: (state) => {
+      state.comments = {
+        list: [],
+        total: 0,
+        isLoadingComments: false,
+      };
     },
   },
   extraReducers: {
@@ -155,17 +168,22 @@ const postSlice = createSlice({
 
     // get comment
     [getComments.pending.type]: (state) => {
-      state.isLoadingComments = true;
+      state.comments.isLoadingComments = true;
     },
     [getComments.fulfilled.type]: (state, action) => {
-      state.isLoadingComments = false;
-      state.comments = action.payload.comments;
+      state.comments.isLoadingComments = false;
+      state.comments.list = [
+        ...state.comments.list,
+        ...action.payload.comments,
+      ];
+      state.comments.total = action.payload.total;
     },
     [getComments.rejected.type]: (state) => {
-      state.isLoadingComments = false;
+      state.comments.isLoadingComments = false;
     },
   },
 });
 
 export const postReducer = postSlice.reducer;
-export const { updateComment, updateCommentReply } = postSlice.actions;
+export const { updateComment, updateCommentReply, resetComments } =
+  postSlice.actions;

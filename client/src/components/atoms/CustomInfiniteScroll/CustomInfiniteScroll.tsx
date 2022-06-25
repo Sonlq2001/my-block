@@ -2,7 +2,7 @@ import InfiniteScroll, {
   Props as InfiniteScrollProps,
 } from 'react-infinite-scroll-component';
 
-import LoadingCircle from 'components/loading/LoadingCircle/LoadingCircle';
+import LoadingScroll from 'components/loading/LoadingScroll/LoadingScroll';
 import styles from './CustomInfiniteScroll.module.scss';
 
 type CustomInfiniteScrollProps = Omit<
@@ -33,7 +33,7 @@ const CustomInfiniteScroll: React.FC<CustomInfiniteScrollProps> = ({
       </InfiniteScroll>
       {loading && (
         <div className={styles.loadingMore}>
-          <LoadingCircle />
+          <LoadingScroll />
         </div>
       )}
     </div>

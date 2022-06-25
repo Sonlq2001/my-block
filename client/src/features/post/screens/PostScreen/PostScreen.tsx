@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
 import PostHeader from './../../components/PostHeader/PostHeader';
@@ -12,6 +12,7 @@ import LoadingPostDetail from 'components/loading/LoadingPostDetail/LoadingPostD
 import Comments from './../../components/Comments/Comments';
 import SharePost from './../../components/SharePost/SharePost';
 import SavePost from '../../components/SavePost/SavePost';
+import LoadingCircleDot from 'components/loading/LoadingCircleDot/LoadingCircleDot';
 
 import { ReactComponent as IconStar } from 'assets/images/icon-star.svg';
 import { ReactComponent as IconChat } from 'assets/images/icon-chat.svg';
@@ -21,7 +22,7 @@ import styles from './PostScreen.module.scss';
 
 import { useAppDispatch, useAppSelector } from 'redux/store';
 import { getPost, getComments, patchViewPost } from './../../redux/post.slice';
-import { postComment } from './../../redux/post.slice';
+import { postComment, resetComments } from './../../redux/post.slice';
 import { usePostSocket } from './../../socket/post.socket';
 import { createNotify } from 'features/notify/notify';
 interface PostParams {
@@ -32,37 +33,45 @@ const PostScreen = () => {
   const dispatch = useAppDispatch();
   usePostSocket();
   const [timeView, setTimeView] = useState<number>(0);
+  const [loadingPost, setLoadingPost] = useState<boolean>(true);
+  const [loadingComment, setLoadingComment] = useState<boolean>(false);
+  const [query, setQuery] = useState<{ page: number; perPage: number }>({
+    page: 1,
+    perPage: 1,
+  });
   const idTime = useRef<any>();
   const { post_id } = useParams<PostParams>();
 
-  const { postItem, isLoadingPost, isLoadingComments, comments, socketData } =
-    useAppSelector((state) => ({
+  const { postItem, comments, socketData, totalComment } = useAppSelector(
+    (state) => ({
       postItem: state.post.post,
-      isLoadingPost: state.post.isLoadingPost,
-      isLoadingComments: state.post.isLoadingComments,
-      comments: state.post.comments,
+      comments: state.post.comments.list,
+      totalComment: state.post.comments.total,
       socketData: state.socket.socketData,
-    }));
+    })
+  );
 
   const fetchPostAndComments = useCallback(
     (postId: string) => {
-      dispatch(
-        getComments({
-          postId,
-          page: 1,
-          perPage: 10,
-        })
-      );
-      dispatch(getPost({ post_id: postId }));
+      Promise.all([
+        dispatch(
+          getComments({
+            postId,
+            query,
+          })
+        ),
+        dispatch(getPost({ post_id: postId })),
+      ]).finally(() => setLoadingPost(false));
     },
-    [dispatch]
+    [dispatch, query]
   );
 
   useEffect(() => {
+    if (!loadingPost) return;
     if (post_id) {
       fetchPostAndComments(post_id);
     }
-  }, [post_id, fetchPostAndComments]);
+  }, [post_id, fetchPostAndComments, loadingPost, loadingComment]);
 
   // join room socket
   useEffect(() => {
@@ -114,10 +123,28 @@ const PostScreen = () => {
     }
   }, [timeView, post_id, dispatch]);
 
+  useEffect(() => {
+    return () => {
+      dispatch(resetComments());
+    };
+  }, [dispatch]);
+
+  const handleLoadMoreComment = () => {
+    const newQuery = { ...query, page: query.page + 1 };
+    setQuery(newQuery);
+    setLoadingComment(true);
+    dispatch(
+      getComments({
+        postId: post_id,
+        query: newQuery,
+      })
+    ).finally(() => setLoadingComment(false));
+  };
+
   return (
     <div>
-      {isLoadingPost && <LoadingPostDetail />}
-      {!isLoadingPost && (
+      {loadingPost && <LoadingPostDetail />}
+      {!loadingPost && (
         <>
           {postItem && (
             <PostHeader avatar={postItem?.avatar}>
@@ -156,16 +183,22 @@ const PostScreen = () => {
                   </div>
 
                   {/* comment */}
-                  {postItem && (
-                    <>
-                      <InputComment getValue={handleComment} />
-                      {isLoadingComments && <div>Loading</div>}
-                      {!isLoadingComments &&
-                        comments.map((comment) => (
-                          <Comments key={comment._id} comment={comment} />
-                        ))}
-                    </>
-                  )}
+                  <>
+                    <InputComment getValue={handleComment} />
+                    {comments.map((comment) => (
+                      <Comments key={comment._id} comment={comment} />
+                    ))}
+                    {comments.length < totalComment && (
+                      <button
+                        className={styles.btnMoreComment}
+                        onClick={handleLoadMoreComment}
+                      >
+                        <span>Xem thêm bình luận</span>
+                        {!loadingComment && <i className="las la-angle-down" />}
+                        {loadingComment && <LoadingCircleDot />}
+                      </button>
+                    )}
+                  </>
                 </div>
               </div>
               <div className={styles.rowPostRight}>

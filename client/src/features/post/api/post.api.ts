@@ -13,15 +13,13 @@ const postCommentApi = (comment: any): Promise<AxiosResponse> => {
 
 const getCommentApi = ({
   postId,
-  page,
-  perPage,
+  query,
 }: {
   postId: string;
-  page: number;
-  perPage: number;
+  query?: { page: number; perPage: number };
 }): Promise<AxiosResponse> => {
   return api.get(PostEndpointsEnum.GET_COMMENTS.replace(/:post_id/, postId), {
-    params: { page, per_page: perPage },
+    params: { page: query?.page, per_page: query?.perPage },
   });
 };
 
