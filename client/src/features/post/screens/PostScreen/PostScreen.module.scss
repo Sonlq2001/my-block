@@ -37,3 +37,14 @@
     width: 35%;
   }
 }
+
+.btnMoreComment {
+  font-size: 1.6rem;
+  margin-top: 3rem;
+  display: flex;
+  align-items: center;
+  color: $text-title-color;
+  span {
+    padding-right: 1rem;
+  }
+}

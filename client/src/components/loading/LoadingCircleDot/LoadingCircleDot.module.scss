@@ -1,0 +1,15 @@
+.loadingCircleDot {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  animation: LoadingCircleDot 0.5s linear infinite;
+}
+
+@keyframes LoadingCircleDot {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

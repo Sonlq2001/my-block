@@ -28,6 +28,7 @@ const Comments: React.FC<CommentsProps> = ({ comment }) => {
               onClick={() => setShowMoreComment(!showMoreComment)}
             >
               {`Xem ${comment?.replyComment.length} câu trả lời`}
+              <i className="las la-angle-down" />
             </div>
           )}
 

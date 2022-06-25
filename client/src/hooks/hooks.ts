@@ -13,7 +13,7 @@ export const useDataToken = (token?: any) => {
       (accessToken || token) &&
       jwtDecode<AccessTokenType>(accessToken || token);
 
-    return { ...dataToken };
+    return dataToken;
   } catch (error) {}
 };
 
