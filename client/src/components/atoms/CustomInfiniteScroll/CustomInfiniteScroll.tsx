@@ -20,6 +20,7 @@ const CustomInfiniteScroll: React.FC<CustomInfiniteScrollProps> = ({
   dataLength,
   hasMore,
   loading,
+  ...props
 }) => {
   return (
     <div>
@@ -28,6 +29,7 @@ const CustomInfiniteScroll: React.FC<CustomInfiniteScrollProps> = ({
         hasMore={hasMore}
         next={fetchMoreData}
         loader={null}
+        {...props}
       >
         {children}
       </InfiniteScroll>

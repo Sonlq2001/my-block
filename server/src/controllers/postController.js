@@ -170,13 +170,18 @@ export const getPostsUser = async (req, res) => {
 				authPost: req.params.user_id,
 			}),
 			req.query
-		).pagination();
+		)
+			.pagination()
+			.sorting();
 
 		const postsUser = await features.query.populate({
 			path: "authPost topic",
 			select: "name",
 		});
-		return res.status(200).json({ postsUser });
+		const total = await Post.count({
+			authPost: req.params.user_id,
+		});
+		return res.status(200).json({ postsUser, total });
 	} catch (error) {
 		return res.status(500).json({ msg: error.message });
 	}
