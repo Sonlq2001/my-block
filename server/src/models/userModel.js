@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema(
 			type: String,
 		},
 		savePost: [{ type: mongoose.Types.ObjectId, ref: "posts" }],
+		refresh_token: { type: String, select: false },
 	},
 	{ timestamps: true }
 );

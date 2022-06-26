@@ -20,9 +20,8 @@ const responseInterceptor = (res: AxiosResponse) => {
 
 const errorInterceptor = async (axiosError: AxiosError) => {
   if (axiosError && axiosError.response) {
-    const { msg } = axiosError.response.data;
     const { status } = axiosError.response;
-    if (status === 401 && msg === 'yes') {
+    if (status === 401) {
       store.dispatch(authLogout());
       localStorage.clear();
       window.location.reload();
@@ -45,6 +44,7 @@ const refreshAuthLogic = async () => {
 
 createAuthRefreshInterceptor(api, refreshAuthLogic, {
   statusCodes: [408],
+  interceptNetworkError: true,
 });
 
 api.interceptors.request.use(requestInterceptor);

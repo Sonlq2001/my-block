@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from 'redux/store';
 import SocketClient from 'helpers/SocketClient';
 import { getNotifies } from 'features/notify/notify';
 import { getUserInfo } from 'features/user/user';
+import { store } from 'redux/store';
 
 const Routes = lazy(() => import('./routes/Routes'));
 
@@ -16,6 +17,24 @@ const SERVER: string = 'http://localhost:5000';
 const App = () => {
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector((state) => state.auth.accessToken);
+
+  useEffect(() => {
+    const loggedInStateOnRedux = !!store.getState().auth.accessToken;
+    const listenStorage = (storageEvent: StorageEvent) => {
+      console.log(storageEvent, 'day nhe');
+      if (storageEvent.key === 'auth') {
+        if (loggedInStateOnRedux) {
+          window.location.reload();
+        }
+      }
+    };
+
+    window.addEventListener('storage', listenStorage);
+
+    return () => {
+      window.removeEventListener('storage', listenStorage);
+    };
+  }, []);
 
   useEffect(() => {
     const socket = io(SERVER, { transports: ['websocket'] });
@@ -28,8 +47,7 @@ const App = () => {
 
   useEffect(() => {
     if (accessToken) {
-      dispatch(getNotifies());
-      dispatch(getUserInfo());
+      Promise.all([dispatch(getNotifies()), dispatch(getUserInfo())]);
     }
   }, [dispatch, accessToken]);
 

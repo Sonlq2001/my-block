@@ -6,59 +6,58 @@ import {
 	generateRefreshToken,
 } from "./../helpers/generate-token.helpers";
 import User from "./../models/userModel";
-import RefreshToken from "./../models/refreshTokenModel";
 
 const client = new OAuth2Client(`${process.env.CLIENT_ID}`);
 
 const handleToken = async ({ user, res }) => {
-	const accessToken = generateToken({
-		_id: user._id,
-		email: user.email,
-		name: user.name,
-		avatar: user.picture || user.avatar,
-	});
+	try {
+		const userLogin = {
+			_id: user._id,
+			email: user.email,
+			name: user.name,
+			avatar: user.picture || user.avatar,
+		};
+		const accessToken = generateToken(userLogin);
+		const refreshToken = generateRefreshToken(userLogin);
 
-	const refreshToken = generateRefreshToken({
-		_id: user._id,
-		email: user.email,
-		name: user.name,
-		avatar: user.picture || user.avatar,
-	});
+		// save refresh token with db when login
+		await User.findOneAndUpdate(
+			{ _id: user._id },
+			{ refresh_token: refreshToken },
+			{ new: true }
+		);
 
-	// save refresh token with db when login
-	const saveRefreshToken = new RefreshToken({ refreshToken });
-	await saveRefreshToken.save();
+		// save refresh token with httpOnly cookie
+		res.cookie("refreshToken", refreshToken, {
+			httpOnly: true,
+			secure: false,
+			path: "/",
+			sameSite: "strict",
+		});
 
-	// save refresh token with httpOnly cookie
-	res.cookie("refreshToken", refreshToken, {
-		httpOnly: true,
-		secure: false,
-		path: "/",
-		sameSite: "strict",
-	});
-
-	return {
-		user,
-		accessToken,
-	};
+		return {
+			user,
+			accessToken,
+		};
+	} catch (error) {
+		return res.status(500).json({ message: error.message });
+	}
 };
 
 export const logout = async (req, res) => {
 	try {
 		const token = req.cookies.refreshToken;
 		if (!token) {
-			return res.status(401).json({ msg: "yes" });
+			return res.status(401).json({ msg: "Invalid Authentication." });
+		}
+
+		if (!req.user) {
+			return res.status(401).json({ msg: "Invalid Authentication." });
 		}
 
 		res.clearCookie("refreshToken", { path: "/" });
 
-		const refreshTokenDb = await RefreshToken.findOne({ refreshToken: token });
-		if (!refreshTokenDb) {
-			// không có token trong db thì client sẽ cho logout ra
-			return res.status(401).json({ msg: "yes" });
-		}
-
-		await RefreshToken.findOneAndDelete({ refreshToken: token });
+		await User.findOneAndUpdate({ _id: req.user._id }, { refresh_token: "" });
 
 		return res.status(200).json({ msg: "Đăng xuất thành công !" });
 	} catch (error) {
@@ -77,7 +76,7 @@ export const loginGoogle = async (req, res) => {
 		const { email, email_verified, name, picture } = verify.getPayload();
 
 		if (!email_verified) {
-			return res.status(500).json({ message: "Xác minh email thất bại" });
+			return res.status(500).json({ message: "Email verification failed." });
 		}
 
 		const user = await User.findOne({ email });
