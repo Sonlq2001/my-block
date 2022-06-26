@@ -44,6 +44,7 @@ const refreshAuthLogic = async () => {
 
 createAuthRefreshInterceptor(api, refreshAuthLogic, {
   statusCodes: [408],
+  interceptNetworkError: true,
 });
 
 api.interceptors.request.use(requestInterceptor);
