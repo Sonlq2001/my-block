@@ -6,6 +6,7 @@ export type ConversationTypes = {
   message?: string;
   createdAt?: string;
   updatedAt?: string;
+  conversationId: string;
 };
 
 export type ConversationItem = {

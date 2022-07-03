@@ -15,13 +15,18 @@ const getConversationsApi = () => {
   return api.get(ChatEndpointsEnum.GET_CONVERSATION);
 };
 
-const getMessages = (id: string) => {
+const getMessagesApi = (id: string) => {
   return api.get(ChatEndpointsEnum.GET_MESSAGES.replace(/:id/, id));
+};
+
+const deleteConversationApi = (id: string) => {
+  return api.delete(ChatEndpointsEnum.DELETE_CONVERSATION.replace(/:id/, id));
 };
 
 export const chatApi = {
   postMessageApi,
   getSearchUserApi,
   getConversationsApi,
-  getMessages,
+  getMessagesApi,
+  deleteConversationApi,
 };

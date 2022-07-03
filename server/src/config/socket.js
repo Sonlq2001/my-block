@@ -31,6 +31,11 @@ const SocketServer = (socket) => {
 		const user = users.find((user) => user.id === data.recipient._id);
 		user && socket.to(`${user.socketId}`).emit("addMessageClient", data);
 	});
+
+	// online / offline
+	socket.on("userOnline", (data) => {
+		// todo check user online - offline before followings
+	});
 };
 
 export default SocketServer;

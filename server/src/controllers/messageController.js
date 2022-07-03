@@ -78,3 +78,20 @@ export const getMessages = async (req, res) => {
 		return res.status(500).json({ msg: error.message });
 	}
 };
+
+export const deleteConversation = async (req, res) => {
+	try {
+		const conversation = await Conversation.findOneAndDelete(
+			{
+				_id: req.params.id,
+			},
+			{ new: true }
+		);
+
+		await Message.deleteMany({ conversation: conversation._id });
+
+		return res.status(200).json({ conversation });
+	} catch (error) {
+		return res.status(500).json({ msg: error.message });
+	}
+};

@@ -6,6 +6,7 @@ import {
   PostMessageType,
   MessageResponse,
   MessageListResponse,
+  ConversationTypes,
 } from '../types/chat.types';
 
 export const postMessage = createAsyncThunk<MessageResponse, PostMessageType>(
@@ -42,7 +43,17 @@ export const getMessages = createAsyncThunk<MessageListResponse, string>(
   'chat/getMessages',
   async (id) => {
     try {
-      const res = await chatApi.getMessages(id);
+      const res = await chatApi.getMessagesApi(id);
+      return res.data;
+    } catch (error) {}
+  }
+);
+
+export const deleteConversation = createAsyncThunk(
+  'chat/deleteConversation',
+  async (id: string) => {
+    try {
+      const res = await chatApi.deleteConversationApi(id);
       return res.data;
     } catch (error) {}
   }
@@ -54,7 +65,10 @@ interface initialStateSlice {
     total: number;
   };
   isLoadingConversations: boolean;
-  messages: MessageListResponse;
+  messages: {
+    data: MessageListResponse;
+    currentChatUser: ConversationTypes | null;
+  };
   isLoadingMessages: boolean;
 }
 
@@ -65,11 +79,14 @@ const initialState: initialStateSlice = {
   },
   isLoadingConversations: false,
   messages: {
-    listMessage: {
-      list: [],
-      _id: '',
+    data: {
+      listMessage: {
+        list: [],
+        _id: '',
+      },
+      total: 0,
     },
-    total: 0,
+    currentChatUser: null,
   },
   isLoadingMessages: false,
 };
@@ -80,11 +97,24 @@ const chatSlice = createSlice({
   reducers: {
     updateMessage(state, action) {
       if (action.payload) {
-        state.messages.listMessage.list =
-          state.messages.listMessage._id === action.payload.recipient._id ||
-          state.messages.listMessage._id === action.payload.sender._id
-            ? [...state.messages.listMessage.list, action.payload]
-            : [...state.messages.listMessage.list];
+        state.messages.data.listMessage.list =
+          state.messages.data.listMessage._id ===
+            action.payload.recipient._id ||
+          state.messages.data.listMessage._id === action.payload.sender._id
+            ? [...state.messages.data.listMessage.list, action.payload]
+            : [...state.messages.data.listMessage.list];
+      }
+    },
+
+    currentChatUser(state, action) {
+      state.messages.currentChatUser = action.payload;
+    },
+    resetCurrentChat(state, action) {
+      state.messages.currentChatUser = null;
+      if (action.payload) {
+        state.conversations.list = state.conversations.list.filter(
+          (item) => item._id !== action.payload
+        );
       }
     },
   },
@@ -106,8 +136,8 @@ const chatSlice = createSlice({
     },
     [getMessages.fulfilled.type]: (state, action) => {
       state.isLoadingMessages = false;
-      state.messages.listMessage = action.payload.listMessage;
-      state.messages.total = action.payload.total;
+      state.messages.data.listMessage = action.payload.listMessage;
+      state.messages.data.total = action.payload.total;
     },
     [getMessages.rejected.type]: (state) => {
       state.isLoadingMessages = false;
@@ -115,15 +145,17 @@ const chatSlice = createSlice({
 
     [postMessage.fulfilled.type]: (state, action) => {
       if (action.payload) {
-        state.messages.listMessage.list =
-          state.messages.listMessage._id === action.payload.recipient._id ||
-          state.messages.listMessage._id === action.payload.sender._id
-            ? [...state.messages.listMessage.list, action.payload]
-            : [...state.messages.listMessage.list];
+        state.messages.data.listMessage.list =
+          state.messages.data.listMessage._id ===
+            action.payload.recipient._id ||
+          state.messages.data.listMessage._id === action.payload.sender._id
+            ? [...state.messages.data.listMessage.list, action.payload]
+            : [...state.messages.data.listMessage.list];
       }
     },
   },
 });
 
 export const chatReducer = chatSlice.reducer;
-export const { updateMessage } = chatSlice.actions;
+export const { updateMessage, currentChatUser, resetCurrentChat } =
+  chatSlice.actions;
