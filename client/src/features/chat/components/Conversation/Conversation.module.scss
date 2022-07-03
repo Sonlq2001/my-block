@@ -1,17 +1,18 @@
 @import 'styles/variables';
 
 .itemMsg {
-  display: flex;
-  align-items: center;
-  padding: 1.5rem 2rem;
   background: #eee;
-  border-radius: 5px;
   margin-bottom: 2px;
   user-select: none;
   cursor: pointer;
-  transition: 0.3s linear;
-  &:hover {
-    background: #ddd;
+  .boxMsg {
+    border-radius: 5px;
+    display: flex;
+    padding: 1.5rem 2rem;
+    transition: 0.3s linear;
+    &:hover {
+      background: #ddd;
+    }
   }
   .itemContent {
     margin: 0 1.5rem;
@@ -28,7 +29,6 @@
     align-items: flex-end;
     margin-bottom: auto;
     white-space: nowrap;
-    position: relative;
     z-index: 0;
   }
 }
@@ -36,16 +36,23 @@
 .btnConversation {
   padding-top: 5px;
   font-size: 1.6rem;
+  right: 2rem;
 }
+
 .listFuture {
   position: absolute;
   background-color: $white-color;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: -50px;
-  padding: 1rem;
   border-radius: 5px;
   min-width: 20rem;
-  z-index: 200;
+  z-index: 20;
+  left: 44rem;
+  padding: 1rem 0;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  .itemFuture {
+    padding: 1rem 2rem;
+    font-size: 1.3rem;
+    &:hover {
+      background-color: #eee;
+    }
+  }
 }

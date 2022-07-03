@@ -1,0 +1,19 @@
+.boxFirstLoad {
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 55rem;
+  }
+}
+
+.boxCaption {
+  margin-top: 2rem;
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 500;
+  }
+}

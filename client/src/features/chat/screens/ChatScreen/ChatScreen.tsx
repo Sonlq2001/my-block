@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { Link } from 'react-router-dom';
 
@@ -9,37 +9,37 @@ import ItemChat from '../../components/ItemChat/ItemChat';
 import InputMessage from '../../components/InputMessage/InputMessage';
 import ListCurrentChat from '../../components/ListCurrentChat/ListCurrentChat';
 import LoadingChat from 'components/loading/LoadingChat/LoadingChat';
+import FirstLoadChat from '../../components/FirstLoadChat/FirstLoadChat';
 
 import { useAppDispatch, useAppSelector } from 'redux/store';
-import { getConversations, getMessages } from '../../redux/chat.slice';
-import { ConversationTypes } from '../../types/chat.types';
+import {
+  getConversations,
+  getMessages,
+  resetCurrentChat,
+} from '../../redux/chat.slice';
 
 const ChatScreen = () => {
   const dispatch = useAppDispatch();
 
-  const [currentUserChat, setCurrentUserChat] =
-    useState<ConversationTypes | null>(null);
-
   const boxElementChat = useRef<HTMLDivElement | null>(null);
 
-  const { messages, isLoadingMessages } = useAppSelector((state) => ({
-    messages: state.chat.messages?.listMessage?.list,
-    isLoadingMessages: state.chat.isLoadingMessages,
-  }));
+  const { messages, isLoadingMessages, currentChat } = useAppSelector(
+    (state) => ({
+      messages: state.chat.messages?.data?.listMessage?.list,
+      isLoadingMessages: state.chat.isLoadingMessages,
+      currentChat: state.chat.messages.currentChatUser,
+    })
+  );
 
   useEffect(() => {
     dispatch(getConversations());
   }, [dispatch]);
 
   useEffect(() => {
-    if (currentUserChat?._id) {
-      dispatch(getMessages(currentUserChat._id));
+    if (currentChat?._id) {
+      dispatch(getMessages(currentChat._id));
     }
-  }, [dispatch, currentUserChat?._id]);
-
-  const handleChangeConversation = useCallback((data: ConversationTypes) => {
-    setCurrentUserChat(data);
-  }, []);
+  }, [dispatch, currentChat?._id]);
 
   // scroll to message
   useEffect(() => {
@@ -51,6 +51,12 @@ const ChatScreen = () => {
       }, 0);
     }
   }, [messages]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetCurrentChat(null));
+    };
+  }, [dispatch]);
 
   return (
     <div className={styles.appChat}>
@@ -75,14 +81,14 @@ const ChatScreen = () => {
           </ul>
         </div>
 
-        <ListCurrentChat handleChangeConversation={handleChangeConversation} />
+        <ListCurrentChat />
       </div>
-      {currentUserChat ? (
+      {currentChat ? (
         <div className={styles.conversation}>
           <div className={styles.headerChat}>
             <div className={styles.userChat}>
-              <UserOnlineAvatar avatar={currentUserChat.avatar} />
-              <div className={styles.userNameChat}>{currentUserChat.name}</div>
+              <UserOnlineAvatar avatar={currentChat.avatar} />
+              <div className={styles.userNameChat}>{currentChat.name}</div>
             </div>
             <div className={styles.groupAction}>
               <div>search</div>
@@ -100,11 +106,11 @@ const ChatScreen = () => {
               </div>
             </div>
 
-            <InputMessage recipientId={currentUserChat._id} />
+            <InputMessage recipientId={currentChat._id} />
           </div>
         </div>
       ) : (
-        <div>Chat di</div>
+        <FirstLoadChat />
       )}
     </div>
   );

@@ -11,16 +11,11 @@ import { getSearchUser } from '../../redux/chat.slice';
 import UserOnline from '../UserOnline/UserOnline';
 import Conversation from '../Conversation/Conversation';
 
-interface ListCurrentChatProps {
-  handleChangeConversation: (data: ConversationTypes) => void;
-}
-
-const ListCurrentChat: React.FC<ListCurrentChatProps> = ({
-  handleChangeConversation,
-}) => {
+const ListCurrentChat: React.FC = () => {
   const dispatch = useAppDispatch();
   const [valueSearch, setValueSearch] = useState<string>('');
   const [dataSearch, setDataSearch] = useState<ConversationTypes[]>([]);
+  const [futureId, setFutureId] = useState<string | null>(null);
   const debounce = useDebounce(valueSearch, 700);
 
   const isSearch = useRef<boolean>(false);
@@ -53,6 +48,7 @@ const ListCurrentChat: React.FC<ListCurrentChatProps> = ({
             message: item.message,
             createdAt: item.createdAt,
             updatedAt: item.updatedAt,
+            conversationId: item._id,
           });
         }
       });
@@ -91,7 +87,8 @@ const ListCurrentChat: React.FC<ListCurrentChatProps> = ({
             <Conversation
               key={item._id}
               item={item}
-              handleChangeConversation={handleChangeConversation}
+              futureId={futureId}
+              setFutureId={setFutureId}
             />
           ))}
         </div>

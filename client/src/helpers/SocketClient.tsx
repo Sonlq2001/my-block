@@ -8,9 +8,10 @@ import { updateMessage } from 'features/chat/chat';
 
 const SocketClient = () => {
   const dispatch = useAppDispatch();
-  const { accessToken, socketData } = useAppSelector((state) => ({
+  const { accessToken, socketData, userInfo } = useAppSelector((state) => ({
     accessToken: state.auth.accessToken,
     socketData: state.socket.socketData,
+    userInfo: state.user.userInfo,
   }));
 
   const decodeData = accessToken && jwt_decode<AccessTokenType>(accessToken);
@@ -47,6 +48,12 @@ const SocketClient = () => {
     };
   }, [socketData, dispatch]);
 
+  // online / offline
+  useEffect(() => {
+    if (!socketData) return;
+
+    socketData.emit('userOnline', userInfo);
+  }, [socketData, userInfo]);
   return <div></div>;
 };
 
