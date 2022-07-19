@@ -45,10 +45,13 @@ const TrendingPosts = () => {
               <div className={styles.postBody}>
                 <h3 className={styles.postTitle}>
                   <Link
-                    to={PostPathsEnum.POST.replace(
-                      /:post_id/,
-                      postTrendingBig._id
-                    )}
+                    to={{
+                      pathname: PostPathsEnum.POST.replace(
+                        /:slug/,
+                        postTrendingBig.slug
+                      ),
+                      state: postTrendingBig._id,
+                    }}
                   >
                     {postTrendingBig.titleInside}
                   </Link>

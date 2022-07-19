@@ -16,6 +16,7 @@ interface ExploreItemProps {
   avatar: any;
   topic: TopicType;
   totalComment: number;
+  slug: string;
 }
 
 const ExploreItem: React.FC<ExploreItemProps> = ({
@@ -23,10 +24,14 @@ const ExploreItem: React.FC<ExploreItemProps> = ({
   avatar,
   topic,
   totalComment,
+  slug,
 }) => {
   return (
     <Link
-      to={PostPathsEnum.POST.replace(/:post_id/, _id)}
+      to={{
+        pathname: PostPathsEnum.POST.replace(/:slug/, slug),
+        state: _id,
+      }}
       className={clsx(styles.itemExplore)}
     >
       <div className={styles.itemExploreImg}>

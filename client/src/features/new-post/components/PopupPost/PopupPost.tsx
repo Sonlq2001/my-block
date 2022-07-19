@@ -123,11 +123,28 @@ const PopupPost: React.FC<PopupPostProps> = ({
 
         <div className={styles.popupContentRight}>
           <div className={styles.postBox}>
-            <label>Chọn danh mục cho bài viết.</label>
+            <label>Chọn chủ đề bài viết.</label>
             <select
               name="topic"
               id=""
               onChange={(e) => setFieldValue('topic', e.target.value)}
+              className="select-option"
+            >
+              {topics?.map((option) => (
+                <option key={option._id} value={option._id}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className={styles.postBox}>
+            <label>Chọn danh mục bài viết.</label>
+            <select
+              name="topic"
+              id=""
+              onChange={(e) => setFieldValue('topic', e.target.value)}
+              className="select-option"
             >
               {topics?.map((option) => (
                 <option key={option._id} value={option._id}>

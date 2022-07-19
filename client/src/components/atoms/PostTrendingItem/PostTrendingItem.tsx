@@ -17,7 +17,12 @@ const PostTrendingItem: React.FC<PostTrendingItemProps> = ({ post }) => {
       <div className={styles.postBody}>
         <div className={styles.postContent}>
           <div className={styles.postTitle}>
-            <Link to={PostPathsEnum.POST.replace(/:post_id/, post._id)}>
+            <Link
+              to={{
+                pathname: PostPathsEnum.POST.replace(/:slug/, post.slug),
+                state: post._id,
+              }}
+            >
               {post.titleOutside}
             </Link>
           </div>

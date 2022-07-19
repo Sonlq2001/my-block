@@ -1,5 +1,3 @@
-import mongoose from "mongoose";
-
 import Post from "./../models/postModel";
 import { ApiFeatures, pagination } from "../helpers/features.helpers";
 
@@ -64,11 +62,12 @@ export const getPosts = async (req, res) => {
 
 export const getPost = async (req, res) => {
 	try {
-		const { post_id } = req.params;
+		const { slug } = req.params;
+
 		const postItem = await Post.aggregate([
 			{
 				$match: {
-					_id: mongoose.Types.ObjectId(post_id),
+					slug,
 				},
 			},
 			// topic
@@ -100,6 +99,11 @@ export const getPost = async (req, res) => {
 					localField: "_id",
 					foreignField: "postId",
 					as: "totalComment",
+				},
+			},
+			{
+				$project: {
+					"authPost.refresh_token": 0,
 				},
 			},
 			// count comment
@@ -144,7 +148,7 @@ export const viewPost = async (req, res) => {
 		);
 		return res.status(200).json({ resData });
 	} catch (error) {
-		return res.status(500).json({ msg: err.message });
+		return res.status(500).json({ msg: error.message });
 	}
 };
 
@@ -264,6 +268,7 @@ export const getPostExplore = async (req, res) => {
 								updatedAt: 1,
 								titleInside: 1,
 								titleOutside: 1,
+								slug: 1,
 							},
 						},
 						{ $skip: skip },

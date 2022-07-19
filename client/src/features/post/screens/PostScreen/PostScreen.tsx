@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 import PostHeader from './../../components/PostHeader/PostHeader';
 import PostContentHeader from './../../components/PostContentHeader/PostContentHeader';
@@ -26,7 +26,7 @@ import { postComment, resetComments } from './../../redux/post.slice';
 import { usePostSocket } from './../../socket/post.socket';
 import { createNotify } from 'features/notify/notify';
 interface PostParams {
-  post_id: string;
+  slug: string;
 }
 
 const PostScreen = () => {
@@ -40,7 +40,10 @@ const PostScreen = () => {
     perPage: 3,
   });
   const idTime = useRef<any>();
-  const { post_id } = useParams<PostParams>();
+  const { slug } = useParams<PostParams>();
+  const { location } = useHistory<string>();
+
+  const post_id = location?.state;
 
   const { postItem, comments, socketData, totalComment } = useAppSelector(
     (state) => ({
@@ -52,7 +55,7 @@ const PostScreen = () => {
   );
 
   const fetchPostAndComments = useCallback(
-    (postId: string) => {
+    (postId) => {
       Promise.all([
         dispatch(
           getComments({
@@ -60,10 +63,10 @@ const PostScreen = () => {
             query,
           })
         ),
-        dispatch(getPost({ post_id: postId })),
+        dispatch(getPost({ slug })),
       ]).finally(() => setLoadingPost(false));
     },
-    [dispatch, query]
+    [dispatch, query, slug]
   );
 
   useEffect(() => {

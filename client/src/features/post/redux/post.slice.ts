@@ -5,9 +5,9 @@ import { postApi } from './../api/post.api';
 
 export const getPost = createAsyncThunk(
   `getPost`,
-  async ({ post_id }: { post_id: string }, { rejectWithValue }) => {
+  async ({ slug }: { slug: string }, { rejectWithValue }) => {
     try {
-      const res = await postApi.getPostApi(post_id);
+      const res = await postApi.getPostApi(slug);
       return res.data;
     } catch (error: any) {
       return rejectWithValue(error.response.msg);

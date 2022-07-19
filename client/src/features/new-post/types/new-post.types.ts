@@ -27,4 +27,5 @@ export interface PostItemType extends PostType {
   avatar: {
     img: string;
   };
+  slug: string;
 }
