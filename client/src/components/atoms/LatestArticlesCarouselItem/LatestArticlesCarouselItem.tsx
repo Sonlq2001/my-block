@@ -19,7 +19,12 @@ const LatestArticlesCarouselItem: React.FC<LatestArticlesCarouselItemProps> = ({
 }) => {
   return (
     <div className={styles.carouselItem}>
-      <Link to={PostPathsEnum.POST.replace(/:post_id/, post._id)}>
+      <Link
+        to={{
+          pathname: PostPathsEnum.POST.replace(/:slug/, post.slug),
+          state: post._id,
+        }}
+      >
         <div className={styles.carouselHeader}>
           <img src={post.avatar.img} alt="" />
         </div>

@@ -9,6 +9,7 @@ import { createServer } from "http";
 import routes from "./routes/app.routes";
 import db from "./config/connectDB";
 import SocketServer from "./config/socket";
+import a from "./routes/category.routes";
 
 const app = express();
 const port = 5000;
@@ -34,6 +35,7 @@ app.use("/api", routes.commentRoute);
 app.use("/api", routes.userRoute);
 app.use("/api", routes.notiFyRoute);
 app.use("/api", routes.messageRoute);
+app.use("/api", a);
 
 // socket
 const http = createServer(app);

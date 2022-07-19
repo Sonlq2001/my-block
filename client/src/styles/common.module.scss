@@ -69,3 +69,29 @@
     background-color: $gray1-color;
   }
 }
+
+// tag select
+.select-option {
+  padding: 8px 1.6rem;
+  border-radius: 5px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  border: 1px solid $green1-color;
+  appearance: none;
+  background-image: url('../assets/images/arrow-down.png');
+  background-repeat: no-repeat;
+  background-size: 10px;
+  background-position: right 14px top 50%;
+  padding-right: 2.5rem;
+
+  &:hover,
+  &:focus {
+    border: 1px solid $green-bold-hover;
+  }
+
+  option {
+    background: $white-color;
+    border: none;
+    font-size: 1.3rem;
+  }
+}

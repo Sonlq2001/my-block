@@ -1,5 +1,5 @@
 export enum PostEndpointsEnum {
-  GET_POST = '/post/:post_id',
+  GET_POST = '/post/:slug',
   POST_COMMENT = '/comment',
   GET_COMMENTS = '/comments/:post_id',
   POST_REPLY_COMMENT = '/reply',

@@ -10,6 +10,7 @@ import { ReactComponent as IconDownload } from 'assets/images/icon-download.svg'
 import styles from './PostContentHeader.module.scss';
 import { UserItem } from 'features/auth/auth';
 import { TopicType } from 'features/master-data/master-data';
+import { ProfilePathsEnum } from 'features/profile/profile';
 
 interface PostContentHeaderProps {
   titleInside: string;
@@ -41,6 +42,10 @@ const PostContentHeader: React.FC<PostContentHeaderProps> = ({
             size="large"
             minute="2"
             color="white"
+            to={ProfilePathsEnum.PROFILE.replace(
+              /:user_id/,
+              authPost._id || ''
+            )}
           />
 
           <div className={styles.postInfoBox}>

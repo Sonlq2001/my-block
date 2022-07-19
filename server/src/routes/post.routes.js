@@ -18,7 +18,7 @@ const route = express.Router();
 
 route.get("/posts", verifyToken, getPosts);
 route.post("/post", verifyToken, createPost);
-route.get("/post/:post_id", verifyToken, getPost);
+route.get("/post/:slug", verifyToken, getPost);
 route.get("/search", verifyToken, searchPost);
 route.patch("/view_post/:post_id", verifyToken, viewPost);
 route.get("/posts_trending", verifyToken, getPostsTrending);

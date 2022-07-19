@@ -1,4 +1,4 @@
-@import "styles/variables";
+@import 'styles/variables';
 
 .profileContentHeader {
   width: 80%;
@@ -19,18 +19,40 @@
 
   .authContent {
     margin-left: 3.2rem;
-    width: 50%;
+    width: 65%;
 
     .authName {
       font-size: 3rem;
       line-height: 4rem;
       margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
     }
 
     .authDes {
       font-size: 1.6rem;
       line-height: 2.4rem;
       color: $gray4-color;
+    }
+
+    .btnFlow {
+      background-color: $green1-color;
+      padding: 6px 12px;
+      border-radius: 5px;
+      font-size: 1.4rem;
+      margin-left: 3rem;
+      color: $gray2-color;
+
+      &:hover {
+        background: $green-bold-hover;
+      }
+    }
+    .bgUnFlow {
+      background: $red-fresh;
+
+      &:hover {
+        background: rgb(220, 6, 6);
+      }
     }
   }
 }

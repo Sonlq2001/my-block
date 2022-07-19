@@ -14,7 +14,9 @@ export const useDataToken = (token?: any) => {
       jwtDecode<AccessTokenType>(accessToken || token);
 
     return dataToken;
-  } catch (error) {}
+  } catch (error) {
+    return {};
+  }
 };
 
 export const useDebounce = (value: any, delay: number) => {
