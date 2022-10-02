@@ -1,27 +1,31 @@
-import React, { useRef } from "react";
+import React, { useRef } from 'react';
 
-import TitleMain from "components/atoms/TitleMain/TitleMain";
-import NavigationCarousel from "components/atoms/NavigationCarousel/NavigationCarousel";
-import styles from "./HotTopics.module.scss";
-import HotTopicCarouselItem from "components/atoms/HotTopicCarouselItem/HotTopicCarouselItem";
-import { data } from "features/home/constants/thumy-data";
+import TitleMain from 'components/atoms/TitleMain/TitleMain';
+import NavigationCarousel from 'components/atoms/NavigationCarousel/NavigationCarousel';
+import styles from './HotTopics.module.scss';
+import HotTopicCarouselItem from 'components/atoms/HotTopicCarouselItem/HotTopicCarouselItem';
+import { data } from 'features/home/constants/thumy-data';
 
 const HotTopics: React.FC = () => {
-  const carouselApp = useRef<any>(null);
+  const carouselApp = useRef<HTMLDivElement>(null);
 
   const handleNext = () => {
     const slide = carouselApp.current;
-    slide.scrollLeft -= slide.offsetWidth;
-    if (slide.scrollLeft <= 0) {
-      slide.scrollLeft = slide.scrollWidth;
+    if (slide) {
+      slide.scrollLeft -= slide.offsetWidth;
+      if (slide.scrollLeft <= 0) {
+        slide.scrollLeft = slide.scrollWidth;
+      }
     }
   };
 
   const handlePrev = () => {
     const slide = carouselApp.current;
-    slide.scrollLeft += slide.offsetWidth;
-    if (slide.scrollLeft >= slide.scrollWidth - slide.offsetWidth) {
-      slide.scrollLeft = 0;
+    if (slide) {
+      slide.scrollLeft += slide.offsetWidth;
+      if (slide.scrollLeft >= slide.scrollWidth - slide.offsetWidth) {
+        slide.scrollLeft = 0;
+      }
     }
   };
 

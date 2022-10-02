@@ -1,8 +1,10 @@
 import clsx from 'clsx';
+import { Link } from 'react-router-dom';
 
 import styles from './ProfileContentHeader.module.scss';
 
 import { ProfileUser } from './../../types/profile.types';
+import { ProfilePathsEnum } from '../../constants/profile.paths';
 
 interface ProfileContentHeaderProps {
   profileUser: ProfileUser;
@@ -22,24 +24,28 @@ const ProfileContentHeader: React.FC<ProfileContentHeaderProps> = ({
       </div>
 
       <div className={styles.authContent}>
-        <h2 className={styles.authName}>
-          {profileUser.name}
-          <button
-            className={clsx(styles.btnFlow)}
-            onClick={handleFollowOrUnFollow}
-          >
-            Theo dõi
-          </button>
-        </h2>
         <div className={styles.authDes}>
+          <h2 className={styles.authName}>
+            {profileUser.name}
+            <button
+              className={clsx(styles.btnFlow)}
+              onClick={handleFollowOrUnFollow}
+            >
+              Theo dõi
+            </button>
+          </h2>
           <p>
             Amet maxime est nostrum molestiae dolorem ipsum nisi. Placeat eos
             aut et animi error aut et. Error porro error velit voluptate aut.
             Eligendi qui eos explicabo soluta officia.
           </p>
         </div>
-
-        <div></div>
+        <Link
+          to={ProfilePathsEnum.PROFILE_SETTING}
+          className={styles.btnEditProfile}
+        >
+          Sửa thông tin
+        </Link>
       </div>
     </div>
   );

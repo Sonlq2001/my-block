@@ -1,53 +1,48 @@
-import React, { useState } from "react";
-import clsx from "clsx";
+import React, { useState, useEffect } from 'react';
+import clsx from 'clsx';
 
-import TitleMain from "components/atoms/TitleMain/TitleMain";
-import { ReactComponent as IconStyle } from "assets/images/icon-palette.svg";
-import styles from "./LifeStyles.module.scss";
-import stylesCommon from "styles/common.module.scss";
+import TitleMain from 'components/atoms/TitleMain/TitleMain';
+import { ReactComponent as IconStyle } from 'assets/images/icon-palette.svg';
+import styles from './LifeStyles.module.scss';
+import stylesCommon from 'styles/common.module.scss';
 
-import LifeStyleItem from "components/atoms/LifeStyleItem/LifeStyleItem";
-import { dataLifeStyles } from "features/home/constants/thumy-data";
+import LifeStyleItem from 'components/atoms/LifeStyleItem/LifeStyleItem';
+import { useAppDispatch, useAppSelector } from 'redux/store';
+import { getPostsHome, TOPIC_TAB, TYPE_POST } from 'features/home/home';
 
 const LifeStyles: React.FC = () => {
-  const [tabIndex, setTabIndex] = useState<number>(1);
+  const dispatch = useAppDispatch();
+  const [tabIndex, setTabIndex] = useState<string>(TYPE_POST.NATURE);
+
+  useEffect(() => {
+    dispatch(getPostsHome({ params: { type: tabIndex } }));
+  }, [dispatch, tabIndex]);
+
+  const postsStyle = useAppSelector((state) => state.home?.postsStyle);
 
   return (
     <div className="container">
       <div className={styles.lifeStyles}>
         <TitleMain
-          title="Life styles"
+          title={postsStyle?.topic || ''}
           icon={<IconStyle />}
-          description="Discover the most outstanding articles in all topics of life."
+          description={postsStyle?.description}
         />
 
         <div className={styles.lifeStylesTab}>
           <div className={styles.navigationTab}>
             <div>
-              <button
-                className={clsx(stylesCommon.navigationTabItem, {
-                  [stylesCommon.active]: tabIndex === 1,
-                })}
-                onClick={() => setTabIndex(1)}
-              >
-                All
-              </button>
-              <button
-                className={clsx(stylesCommon.navigationTabItem, {
-                  [stylesCommon.active]: tabIndex === 2,
-                })}
-                onClick={() => setTabIndex(2)}
-              >
-                Toys
-              </button>
-              <button
-                className={clsx(stylesCommon.navigationTabItem, {
-                  [stylesCommon.active]: tabIndex === 3,
-                })}
-                onClick={() => setTabIndex(3)}
-              >
-                Photos
-              </button>
+              {TOPIC_TAB.map((topic) => (
+                <button
+                  className={clsx(stylesCommon.navigationTabItem, {
+                    [stylesCommon.active]: tabIndex === topic.slug,
+                  })}
+                  onClick={() => setTabIndex(topic.slug)}
+                  key={topic.label}
+                >
+                  {topic.label}
+                </button>
+              ))}
             </div>
 
             <button className={stylesCommon.btnViewAll}>
@@ -57,17 +52,11 @@ const LifeStyles: React.FC = () => {
           </div>
 
           <div className={styles.groupTabs}>
-            {tabIndex === 1 && (
-              <div className={styles.tabItem}>
-                {dataLifeStyles.map((item) => (
-                  <LifeStyleItem key={item.id} image={item.img} />
-                ))}
-              </div>
-            )}
-
-            {tabIndex === 2 && <div className="tabs-items">2</div>}
-
-            {tabIndex === 3 && <div className="tabs-items">3</div>}
+            <div className={styles.tabItem}>
+              {postsStyle?.data.map((item) => (
+                <LifeStyleItem key={item._id} post={item} />
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -1,7 +1,6 @@
 @import 'styles/variables';
 
 .profileContentHeader {
-  width: 80%;
   display: flex;
   align-items: center;
 
@@ -16,43 +15,55 @@
       height: 100%;
     }
   }
+}
 
-  .authContent {
-    margin-left: 3.2rem;
-    width: 65%;
+.authContent {
+  margin-left: 3.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 
-    .authName {
-      font-size: 3rem;
-      line-height: 4rem;
-      margin-bottom: 2rem;
-      display: flex;
-      align-items: center;
+  .authName {
+    font-size: 3rem;
+    line-height: 4rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .authDes {
+    font-size: 1.6rem;
+    line-height: 2.4rem;
+    color: $gray4-color;
+    width: 70%;
+  }
+
+  .btnFlow {
+    background-color: $green1-color;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-size: 1.4rem;
+    margin-left: 3rem;
+    color: $gray2-color;
+
+    &:hover {
+      background: $green-bold-hover;
     }
+  }
+  .bgUnFlow {
+    background: $red-fresh;
 
-    .authDes {
-      font-size: 1.6rem;
-      line-height: 2.4rem;
-      color: $gray4-color;
+    &:hover {
+      background: rgb(220, 6, 6);
     }
-
-    .btnFlow {
-      background-color: $green1-color;
-      padding: 6px 12px;
-      border-radius: 5px;
-      font-size: 1.4rem;
-      margin-left: 3rem;
-      color: $gray2-color;
-
-      &:hover {
-        background: $green-bold-hover;
-      }
-    }
-    .bgUnFlow {
-      background: $red-fresh;
-
-      &:hover {
-        background: rgb(220, 6, 6);
-      }
+  }
+  .btnEditProfile {
+    font-size: 1.5rem;
+    padding: 1rem 1.6rem;
+    border-radius: 1rem;
+    border: 1px solid $gray5-color;
+    &:hover {
+      background-color: $gray2-color;
     }
   }
 }

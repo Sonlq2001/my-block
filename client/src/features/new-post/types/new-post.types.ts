@@ -14,6 +14,7 @@ export interface PostType {
   avatar?: {
     img: string;
   };
+  categoryId?: string;
 }
 
 export interface PostItemType extends PostType {
@@ -29,3 +30,25 @@ export interface PostItemType extends PostType {
   };
   slug: string;
 }
+
+export type PostHomeType = {
+  _id: string;
+  topic: string;
+  description: string;
+  data: PostHomeTypeDef[];
+};
+
+export type PostHomeTypeDef = {
+  authPost: { name: string; avatar: string };
+  slug: string;
+  createdAt: string;
+  updatedAt: string;
+  topic: { name: string };
+  view: number;
+  avatar: { img: string; idImage: string };
+  _id: string;
+  description: string;
+  titleInside: string;
+  titleOutside?: string;
+  totalComment?: number;
+};
