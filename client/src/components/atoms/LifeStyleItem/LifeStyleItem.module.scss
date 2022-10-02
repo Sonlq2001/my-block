@@ -1,4 +1,4 @@
-@import "styles/variables";
+@import 'styles/variables';
 
 .lifeStyleItem:nth-child(1) {
   grid-row: 1 / 2;
@@ -28,7 +28,7 @@
     }
 
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       display: block;
       top: 0;
@@ -37,12 +37,16 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: linear-gradient(to top, rgba(0, 0, 0, 1), transparent);
+      background-image: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.3),
+        transparent
+      );
       z-index: 1;
     }
 
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       display: block;
       top: 0;

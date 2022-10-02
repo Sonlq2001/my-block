@@ -1,4 +1,4 @@
 export enum HomeEnumEndpoints {
-  GET_TRENDING = '/posts_trending',
+  GET_POSTS_HOME = '/posts-type',
   GET_POST_NEWEST = '/post_newest',
 }

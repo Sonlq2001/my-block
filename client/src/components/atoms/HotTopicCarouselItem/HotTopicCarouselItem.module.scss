@@ -1,4 +1,4 @@
-@import "styles/variables";
+@import 'styles/variables';
 
 .carouselItem {
   min-width: calc(20% - 2.5rem);
@@ -16,14 +16,15 @@
     position: relative;
     overflow: hidden;
     border-radius: 1.5rem;
+    height: 23rem;
 
     img {
       width: 100%;
-      height: 32.3rem;
+      height: 100%;
     }
 
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       top: 0;
       right: 0;

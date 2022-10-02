@@ -28,9 +28,12 @@ const NewPostScreen = () => {
     setIsSubmit(true);
     dispatch(postArticle({ data: { ...values, authPost: _id } }))
       .then(unwrapResult)
-      .then((res) =>
-        history.push(PostPathsEnum.POST.replace(/:post_id/, res.post._id))
-      )
+      .then((res) => {
+        history.push(
+          PostPathsEnum.POST.replace(/:slug/, res.post.slug),
+          res.post._id
+        );
+      })
       .catch((err) => console.log(err.response))
       .finally(() => setIsSubmit(false));
   };

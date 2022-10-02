@@ -1,4 +1,4 @@
-@import "styles/variables";
+@import 'styles/variables';
 
 .profileHeader {
   max-width: 152.3rem;
@@ -19,7 +19,7 @@
 
   .profileAuthInfo {
     position: absolute;
-    padding: 6.4rem;
+    padding: 4rem 3rem;
     border-radius: 3rem;
     background-color: $white-color;
     bottom: -16%;

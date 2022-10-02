@@ -11,6 +11,7 @@ import {
 	getPostsSaved,
 	getPostNewest,
 	getPostExplore,
+	getPostsType,
 } from "./../controllers/postController";
 import { verifyToken } from "./../middleware/verifyToken";
 
@@ -26,5 +27,6 @@ route.get("/posts_user/:user_id", getPostsUser);
 route.get("/post_saved", verifyToken, getPostsSaved);
 route.get("/post_newest", verifyToken, getPostNewest);
 route.get("/post_explore", getPostExplore);
+route.get("/posts-type", getPostsType);
 
 export default route;

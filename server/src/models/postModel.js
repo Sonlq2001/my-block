@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import slug from "mongoose-slug-updater";
+import slug from "mongoose-slug-generator";
 
 mongoose.plugin(slug);
 
@@ -38,7 +38,6 @@ const postSchema = new mongoose.Schema(
 			type: Number,
 			default: 0,
 		},
-		categoryId: { type: mongoose.Types.ObjectId, ref: "categories" },
 		slug: { type: String, slug: "titleInside", unique: true },
 	},
 	{ timestamps: true }

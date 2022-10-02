@@ -12,7 +12,7 @@ import { PostType } from './../../types/new-post.types';
 import LoadingCircle from 'components/loading/LoadingCircle/LoadingCircle';
 
 import { useAppDispatch, useAppSelector } from 'redux/store';
-import { getTopics } from 'features/master-data/master-data';
+import { getTopics, getCategories } from 'features/master-data/master-data';
 
 interface PopupPostProps {
   setPublish: (publish: boolean) => void;
@@ -38,9 +38,11 @@ const PopupPost: React.FC<PopupPostProps> = ({
 
   const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
-    if (file) {
+    try {
       setFieldValue('avatar', file);
       setFieldValue('previewImage', URL.createObjectURL(file as Blob));
+    } catch (error) {
+      // to handle error
     }
   };
 
@@ -52,7 +54,7 @@ const PopupPost: React.FC<PopupPostProps> = ({
 
     setTimeout(() => {
       setTags(listTag);
-    }, 700);
+    }, 400);
     setFieldValue('tags', listTag);
 
     if (listTag.length > 4) {
@@ -61,7 +63,7 @@ const PopupPost: React.FC<PopupPostProps> = ({
   };
 
   useEffect(() => {
-    dispatch(getTopics());
+    Promise.all([dispatch(getTopics()), dispatch(getCategories())]);
   }, [dispatch]);
 
   useEffect(() => {
@@ -72,6 +74,7 @@ const PopupPost: React.FC<PopupPostProps> = ({
 
   const { topics } = useAppSelector((state) => ({
     topics: state.masterData.topics,
+    categories: state.masterData.categories,
   }));
 
   return (
@@ -124,22 +127,6 @@ const PopupPost: React.FC<PopupPostProps> = ({
         <div className={styles.popupContentRight}>
           <div className={styles.postBox}>
             <label>Chọn chủ đề bài viết.</label>
-            <select
-              name="topic"
-              id=""
-              onChange={(e) => setFieldValue('topic', e.target.value)}
-              className="select-option"
-            >
-              {topics?.map((option) => (
-                <option key={option._id} value={option._id}>
-                  {option.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className={styles.postBox}>
-            <label>Chọn danh mục bài viết.</label>
             <select
               name="topic"
               id=""

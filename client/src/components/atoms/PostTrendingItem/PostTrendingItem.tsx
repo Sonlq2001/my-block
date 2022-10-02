@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 
 import PostCardAuth from 'components/atoms/PostCardAuth/PostCardAuth';
 import styles from './PostTrendingItem.module.scss';
-import { PostItemType } from 'features/new-post/new-post';
+import { PostHomeTypeDef } from 'features/new-post/new-post';
 import { PostPathsEnum } from 'features/post/post';
 
 interface PostTrendingItemProps {
-  post: PostItemType;
+  post: PostHomeTypeDef;
 }
 
 const PostTrendingItem: React.FC<PostTrendingItemProps> = ({ post }) => {

@@ -1,4 +1,7 @@
+import mongoose from "mongoose";
+
 import Post from "./../models/postModel";
+import Topic from "./../models/topicModel";
 import { ApiFeatures, pagination } from "../helpers/features.helpers";
 
 export const createPost = async (req, res) => {
@@ -294,5 +297,73 @@ export const getPostExplore = async (req, res) => {
 		return res.status(200).json({ list, total });
 	} catch (error) {
 		return res.status(500).json({ msg: error.message });
+	}
+};
+
+// [/] use in home page
+export const getPostsType = async (req, res) => {
+	try {
+		const { type } = req.query;
+
+		const topicId = await Topic.findOne({ slug: type });
+
+		if (!topicId) {
+			return res.status(400).json({ message: "Not Found topic" });
+		}
+
+		const list = await Post.aggregate([
+			{ $match: { topic: mongoose.Types.ObjectId(topicId._id) } },
+			{
+				$lookup: {
+					from: "topics",
+					localField: "topic",
+					foreignField: "_id",
+					as: "topic",
+				},
+			},
+			{ $unwind: "$topic" },
+			{
+				$lookup: {
+					from: "users",
+					localField: "authPost",
+					foreignField: "_id",
+					as: "authPost",
+				},
+			},
+			{ $unwind: "$authPost" },
+			{
+				$group: {
+					_id: "$topic._id",
+					topic: { $first: "$topic.name" },
+					slug: { $first: "$topic.slug" },
+					description: { $first: "$topic.description" },
+					data: { $push: "$$ROOT" },
+					count: { $sum: 1 },
+				},
+			},
+			{
+				$project: {
+					_id: 1,
+					topic: 1,
+					slug: 1,
+					description: 1,
+					"data.authPost.name": 1,
+					"data.authPost.avatar": 1,
+					"data.topic.name": 1,
+					"data.slug": 1,
+					"data.view": 1,
+					"data.createdAt": 1,
+					"data.updatedAt": 1,
+					"data.avatar": 1,
+					"data._id": 1,
+					"data.description": 1,
+					"data.titleInside": 1,
+				},
+			},
+		]);
+
+		return res.status(200).json({ list: list[0] || {} });
+	} catch (error) {
+		return res.status(500).json({ message: error.message });
 	}
 };

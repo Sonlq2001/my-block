@@ -1,4 +1,4 @@
-@import "styles/variables";
+@import 'styles/variables';
 
 .lifeStyles {
   margin-top: 11.2rem;
@@ -17,9 +17,9 @@
 
     .tabItem {
       display: grid;
-      grid-template-rows: repeat(2, 39.6rem);
+      grid-template-rows: repeat(2, 35rem);
       grid-template-columns: repeat(4, 1fr);
-      grid-gap: 3.3rem;
+      grid-gap: 3rem;
     }
   }
 }
