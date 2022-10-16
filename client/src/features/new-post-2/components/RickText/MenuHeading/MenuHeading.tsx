@@ -14,13 +14,9 @@ interface MenuHeadingProps {
 const MenuHeading: React.FC<MenuHeadingProps> = ({ editor }) => {
   const [toggleHeading, setToggleHeading] = useState<boolean>(false);
 
-  const isActiveHeading =
-    editor.isActive('heading', { level: 1 }) ||
-    editor.isActive('heading', { level: 2 }) ||
-    editor.isActive('heading', { level: 3 }) ||
-    editor.isActive('heading', { level: 4 }) ||
-    editor.isActive('heading', { level: 5 }) ||
-    editor.isActive('heading', { level: 6 });
+  const isActiveHeading = Array(6)
+    .fill(1)
+    .some((_, index) => editor.isActive('heading', { level: index + 1 }));
 
   return (
     <div
