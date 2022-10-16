@@ -9,16 +9,6 @@ const tagSchema = new mongoose.Schema({
 
 const postSchema = new mongoose.Schema(
 	{
-		// titleInside: {
-		// 	type: String,
-		// 	required: true,
-		// 	unique: true,
-		// },
-		// titleOutside: {
-		// 	type: String,
-		// 	required: true,
-		// 	unique: true,
-		// },
 		title: { type: String, required: true, unique: true },
 		content: {
 			type: String,
