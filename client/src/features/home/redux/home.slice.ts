@@ -62,14 +62,15 @@ const homeSlice = createSlice({
     },
     [getPostsHome.fulfilled.type]: (state, action) => {
       state.isLoadingPostsTrending = false;
-      switch (action.payload.list.slug) {
+
+      switch (action.payload?.list.slug) {
         case TYPE_POST.LIFE:
-          state.postsTrending = action.payload.list;
+          state.postsTrending = action.payload?.list;
           break;
         case TYPE_POST.NATURE:
         case TYPE_POST.ANIMAL:
         case TYPE_POST.SPORT:
-          state.postsStyle = action.payload.list;
+          state.postsStyle = action.payload?.list;
           break;
         default:
           break;

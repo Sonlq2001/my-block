@@ -23,7 +23,9 @@ const TrendingPosts = () => {
     })
   );
   useEffect(() => {
-    dispatch(getPostsHome({ params: { type: TYPE_POST.LIFE } }));
+    dispatch(
+      getPostsHome({ params: { type: TYPE_POST.LIFE, page: 1, per_page: 4 } })
+    );
   }, [dispatch]);
 
   const { postTrendingItem, listPost } = useMemo(
@@ -63,7 +65,7 @@ const TrendingPosts = () => {
                         state: postTrendingItem?._id,
                       }}
                     >
-                      {postTrendingItem?.titleInside}
+                      {postTrendingItem?.title}
                     </Link>
                   </h3>
                   <p className={styles.postDes}>
@@ -71,8 +73,9 @@ const TrendingPosts = () => {
                   </p>
 
                   <PostCardAuth
-                    auth="sonel"
+                    auth={postTrendingItem?.authPost.name}
                     time={moment(postTrendingItem?.createdAt).fromNow()}
+                    avatar={postTrendingItem?.authPost.avatar}
                   />
                 </div>
 

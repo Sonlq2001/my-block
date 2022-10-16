@@ -12,7 +12,7 @@ import { PostType } from './../../types/new-post.types';
 import LoadingCircle from 'components/loading/LoadingCircle/LoadingCircle';
 
 import { useAppDispatch, useAppSelector } from 'redux/store';
-import { getTopics, getCategories } from 'features/master-data/master-data';
+import { getTopics } from 'features/master-data/master-data';
 
 interface PopupPostProps {
   setPublish: (publish: boolean) => void;
@@ -63,7 +63,7 @@ const PopupPost: React.FC<PopupPostProps> = ({
   };
 
   useEffect(() => {
-    Promise.all([dispatch(getTopics()), dispatch(getCategories())]);
+    Promise.all([dispatch(getTopics())]);
   }, [dispatch]);
 
   useEffect(() => {
@@ -74,7 +74,6 @@ const PopupPost: React.FC<PopupPostProps> = ({
 
   const { topics } = useAppSelector((state) => ({
     topics: state.masterData.topics,
-    categories: state.masterData.categories,
   }));
 
   return (

@@ -25,6 +25,10 @@ const NewPostScreen = () => {
   const { _id } = useDataToken();
 
   const handleSubmitForm = async (values: PostType) => {
+    if (!_id) {
+      return;
+    }
+
     setIsSubmit(true);
     dispatch(postArticle({ data: { ...values, authPost: _id } }))
       .then(unwrapResult)

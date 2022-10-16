@@ -4,25 +4,26 @@ import { Link } from 'react-router-dom';
 
 import styles from './Button.module.scss';
 
-interface ButtonProps {
-  title: string;
-  onClick?: () => void;
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   to?: string;
   disabled?: boolean;
+  children: React.ReactNode;
 }
 
 const Button: React.FC<ButtonProps> = ({
   to,
-  title,
   disabled = false,
+  children,
+  type = 'button',
   ...rest
 }) => {
   const btn = (
     <button
       className={clsx(styles.btnLogin, disabled && styles.btnDisabled)}
       {...rest}
+      type={type}
     >
-      {title}
+      {children}
     </button>
   );
 

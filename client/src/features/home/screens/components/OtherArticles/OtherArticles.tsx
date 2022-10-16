@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
-import TitleMain from "components/atoms/TitleMain/TitleMain";
-import Button from "components/atoms/Button/Button";
-import OtherArticlesItem from "components/atoms/OtherArticlesItem/OtherArticlesItem";
-import { ReactComponent as IconCircle } from "assets/images/icon-circle.svg";
-import styles from "./OtherArticles.module.scss";
-import { data } from "features/home/constants/thumy-data";
+import TitleMain from 'components/atoms/TitleMain/TitleMain';
+import Button from 'components/atoms/Button/Button';
+import OtherArticlesItem from 'components/atoms/OtherArticlesItem/OtherArticlesItem';
+import { ReactComponent as IconCircle } from 'assets/images/icon-circle.svg';
+import styles from './OtherArticles.module.scss';
+import { data } from 'features/home/constants/thumy-data';
 
 const OtherArticles: React.FC = () => {
   return (
@@ -20,7 +20,7 @@ const OtherArticles: React.FC = () => {
         </div>
 
         <div className={styles.otherArticlesBtn}>
-          <Button title="Show me more" />
+          <Button>Show me more</Button>
         </div>
       </div>
     </div>

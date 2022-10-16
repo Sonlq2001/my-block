@@ -9,12 +9,11 @@ import ChipTag from 'components/atoms/ChipTag/ChipTag';
 import ChipInfo from 'components/atoms/ChipInfo/ChipInfo';
 import styles from './ExploreItem.module.scss';
 import { PostPathsEnum } from 'features/post/post';
-import { TopicType } from 'features/master-data/master-data';
 
 interface ExploreItemProps {
   _id: string;
-  avatar: any;
-  topic: TopicType;
+  avatar: { idImg: string; img: string };
+  topics: { _id: string; name: string }[];
   totalComment: number;
   slug: string;
 }
@@ -22,7 +21,7 @@ interface ExploreItemProps {
 const ExploreItem: React.FC<ExploreItemProps> = ({
   _id,
   avatar,
-  topic,
+  topics,
   totalComment,
   slug,
 }) => {
@@ -35,13 +34,15 @@ const ExploreItem: React.FC<ExploreItemProps> = ({
       className={clsx(styles.itemExplore)}
     >
       <div className={styles.itemExploreImg}>
-        <img src={avatar.img} alt="" />
+        <img src={avatar.img} alt={avatar.img} />
       </div>
 
       <div className={styles.itemInfo}>
         <div className={styles.itemInfoGroup}>
           <div className={styles.itemInfoCate}>
-            <ChipTag title={topic.name} />
+            {topics.map((topic) => (
+              <ChipTag title={topic.name} key={topic._id} />
+            ))}
           </div>
           <ChipInfo total="10" icon={<IconHeart />} />
           <ChipInfo total={totalComment} icon={<IconChat />} />
