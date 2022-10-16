@@ -189,9 +189,10 @@ const ProfileScreen = () => {
           <div className={styles.groupBtn}>
             <Button
               disabled={postsUser.length === totalPostUser}
-              title="Xem thêm"
               onClick={handleShowMore}
-            />
+            >
+              Xem thêm
+            </Button>
           </div>
         </div>
       </div>

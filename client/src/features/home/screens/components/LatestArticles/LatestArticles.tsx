@@ -1,14 +1,14 @@
 import React, { useRef, useEffect } from 'react';
 
 import TitleMain from 'components/atoms/TitleMain/TitleMain';
-import LatestArticlesCarouselItem from 'components/atoms/LatestArticlesCarouselItem/LatestArticlesCarouselItem';
+// import LatestArticlesCarouselItem from 'components/atoms/LatestArticlesCarouselItem/LatestArticlesCarouselItem';
 import NavigationCarousel from 'components/atoms/NavigationCarousel/NavigationCarousel';
 import { ReactComponent as IconHappy } from 'assets/images/icon-happy.svg';
 import styles from './LatestArticles.module.scss';
-import LoadingNewest from 'components/loading/LoadingNewest/LoadingNewest';
+// import LoadingNewest from 'components/loading/LoadingNewest/LoadingNewest';
 
-import { getPostsNewest } from 'features/home/home';
-import { useAppDispatch, useAppSelector } from 'redux/store';
+// import { getPostsNewest } from 'features/home/home';
+import { useAppDispatch } from 'redux/store';
 
 const LatestArticles: React.FC = () => {
   const carouselApp = useRef<any>(null);
@@ -31,13 +31,13 @@ const LatestArticles: React.FC = () => {
   };
 
   useEffect(() => {
-    dispatch(getPostsNewest());
+    // dispatch(getPostsNewest());
   }, [dispatch]);
 
-  const { postsNewest, isLoadingPostsNewest } = useAppSelector((state) => ({
-    postsNewest: state.home.postsNewest,
-    isLoadingPostsNewest: state.home.isLoadingPostsNewest,
-  }));
+  // const { postsNewest, isLoadingPostsNewest } = useAppSelector((state) => ({
+  //   postsNewest: state.home.postsNewest,
+  //   isLoadingPostsNewest: state.home.isLoadingPostsNewest,
+  // }));
 
   return (
     <div className="container">
@@ -53,12 +53,12 @@ const LatestArticles: React.FC = () => {
         </div>
 
         <div className={styles.carouselGroup} ref={carouselApp}>
-          {isLoadingPostsNewest && <LoadingNewest />}
+          {/* {isLoadingPostsNewest && <LoadingNewest />}
           {!isLoadingPostsNewest &&
             postsNewest.length > 0 &&
-            postsNewest.map((post) => {
-              return <LatestArticlesCarouselItem key={post._id} post={post} />;
-            })}
+            postsNewest.map((post) => { */}
+          {/* <LatestArticlesCarouselItem  />; */}
+          {/* })} */}
         </div>
       </div>
     </div>

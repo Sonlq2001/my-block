@@ -29,7 +29,7 @@ const InputMessage: React.FC<InputMessageProps> = ({ recipientId }) => {
   };
 
   const handleCallSubmit = async () => {
-    if (!contentChat.trim()) {
+    if (!contentChat.trim() || !_id) {
       return;
     }
     const resMsg = await dispatch(

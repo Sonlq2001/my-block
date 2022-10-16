@@ -24,7 +24,7 @@ const PostItemProfile: React.FC<PostItemProfileProps> = ({ post }) => {
           <div className={styles.postAuth}>
             <PostCardAuth auth={post.authPost.name} />
           </div>
-          <h3 className={styles.postTitle}>{post.titleOutside}</h3>
+          <h3 className={styles.postTitle}>{post.title}</h3>
         </div>
         <div className={styles.postFooter}>
           <ChipInfo total="10" icon={<IconHeart />} />

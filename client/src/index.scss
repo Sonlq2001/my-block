@@ -10,6 +10,7 @@ html {
   font-size: 62.5%;
   font-family: 'Poppins', sans-serif;
   line-height: 1.5rem;
+  color: $text-color;
 }
 
 .container {
@@ -44,6 +45,7 @@ button {
   cursor: pointer;
   background-color: transparent;
   user-select: none;
+  font-family: 'Poppins', sans-serif;
 }
 
 img {
@@ -69,6 +71,7 @@ input:-webkit-autofill:active {
 }
 
 @import './styles/common.module';
+@import './styles/resetRickEditor';
 
 .header {
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;

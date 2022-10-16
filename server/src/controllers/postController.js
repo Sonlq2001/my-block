@@ -7,10 +7,8 @@ import { ApiFeatures, pagination } from "../helpers/features.helpers";
 export const createPost = async (req, res) => {
 	try {
 		const post = new Post(req.body);
-		const resPost = await post.save();
-		return res
-			.status(200)
-			.json({ msg: "Đăng bài viết thành công !", post: resPost });
+		const postSaved = await post.save();
+		return res.status(200).json({ post: postSaved });
 	} catch (err) {
 		return res.status(500).json({ msg: err.message });
 	}
@@ -63,6 +61,7 @@ export const getPosts = async (req, res) => {
 	}
 };
 
+// [GET] - [/post/:slug]
 export const getPost = async (req, res) => {
 	try {
 		const { slug } = req.params;
@@ -77,13 +76,12 @@ export const getPost = async (req, res) => {
 			{
 				$lookup: {
 					from: "topics",
-					localField: "topic",
+					localField: "topics",
 					foreignField: "_id",
-					as: "topic",
+					as: "topics",
 				},
 			},
-			// array -> object
-			{ $unwind: "$topic" },
+
 			// auth post
 			{
 				$lookup: {
@@ -231,27 +229,25 @@ export const getPostNewest = async (req, res) => {
 export const getPostExplore = async (req, res) => {
 	try {
 		const { skip, perPage } = pagination(req);
+
 		const resData = await Post.aggregate([
 			{
 				$facet: {
 					posts: [
 						{
 							$match: {
-								$or: [
-									{ titleInside: { $regex: req.query.q } },
-									{ titleOutside: { $regex: req.query.q } },
-								],
+								title: { $regex: req.query.q },
 							},
 						},
 						{
 							$lookup: {
 								from: "topics",
-								localField: "topic",
+								localField: "topics",
 								foreignField: "_id",
-								as: "topic",
+								as: "topics",
 							},
 						},
-						{ $unwind: "$topic" },
+						// { $unwind: "$topic" },
 						{
 							$lookup: {
 								from: "comments",
@@ -265,7 +261,8 @@ export const getPostExplore = async (req, res) => {
 						{
 							$project: {
 								avatar: 1,
-								topic: 1,
+								"topics._id": 1,
+								"topics.name": 1,
 								totalComment: 1,
 								createdAt: 1,
 								updatedAt: 1,
@@ -281,10 +278,7 @@ export const getPostExplore = async (req, res) => {
 					totalCount: [
 						{
 							$match: {
-								$or: [
-									{ titleInside: { $regex: req.query.q } },
-									{ titleOutside: { $regex: req.query.q } },
-								],
+								title: { $regex: req.query.q },
 							},
 						},
 						{ $count: "count" },
@@ -300,69 +294,46 @@ export const getPostExplore = async (req, res) => {
 	}
 };
 
-// [/] use in home page
+// [GET] - [/posts-type]
 export const getPostsType = async (req, res) => {
 	try {
 		const { type } = req.query;
+		const { skip, perPage } = pagination(req);
 
-		const topicId = await Topic.findOne({ slug: type });
+		const topic = await Topic.findOne({ slug: type }).select({
+			createdAt: 0,
+			updatedAt: 0,
+			__v: 0,
+		});
 
-		if (!topicId) {
+		if (!topic) {
 			return res.status(400).json({ message: "Not Found topic" });
 		}
 
-		const list = await Post.aggregate([
-			{ $match: { topic: mongoose.Types.ObjectId(topicId._id) } },
-			{
-				$lookup: {
-					from: "topics",
-					localField: "topic",
-					foreignField: "_id",
-					as: "topic",
-				},
-			},
-			{ $unwind: "$topic" },
-			{
-				$lookup: {
-					from: "users",
-					localField: "authPost",
-					foreignField: "_id",
-					as: "authPost",
-				},
-			},
-			{ $unwind: "$authPost" },
-			{
-				$group: {
-					_id: "$topic._id",
-					topic: { $first: "$topic.name" },
-					slug: { $first: "$topic.slug" },
-					description: { $first: "$topic.description" },
-					data: { $push: "$$ROOT" },
-					count: { $sum: 1 },
-				},
-			},
-			{
-				$project: {
-					_id: 1,
-					topic: 1,
-					slug: 1,
-					description: 1,
-					"data.authPost.name": 1,
-					"data.authPost.avatar": 1,
-					"data.topic.name": 1,
-					"data.slug": 1,
-					"data.view": 1,
-					"data.createdAt": 1,
-					"data.updatedAt": 1,
-					"data.avatar": 1,
-					"data._id": 1,
-					"data.description": 1,
-					"data.titleInside": 1,
-				},
-			},
-		]);
+		const listPost = await Post.find({ topics: topic._id })
+			.populate({
+				path: "topics",
+				select: "name",
+			})
+			.populate({
+				path: "authPost",
+				select: "name avatar",
+			})
+			.skip(skip)
+			.limit(perPage)
+			.sort({ createdAt: -1 });
 
-		return res.status(200).json({ list: list[0] || {} });
+		const total = await Post.count({ topics: topic._id });
+
+		return res.status(200).json({
+			list: {
+				...topic._doc,
+				name: undefined,
+				topic: topic.name,
+				data: listPost,
+				total,
+			},
+		});
 	} catch (error) {
 		return res.status(500).json({ message: error.message });
 	}

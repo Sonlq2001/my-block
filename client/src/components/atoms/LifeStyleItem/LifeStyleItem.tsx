@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import styles from './LifeStyleItem.module.scss';
 import ChipInfo from 'components/atoms/ChipInfo/ChipInfo';
@@ -9,6 +10,7 @@ import { ReactComponent as IconChat } from 'assets/images/icon-chat.svg';
 import { ReactComponent as IconDownload } from 'assets/images/icon-download.svg';
 
 import { PostHomeTypeDef } from 'features/new-post/new-post';
+import { PostPathsEnum } from 'features/post/post';
 interface LifeStyleItemProps {
   post: PostHomeTypeDef;
 }
@@ -16,16 +18,23 @@ interface LifeStyleItemProps {
 const LifeStyleItem: React.FC<LifeStyleItemProps> = ({ post }) => {
   return (
     <div className={styles.lifeStyleItem}>
-      <a href="/">
+      <Link
+        to={{
+          pathname: PostPathsEnum.POST.replace(/:slug/, post.slug),
+          state: post._id,
+        }}
+      >
         <div className={styles.itemHeader}>
           <img src={post.avatar.img} alt="" />
         </div>
 
         <div className={styles.itemBody}>
           <div>
-            <ChipTag title={post.topic.name} />
+            {post.topics.map((topic) => (
+              <ChipTag title={topic.name} key={topic._id} />
+            ))}
           </div>
-          <h3 className={styles.itemBodyTitle}>{post.titleInside}</h3>
+          <h3 className={styles.itemBodyTitle}>{post.title}</h3>
           <p className={styles.itemBodyDes}>{post.description}</p>
         </div>
 
@@ -40,7 +49,7 @@ const LifeStyleItem: React.FC<LifeStyleItemProps> = ({ post }) => {
             <ChipInfo icon={<IconDownload />} download />
           </div>
         </div>
-      </a>
+      </Link>
     </div>
   );
 };

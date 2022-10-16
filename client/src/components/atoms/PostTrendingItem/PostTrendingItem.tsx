@@ -23,7 +23,7 @@ const PostTrendingItem: React.FC<PostTrendingItemProps> = ({ post }) => {
                 state: post._id,
               }}
             >
-              {post.titleOutside}
+              {post.title}
             </Link>
           </div>
           <p className={styles.postDes}>{post.description}</p>

@@ -13,25 +13,27 @@ import { TopicType } from 'features/master-data/master-data';
 import { ProfilePathsEnum } from 'features/profile/profile';
 
 interface PostContentHeaderProps {
-  titleInside: string;
+  title: string;
   authPost: UserItem;
-  topic: TopicType;
+  topics: TopicType[];
   totalComment: number;
   view: number;
 }
 
 const PostContentHeader: React.FC<PostContentHeaderProps> = ({
-  titleInside,
+  title,
   authPost,
-  topic,
+  topics,
   totalComment,
   view,
 }) => {
   return (
     <div className={styles.postContentHeader}>
-      {topic && <ChipTag title={topic.name} />}
+      {topics?.map((topic) => (
+        <ChipTag title={topic.name} key={topic._id} />
+      ))}
 
-      <h1 className={styles.postTitle}>{titleInside}</h1>
+      <h1 className={styles.postTitle}>{title}</h1>
 
       <div className={styles.postInfo}>
         <div className={styles.postInfoGroup}>

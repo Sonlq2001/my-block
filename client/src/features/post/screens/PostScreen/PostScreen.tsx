@@ -111,6 +111,9 @@ const PostScreen = () => {
   };
 
   useEffect(() => {
+    if (idTime.current) {
+      clearInterval(idTime.current);
+    }
     idTime.current = setInterval(() => {
       setTimeView((pre) => pre + 1);
     }, 1000);
@@ -159,13 +162,19 @@ const PostScreen = () => {
             <div className={styles.rowPost}>
               <div className={styles.rowPostLeft}>
                 {postItem?.content && (
-                  <div dangerouslySetInnerHTML={{ __html: postItem.content }} />
+                  <div
+                    className="content-post"
+                    dangerouslySetInnerHTML={{ __html: postItem.content }}
+                  />
                 )}
 
                 <div className={styles.rowPostFooter}>
                   <div className={styles.rowPostTags}>
-                    {postItem?.tags.map((tag) => (
-                      <SidebarItemTag tag={`#${tag}`} key={tag} />
+                    {postItem?.tags.map((tagItem) => (
+                      <SidebarItemTag
+                        tag={`#${tagItem.tag}`}
+                        key={tagItem._id}
+                      />
                     ))}
                   </div>
 

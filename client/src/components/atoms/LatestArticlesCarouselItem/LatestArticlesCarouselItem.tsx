@@ -17,6 +17,7 @@ interface LatestArticlesCarouselItemProps {
 const LatestArticlesCarouselItem: React.FC<LatestArticlesCarouselItemProps> = ({
   post,
 }) => {
+  console.log(post);
   return (
     <div className={styles.carouselItem}>
       <Link
@@ -31,10 +32,10 @@ const LatestArticlesCarouselItem: React.FC<LatestArticlesCarouselItemProps> = ({
 
         <div className={styles.carouselBody}>
           <div className={styles.cateGroup}>
-            <ChipTag title={post.topic.name} />
+            <ChipTag title={post.topic.toString()} />
             <ChipTag title="Dev" />
           </div>
-          <h4>{post.titleOutside}</h4>
+          <h4>{post.title}</h4>
 
           <div className={styles.authPost}>
             <PostCardAuth

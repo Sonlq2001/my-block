@@ -1,0 +1,96 @@
+@import 'styles/variables';
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.2);
+  .modalContent {
+    overflow: hidden;
+    width: 127.8rem;
+    max-width: calc(100% - 32px);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: $white-color;
+    border-radius: 1.5rem;
+    transition: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .modalMedium,
+  .modalSmall {
+    max-width: 768px;
+    width: 100%;
+  }
+  .modalSmall {
+    max-width: 60rem;
+  }
+}
+.modalHeader {
+  padding: 20px 24px;
+  text-align: center;
+  position: relative;
+  border-bottom: 1px solid $gray2-color;
+  .modalClose {
+    position: absolute;
+    left: 2.4rem;
+    height: 2.2rem;
+    width: 2.2rem;
+    cursor: pointer;
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 3rem;
+      height: 3rem;
+      background-color: $gray1-color;
+      z-index: -1;
+      border-radius: 50%;
+      opacity: 0;
+    }
+    &:hover::after {
+      opacity: 1;
+    }
+  }
+  .modalTitle {
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+}
+.modalBody,
+.modalFooter {
+  padding: 20px 24px;
+}
+.modalFooter {
+  background-color: $gray1-color;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  .modalBtn {
+    padding: 8px 2rem;
+    border-radius: 2rem;
+    font-size: 1.6rem;
+  }
+  .modalBtn + .modalBtn {
+    margin-left: 2rem;
+  }
+  .modalBtnOK {
+    background: $blue-color;
+    color: $white-color;
+    &:hover {
+      background-color: $blue2-color;
+    }
+    &.disabled {
+      cursor: default;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+  }
+  .modalBtnCancel {
+    outline: 1px solid $gray3-color;
+  }
+}

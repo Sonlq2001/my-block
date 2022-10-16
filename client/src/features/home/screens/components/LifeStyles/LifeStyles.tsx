@@ -15,7 +15,9 @@ const LifeStyles: React.FC = () => {
   const [tabIndex, setTabIndex] = useState<string>(TYPE_POST.NATURE);
 
   useEffect(() => {
-    dispatch(getPostsHome({ params: { type: tabIndex } }));
+    dispatch(
+      getPostsHome({ params: { type: tabIndex, page: 1, per_page: 6 } })
+    );
   }, [dispatch, tabIndex]);
 
   const postsStyle = useAppSelector((state) => state.home?.postsStyle);

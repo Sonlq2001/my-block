@@ -4,16 +4,23 @@ import jwtDecode from 'jwt-decode';
 import { useAppSelector } from 'redux/store';
 import { AccessTokenType } from 'types/access-token.types';
 
-export const useDataToken = (token?: any) => {
-  const { accessToken } = useAppSelector((state) => ({
-    accessToken: state.auth.accessToken,
-  }));
-  try {
-    const dataToken =
-      (accessToken || token) &&
-      jwtDecode<AccessTokenType>(accessToken || token);
+export const useDataToken = (): {
+  name?: string;
+  email?: string;
+  _id?: string;
+  avatar?: string;
+} => {
+  const accessToken = useAppSelector((state) => state.auth.accessToken);
 
-    return dataToken;
+  if (!accessToken) {
+    return {};
+  }
+
+  try {
+    const { name, email, _id, avatar } =
+      jwtDecode<AccessTokenType>(accessToken);
+
+    return { name, email, _id, avatar };
   } catch (error) {
     return {};
   }

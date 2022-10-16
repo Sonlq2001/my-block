@@ -17,18 +17,21 @@ export interface PostType {
   categoryId?: string;
 }
 
-export interface PostItemType extends PostType {
+export interface PostItemType extends Omit<PostType, 'tags'> {
   _id: string;
   createdAt: string;
   updatedAt: string;
-  topic: TopicType;
+  topics: TopicType[];
   authPost: UserItem;
   totalComment: number;
   view: number;
   avatar: {
     img: string;
+    idImg: string;
   };
   slug: string;
+  title: string;
+  tags: { tag: string; _id: string }[];
 }
 
 export type PostHomeType = {
@@ -43,12 +46,11 @@ export type PostHomeTypeDef = {
   slug: string;
   createdAt: string;
   updatedAt: string;
-  topic: { name: string };
+  topics: { _id: string; name: string }[];
   view: number;
   avatar: { img: string; idImage: string };
   _id: string;
   description: string;
-  titleInside: string;
-  titleOutside?: string;
+  title: string;
   totalComment?: number;
 };

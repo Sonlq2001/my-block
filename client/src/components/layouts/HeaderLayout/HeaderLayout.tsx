@@ -139,7 +139,7 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({
             </div>
           </OutsideClickHandler>
         ) : (
-          <Button title="Login" to="/login" />
+          <Button to="/login">Login</Button>
         )}
       </div>
     </header>

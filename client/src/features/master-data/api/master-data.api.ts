@@ -8,10 +8,6 @@ const getTopicsApi = (): Promise<AxiosResponse> => {
   return api.get(MasterDataEndpointsEnum.GET_TOPICS);
 };
 
-const getCategoriesApi = (): Promise<AxiosResponse> => {
-  return api.get(MasterDataEndpointsEnum.GET_CATEGORIES);
-};
 export const topicApi = {
   getTopicsApi,
-  getCategoriesApi,
 };
