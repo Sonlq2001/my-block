@@ -9,6 +9,7 @@ import PostTrendingItem from 'components/atoms/PostTrendingItem/PostTrendingItem
 import PostCardAuth from 'components/atoms/PostCardAuth/PostCardAuth';
 import { PostPathsEnum } from 'features/post/post';
 import LoadingTrending from 'components/loading/LoadingTrending/LoadingTrending';
+import LazyImage from 'components/atoms/LazyImage/LazyImage';
 
 import { useAppDispatch, useAppSelector } from 'redux/store';
 import { getPostsHome } from 'features/home/home';
@@ -51,7 +52,7 @@ const TrendingPosts = () => {
             {listPostTrending && listPostTrending.data.length > 0 && (
               <div className={styles.postMain}>
                 <div className={styles.postHeader}>
-                  <img src={postTrendingItem?.avatar.img} alt="" />
+                  <LazyImage src={postTrendingItem?.avatar.img || ''} alt="" />
                 </div>
 
                 <div className={styles.postBody}>

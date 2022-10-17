@@ -1,4 +1,4 @@
-@import "styles/variables";
+@import 'styles/variables';
 
 .trendingGroup {
   display: flex;
@@ -10,20 +10,14 @@
     width: 50%;
 
     .postHeader {
-      position: relative;
-
       img {
         border-radius: 2.7rem;
-        position: absolute;
-        left: 0;
-        top: 0;
         width: 100%;
         height: 47.1rem;
       }
     }
 
     .postBody {
-      padding-top: 74.9%;
       margin-top: 3.6rem;
 
       .postTitle {

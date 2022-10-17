@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import styles from './LifeStyleItem.module.scss';
 import ChipInfo from 'components/atoms/ChipInfo/ChipInfo';
 import ChipTag from 'components/atoms/ChipTag/ChipTag';
+import LazyImage from 'components/atoms/LazyImage/LazyImage';
 
 import { ReactComponent as IconHeart } from 'assets/images/icon-heart.svg';
 import { ReactComponent as IconChat } from 'assets/images/icon-chat.svg';
@@ -25,7 +26,7 @@ const LifeStyleItem: React.FC<LifeStyleItemProps> = ({ post }) => {
         }}
       >
         <div className={styles.itemHeader}>
-          <img src={post.avatar.img} alt="" />
+          <LazyImage src={post.avatar.img} alt="" />
         </div>
 
         <div className={styles.itemBody}>
