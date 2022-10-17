@@ -11,6 +11,7 @@ import { NewPostPathsEnum } from 'features/new-post/new-post';
 import { authLogout } from 'features/auth/auth';
 import { ProfilePathsEnum } from 'features/profile/profile';
 import { ChatPathsEnum } from 'features/chat/chat';
+import LazyImage from 'components/atoms/LazyImage/LazyImage';
 
 import { useDataToken } from 'hooks/hooks';
 
@@ -45,7 +46,7 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({
     <header className={styles.headerGroup}>
       <div className={styles.headerLogo}>
         <Link to="/">
-          <img src={Logo} alt="logo" />
+          <LazyImage src={Logo} alt="logo" />
         </Link>
       </div>
 
@@ -97,7 +98,7 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({
                 onClick={() => setIsToggleUser(!isToggleUser)}
               >
                 {avatar && (
-                  <img src={avatar} alt="" className={styles.avatar} />
+                  <LazyImage src={avatar} alt="" className={styles.avatar} />
                 )}
               </button>
 

@@ -1,6 +1,7 @@
-import React from "react";
+import React from 'react';
 
-import styles from "./HotTopicCarouselItem.module.scss";
+import LazyImage from 'components/atoms/LazyImage/LazyImage';
+import styles from './HotTopicCarouselItem.module.scss';
 
 interface HotTopicCarouselItemProps {
   image: string;
@@ -12,7 +13,7 @@ const HotTopicCarouselItem: React.FC<HotTopicCarouselItemProps> = ({
   return (
     <div className={styles.carouselItem}>
       <div className={styles.carouselHeader}>
-        <img src={image} alt="" />
+        <LazyImage src={image} alt="" />
       </div>
 
       <div className={styles.carouselBody}>

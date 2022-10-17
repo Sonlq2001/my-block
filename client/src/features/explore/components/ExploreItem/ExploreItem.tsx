@@ -9,6 +9,7 @@ import ChipTag from 'components/atoms/ChipTag/ChipTag';
 import ChipInfo from 'components/atoms/ChipInfo/ChipInfo';
 import styles from './ExploreItem.module.scss';
 import { PostPathsEnum } from 'features/post/post';
+import LazyImage from 'components/atoms/LazyImage/LazyImage';
 
 interface ExploreItemProps {
   _id: string;
@@ -34,7 +35,7 @@ const ExploreItem: React.FC<ExploreItemProps> = ({
       className={clsx(styles.itemExplore)}
     >
       <div className={styles.itemExploreImg}>
-        <img src={avatar.img} alt={avatar.img} />
+        <LazyImage src={avatar.img} alt={avatar.img} />
       </div>
 
       <div className={styles.itemInfo}>
