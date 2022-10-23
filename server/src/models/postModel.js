@@ -14,7 +14,7 @@ const postSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
-		description: {
+		excerpt: {
 			type: String,
 		},
 		avatar: {
@@ -33,6 +33,13 @@ const postSchema = new mongoose.Schema(
 			default: 0,
 		},
 		slug: { type: String, slug: "title", unique: true },
+		format: {
+			type: Number,
+			default: 1, // format standard
+		},
+		videoUrl: {
+			type: String,
+		},
 	},
 	{ timestamps: true }
 );

@@ -45,13 +45,15 @@ const FormTags: React.FC<FormTagsProps> = ({ name }) => {
         value={tag}
         onChange={(e) => setTag(e.target.value)}
         onKeyDown={(e) => {
-          if (e.keyCode === 13 && tag) {
+          if (e.keyCode === 13) {
             e.preventDefault();
-            setListTag([
-              ...listTag,
-              { tag, idTag: Math.random().toString(36).substr(2, 9) },
-            ]);
-            setTag('');
+            if (tag) {
+              setListTag([
+                ...listTag,
+                { tag, idTag: Math.random().toString(36).substr(2, 9) },
+              ]);
+              setTag('');
+            }
           }
         }}
         name={name}

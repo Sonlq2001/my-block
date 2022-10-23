@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { Formik, Form } from 'formik';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useHistory } from 'react-router-dom';
+import OutsideClickHandler from 'react-outside-click-handler';
 
 import styles from './NewPostScreen.module.scss';
 
 import { ReactComponent as IconV } from 'assets/images/icon-v.svg';
+import { ReactComponent as IconSetting } from 'assets/images/icon-editor/icon-setting.svg';
 import ContentEditable from 'components/atoms/ContentEditableTag/ContentEditableTag';
 import Modal from 'components/atoms/Modal/Modal';
 import FormTags from './../components/FormTags/FormTags';
@@ -15,6 +17,7 @@ import BoxSelectImage from '../components/BoxSelectImage/BoxSelectImage';
 import { initForm } from '../helpers/new-post.helpers';
 import Button from 'components/atoms/Button/Button';
 import { TypeInitForm, PostBody } from '../types/new-post.types';
+import SettingPost from '../components/SettingPost/SettingPost';
 
 import { useAppDispatch } from 'redux/store';
 import { upLoadImage } from 'helpers/uploadImage';
@@ -25,6 +28,7 @@ import { PostPathsEnum } from 'features/post/post';
 
 const NewPostScreen = () => {
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
+  const [isShowModalSetting, setIsShowModalSetting] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const history = useHistory();
 
@@ -105,6 +109,26 @@ const NewPostScreen = () => {
                   <div className={styles.boxBtnSubmit}>
                     <div className={styles.boxContentBtn}>
                       <Button type="submit">Xuất bản</Button>
+
+                      <div className={styles.wrapSettingPost}>
+                        <button
+                          type="button"
+                          className={styles.btnSetting}
+                          onClick={() => setIsShowModalSetting(true)}
+                        >
+                          <IconSetting className={styles.iconSetting} />
+                        </button>
+
+                        {isShowModalSetting && (
+                          <OutsideClickHandler
+                            onOutsideClick={() => setIsShowModalSetting(false)}
+                          >
+                            <SettingPost
+                              setIsShowModalSetting={setIsShowModalSetting}
+                            />
+                          </OutsideClickHandler>
+                        )}
+                      </div>
                     </div>
                   </div>
 
