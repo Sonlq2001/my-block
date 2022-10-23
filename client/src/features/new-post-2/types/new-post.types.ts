@@ -4,6 +4,10 @@ export type TypeInitForm = {
   tags: string[];
   topics: string[];
   content: string;
+  excerpt?: string;
+  format?: number;
+  allowComment: boolean;
+  videoUrl?: string;
 };
 
 export interface PostBody extends Omit<TypeInitForm, 'avatar'> {

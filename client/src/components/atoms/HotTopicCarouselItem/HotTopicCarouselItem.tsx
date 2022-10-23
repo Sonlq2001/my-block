@@ -5,10 +5,12 @@ import styles from './HotTopicCarouselItem.module.scss';
 
 interface HotTopicCarouselItemProps {
   image: string;
+  topic: string;
 }
 
 const HotTopicCarouselItem: React.FC<HotTopicCarouselItemProps> = ({
   image,
+  topic,
 }) => {
   return (
     <div className={styles.carouselItem}>
@@ -17,7 +19,7 @@ const HotTopicCarouselItem: React.FC<HotTopicCarouselItemProps> = ({
       </div>
 
       <div className={styles.carouselBody}>
-        <div className={styles.carouselTitle}>Photos</div>
+        <div className={styles.carouselTitle}>{topic}</div>
         <div className={styles.carouselDes}>17 articles</div>
       </div>
     </div>

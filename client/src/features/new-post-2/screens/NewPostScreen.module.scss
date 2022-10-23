@@ -69,9 +69,32 @@
 // boxBtnSubmit
 .boxBtnSubmit {
   border-top: 1px solid $gray2-color;
+  .boxContentBtn {
+    padding: 32px 0;
+    max-width: 768px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+  }
 }
-.boxContentBtn {
-  padding: 32px 0;
-  max-width: 768px;
-  margin: 0 auto;
+
+// wrap setting post
+.wrapSettingPost {
+  position: relative;
+  .btnSetting {
+    width: 48px;
+    height: 48px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid $gray2-color;
+    margin-left: 1rem;
+    &:hover {
+      background-color: #f3f4f6;
+    }
+    .iconSetting {
+      width: 24px;
+    }
+  }
 }

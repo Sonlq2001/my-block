@@ -48,3 +48,19 @@ export enum TAB_SET_IMAGE {
   LINK = 1,
   FILE = 2,
 }
+
+export const FORMAT_POST = [
+  {
+    id: 1,
+    label: 'Tiêu chuẩn',
+  },
+  {
+    id: 2,
+    label: 'Video',
+  },
+];
+
+export enum FORMAT_POST_ID {
+  STANDARD = 1,
+  VIDEO = 2,
+}

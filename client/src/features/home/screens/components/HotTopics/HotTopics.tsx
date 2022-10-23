@@ -1,12 +1,15 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import TitleMain from 'components/atoms/TitleMain/TitleMain';
 import NavigationCarousel from 'components/atoms/NavigationCarousel/NavigationCarousel';
 import styles from './HotTopics.module.scss';
 import HotTopicCarouselItem from 'components/atoms/HotTopicCarouselItem/HotTopicCarouselItem';
-import { data } from 'features/home/constants/thumy-data';
+
+import { useAppSelector, useAppDispatch } from 'redux/store';
+import { getTopics } from 'features/master-data/master-data';
 
 const HotTopics: React.FC = () => {
+  const dispatch = useAppDispatch();
   const carouselApp = useRef<HTMLDivElement>(null);
 
   const handleNext = () => {
@@ -29,6 +32,12 @@ const HotTopics: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    dispatch(getTopics());
+  }, [dispatch]);
+
+  const topics = useAppSelector((state) => state.masterData.topics);
+
   return (
     <div className={styles.hotTopicsBg}>
       <div className="container">
@@ -47,9 +56,14 @@ const HotTopics: React.FC = () => {
 
           <div className={styles.carouselHotTopic}>
             <div className={styles.carouselGroup} ref={carouselApp}>
-              {data.map((item) => (
-                <HotTopicCarouselItem key={item.id} image={item.img} />
-              ))}
+              {topics &&
+                topics.map((item) => (
+                  <HotTopicCarouselItem
+                    key={item._id}
+                    image="https://ncmaz.chisnghiax.com/wp-content/uploads/2021/09/pexels-photo-1705264-1-768x512.jpeg"
+                    topic={item.name}
+                  />
+                ))}
             </div>
           </div>
         </div>
