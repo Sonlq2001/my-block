@@ -1,0 +1,43 @@
+@import 'styles/variables';
+
+.wrapVideoPost {
+  margin-top: 10rem;
+}
+.contentVideo {
+  margin-top: 11rem;
+  display: flex;
+  position: relative;
+  .bgDeco {
+    position: absolute;
+    height: 71.7rem;
+    background-color: #f3f5ff;
+    max-width: 61rem;
+    width: 100%;
+    z-index: -1;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    border-radius: 4rem;
+  }
+  .videoMain {
+    width: 99rem;
+    height: 585px;
+    border-radius: 5rem;
+    overflow: hidden;
+    border: 10px solid $white-color;
+  }
+
+  // videoSlide
+  .videoSlide {
+    margin-left: 2.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+  }
+  .videoItem {
+    width: 16rem;
+    height: 13.3rem;
+    border-radius: 2.5rem;
+    overflow: hidden;
+  }
+}

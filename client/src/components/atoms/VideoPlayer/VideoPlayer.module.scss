@@ -1,0 +1,106 @@
+@import 'styles/variables';
+
+.wrapVideo {
+  position: relative;
+  height: 100%;
+  background-color: $post-header-color;
+}
+.videoPlayer {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  pointer-events: none;
+  iframe {
+    width: 300%;
+    height: 100%;
+    margin-left: -100%;
+  }
+}
+.videoControls {
+  position: absolute;
+  z-index: 10;
+  left: 2rem;
+  right: 2rem;
+  bottom: 20px;
+  height: 7rem;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 3rem;
+  display: flex;
+  align-items: center;
+  padding: 0 3rem;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+  // player video
+  .playVideo {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 13px solid $white-color;
+    border-radius: 3px;
+  }
+  .pauseVideo {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-right: 3px;
+    div {
+      width: 3px;
+      height: 13px;
+      background-color: $white-color;
+      border-radius: 1px;
+    }
+    div + div {
+      margin-left: 5px;
+    }
+  }
+
+  // input range
+  .inputRange {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 2px;
+    background: rgb(173, 173, 173);
+    border-radius: 10px;
+    cursor: pointer;
+    /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 6px;
+      height: 6px;
+      background: $white-color;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    &::-moz-range-thumb {
+      width: 6px;
+      height: 6px;
+      background: $white-color;
+      cursor: pointer;
+    }
+    &:hover {
+      background: rgb(215, 215, 215);
+    }
+  }
+
+  // sound video
+  .soundVideo {
+    display: flex;
+    align-items: center;
+    margin: 0 2rem;
+  }
+  .cloudSpeakerVideo {
+    line-height: 0;
+    svg {
+      fill: $white-color;
+      width: 19px;
+      height: 19px;
+    }
+  }
+  .volumeVideo {
+    margin: 0 1rem;
+    width: 8rem;
+  }
+}

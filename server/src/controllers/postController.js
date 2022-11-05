@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
-
 import Post from "./../models/postModel";
 import Topic from "./../models/topicModel";
+
 import { ApiFeatures, pagination } from "../helpers/features.helpers";
+import { FORMAT_POST } from "../constants/post.constants";
 
 export const createPost = async (req, res) => {
 	try {
@@ -310,7 +310,10 @@ export const getPostsType = async (req, res) => {
 			return res.status(400).json({ message: "Not Found topic" });
 		}
 
-		const listPost = await Post.find({ topics: topic._id })
+		const listPost = await Post.find({
+			topics: topic._id,
+			format: FORMAT_POST.STANDARD,
+		})
 			.populate({
 				path: "topics",
 				select: "name",
@@ -334,6 +337,17 @@ export const getPostsType = async (req, res) => {
 				total,
 			},
 		});
+	} catch (error) {
+		return res.status(500).json({ message: error.message });
+	}
+};
+
+export const getPostsVideo = async (req, res) => {
+	try {
+		const listVideo = await Post.find({ format: FORMAT_POST.VIDEO }).sort({
+			createdAt: -1,
+		});
+		return res.status(200).json({ list: listVideo });
 	} catch (error) {
 		return res.status(500).json({ message: error.message });
 	}
