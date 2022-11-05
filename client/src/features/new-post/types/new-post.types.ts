@@ -53,4 +53,5 @@ export type PostHomeTypeDef = {
   description: string;
   title: string;
   totalComment?: number;
+  videoUrl?: string;
 };

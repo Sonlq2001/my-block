@@ -1,13 +1,14 @@
-import { memo } from "react";
+import { memo } from 'react';
 
-import TrendingPosts from "./components/TrendingPosts/TrendingPosts";
-import HotTopics from "./components/HotTopics/HotTopics";
-import LifeStyles from "./components/LifeStyles/LifeStyles";
-import Newsletter from "./components/Newsletter/Newsletter";
-import LatestArticles from "./components/LatestArticles/LatestArticles";
-import OtherArticles from "./components/OtherArticles/OtherArticles";
+import TrendingPosts from './components/TrendingPosts/TrendingPosts';
+import HotTopics from './components/HotTopics/HotTopics';
+import LifeStyles from './components/LifeStyles/LifeStyles';
+import Newsletter from './components/Newsletter/Newsletter';
+import LatestArticles from './components/LatestArticles/LatestArticles';
+import OtherArticles from './components/OtherArticles/OtherArticles';
+import VideoPost from '../components/VideoPost/VideoPost';
 
-import styles from "./HomeScreen.module.scss";
+import styles from './HomeScreen.module.scss';
 
 const HomeScreen = () => {
   return (
@@ -17,6 +18,8 @@ const HomeScreen = () => {
       <HotTopics />
 
       <LifeStyles />
+
+      <VideoPost />
 
       <Newsletter />
 

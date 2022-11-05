@@ -1,7 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { homeApi } from './../api/home.api';
-import { PostItemType, PostHomeType } from 'features/new-post/new-post';
+import {
+  PostItemType,
+  PostHomeType,
+  PostHomeTypeDef,
+} from 'features/new-post/new-post';
 import { ParamsHomePost } from '../types/home.types';
 import { TYPE_POST } from '../constants/home.constants';
 
@@ -25,6 +29,16 @@ export const getPostsNewest = createAsyncThunk(
   }
 );
 
+export const getPostsVideo = createAsyncThunk(
+  'home/getPostsVideo',
+  async () => {
+    try {
+      const res = await homeApi.getPostsVideoApi();
+      return res.data;
+    } catch (error) {}
+  }
+);
+
 interface HomeSlice {
   // post trending
   postsTrending: PostHomeType | null;
@@ -36,6 +50,8 @@ interface HomeSlice {
 
   // post styles
   postsStyle: PostHomeType | null;
+
+  postsVideo: PostHomeTypeDef[] | null;
 }
 
 const initialState: HomeSlice = {
@@ -49,6 +65,9 @@ const initialState: HomeSlice = {
 
   // post style
   postsStyle: null,
+
+  // posts video
+  postsVideo: null,
 };
 
 const homeSlice = createSlice({
@@ -90,6 +109,11 @@ const homeSlice = createSlice({
     },
     [getPostsNewest.rejected.type]: (state) => {
       state.isLoadingPostsNewest = false;
+    },
+
+    // posts video
+    [getPostsVideo.fulfilled.type]: (state, action) => {
+      state.postsVideo = action.payload.list;
     },
   },
 });

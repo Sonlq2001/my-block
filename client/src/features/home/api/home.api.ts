@@ -12,4 +12,12 @@ const getPostsNewestApi = (): Promise<AxiosResponse> => {
   return api.get(HomeEnumEndpoints.GET_POST_NEWEST);
 };
 
-export const homeApi = { getListPostHomeApi, getPostsNewestApi };
+const getPostsVideoApi = (): Promise<AxiosResponse> => {
+  return api.get(HomeEnumEndpoints.GET_POSTS_VIDEO);
+};
+
+export const homeApi = {
+  getListPostHomeApi,
+  getPostsNewestApi,
+  getPostsVideoApi,
+};

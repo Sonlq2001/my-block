@@ -114,6 +114,7 @@ const SettingPost: React.FC<SettingPostProps> = ({ setIsShowModalSetting }) => {
                 type="text"
                 placeholder="Video url"
                 className={styles.inputVideoUrl}
+                name="videoUrl"
                 onChange={(e) =>
                   setSettingPostValue({
                     ...settingPostValue,
