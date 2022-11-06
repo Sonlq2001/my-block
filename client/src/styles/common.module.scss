@@ -95,3 +95,9 @@
     font-size: 1.3rem;
   }
 }
+
+// config css icon play video
+.react-player__preview {
+  position: relative;
+  z-index: 1;
+}

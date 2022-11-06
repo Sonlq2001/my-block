@@ -6,10 +6,27 @@ import TitleMain from 'components/atoms/TitleMain/TitleMain';
 import VideoPlayer from 'components/atoms/VideoPlayer/VideoPlayer';
 import { getPostsVideo } from '../../redux/home.slice';
 import { useAppDispatch, useAppSelector } from 'redux/store';
+import LoadingWavesMusic from './../LoadingWavesMusic/LoadingWavesMusic';
+import IconPlayVideo from 'components/atoms/IconPlayVideo/IconPlayVideo';
+import { VideoPlayDef } from 'types/app.types';
+
+type ProgressVideo = {
+  loaded: number;
+  loadedSeconds: number;
+  played: number;
+  playedSeconds: number;
+};
 
 const VideoPost = () => {
   const dispatch = useAppDispatch();
   const [indexVideoPost, setIndexVideoPost] = useState<number>(0);
+  const [controlVideo, setControlVideo] = useState<VideoPlayDef>({
+    playing: false,
+    duration: 0,
+    loadedSeconds: 0,
+    volume: 100,
+  });
+
   useEffect(() => {
     dispatch(getPostsVideo());
   }, [dispatch]);
@@ -19,6 +36,23 @@ const VideoPost = () => {
   const currentPostVideo = useMemo(() => {
     return listPostVideo && listPostVideo[indexVideoPost];
   }, [indexVideoPost, listPostVideo]);
+
+  const handleChangeVideoPost = (index: number) => {
+    setIndexVideoPost(index);
+    setControlVideo({ ...controlVideo, playing: true });
+  };
+
+  const handleDurationVideo = (e: number) => {
+    setControlVideo({ ...controlVideo, duration: e });
+  };
+
+  const handleProgressVideo = (e: ProgressVideo) => {
+    setControlVideo({ ...controlVideo, loadedSeconds: e.playedSeconds });
+  };
+
+  const handleEndVideo = () => {
+    setControlVideo({ ...controlVideo, playing: false });
+  };
 
   return (
     <div className="container">
@@ -35,6 +69,11 @@ const VideoPost = () => {
               <VideoPlayer
                 url={currentPostVideo?.videoUrl || ''}
                 thumbnail={currentPostVideo?.avatar.img || ''}
+                controlVideo={controlVideo}
+                onDuration={handleDurationVideo}
+                onProgress={handleProgressVideo}
+                setControlVideo={setControlVideo}
+                onEnded={handleEndVideo}
               />
             )}
           </div>
@@ -46,13 +85,19 @@ const VideoPost = () => {
                   <div
                     className={styles.videoItem}
                     key={postVideo._id}
-                    onClick={() => setIndexVideoPost(index)}
+                    onClick={() => handleChangeVideoPost(index)}
                   >
-                    <img
-                      src={postVideo.avatar?.img}
-                      alt=""
-                      style={{ height: '100%' }}
-                    />
+                    <img src={postVideo.avatar?.img} alt="video-post" />
+
+                    <div className={styles.wrapIcon}>
+                      {indexVideoPost === index && controlVideo.playing ? (
+                        <div className={styles.bgIcon}>
+                          <LoadingWavesMusic />
+                        </div>
+                      ) : (
+                        <IconPlayVideo />
+                      )}
+                    </div>
                   </div>
                 );
               })}
