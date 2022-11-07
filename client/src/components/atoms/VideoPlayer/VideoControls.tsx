@@ -1,10 +1,13 @@
-import { memo } from 'react';
+import { memo, useRef } from 'react';
 import { ReactPlayerProps } from 'react-player';
 import clsx from 'clsx';
 import styles from './VideoPlayer.module.scss';
 import { VideoPlayDef } from 'types/app.types';
-import { ReactComponent as IconLoudspeaker } from 'assets/images/icon-svg/icon-volume-off.svg';
+import { ReactComponent as IconVolumeOn } from 'assets/images/icon-svg/icon-volume-on.svg';
+import { ReactComponent as IconVolumeOff } from 'assets/images/icon-svg/icon-volume-off.svg';
 
+const MIN_VOLUME = 0;
+const MAX_VOLUME = 100;
 interface VideoControlsProps {
   setControlVideo: (play: VideoPlayDef) => void;
   controlVideo: VideoPlayDef;
@@ -15,6 +18,7 @@ const VideoControls: React.FC<VideoControlsProps> = ({
   controlVideo,
   videoRef,
 }) => {
+  const preVolume = useRef<number>(0);
   const handlePlayVideo = () => {
     setControlVideo({ ...controlVideo, playing: !controlVideo.playing });
   };
@@ -26,6 +30,16 @@ const VideoControls: React.FC<VideoControlsProps> = ({
 
   const handleVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
     setControlVideo({ ...controlVideo, volume: Number(e.target.value) });
+    preVolume.current = Number(e.target.value);
+  };
+
+  const handleMuteVideo = () => {
+    setControlVideo({
+      ...controlVideo,
+      volume: controlVideo.volume
+        ? MIN_VOLUME
+        : preVolume.current || MAX_VOLUME,
+    });
   };
 
   return (
@@ -40,13 +54,17 @@ const VideoControls: React.FC<VideoControlsProps> = ({
       )}
 
       <div className={styles.soundVideo}>
-        <button className={styles.cloudSpeakerVideo}>
-          <IconLoudspeaker />
+        <button className={styles.cloudSpeakerVideo} onClick={handleMuteVideo}>
+          {controlVideo.volume === MIN_VOLUME ? (
+            <IconVolumeOff className={styles.iconVolumeOff} />
+          ) : (
+            <IconVolumeOn />
+          )}
         </button>
         <input
-          min={0}
+          min={MIN_VOLUME}
           step={1}
-          max={100}
+          max={MAX_VOLUME}
           type="range"
           className={clsx(styles.inputRange, styles.volumeVideo)}
           onChange={handleVolume}

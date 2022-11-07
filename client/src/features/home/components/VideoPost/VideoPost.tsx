@@ -39,7 +39,10 @@ const VideoPost = () => {
 
   const handleChangeVideoPost = (index: number) => {
     setIndexVideoPost(index);
-    setControlVideo({ ...controlVideo, playing: true });
+    setControlVideo({
+      ...controlVideo,
+      playing: index === indexVideoPost ? !controlVideo.playing : true,
+    });
   };
 
   const handleDurationVideo = (e: number) => {
