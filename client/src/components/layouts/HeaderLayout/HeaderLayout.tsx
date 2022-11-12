@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 import OutsideClickHandler from 'react-outside-click-handler';
@@ -11,7 +11,6 @@ import { NewPostPathsEnum } from 'features/new-post/new-post';
 import { authLogout } from 'features/auth/auth';
 import { ProfilePathsEnum } from 'features/profile/profile';
 import { ChatPathsEnum } from 'features/chat/chat';
-import LazyImage from 'components/atoms/LazyImage/LazyImage';
 
 import { useDataToken } from 'hooks/hooks';
 
@@ -23,14 +22,17 @@ interface HeaderLayoutProps {
   showMenu?: boolean;
   setPublish?: (value: boolean) => void;
   isActive?: boolean;
+  hideHeader?: boolean;
 }
 
 const HeaderLayout: React.FC<HeaderLayoutProps> = ({
   showMenu = false,
   setPublish,
   isActive,
+  hideHeader = false,
 }) => {
   const [isToggleUser, setIsToggleUser] = useState<boolean>(false);
+
   const dispatch = useAppDispatch();
   const { accessToken } = useAppSelector((state) => ({
     accessToken: state.auth.accessToken,
@@ -43,108 +45,123 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({
   const { avatar, _id: authId } = useDataToken();
 
   return (
-    <header className={styles.headerGroup}>
-      <div className={styles.headerLogo}>
-        <Link to="/">
-          <LazyImage src={Logo} alt="logo" />
-        </Link>
-      </div>
-
-      {showMenu && (
-        <ul className={styles.headerNav}>
-          <li className="header-li">
-            <Link to="/" className={styles.headerLink}>
-              Trang chủ
+    <div className={clsx(styles.header, hideHeader && styles.hideHeader)}>
+      <header className="container-full">
+        <div className={clsx(styles.headerGroup)}>
+          <div className={styles.headerLogo}>
+            <Link to="/">
+              <img src={Logo} alt="logo" />
             </Link>
-          </li>
-          <li className="header-li">
-            <Link to="/abcasdf" className={styles.headerLink}>
-              Blog
-            </Link>
-          </li>
-          <li className="header-li">
-            <Link to="/explore" className={styles.headerLink}>
-              Khám phá
-            </Link>
-          </li>
-        </ul>
-      )}
+          </div>
 
-      <div className={styles.headerOption}>
-        {!showMenu && (
-          <button
-            className={clsx(styles.btnPublish, {
-              [styles.activePublish]: !isActive,
-            })}
-            onClick={() => setPublish && setPublish(true)}
-          >
-            Xuất bản
-          </button>
-        )}
+          {showMenu && (
+            <ul className={styles.headerNav}>
+              <li className="header-li">
+                <Link to="/" className={styles.headerLink}>
+                  Trang chủ
+                </Link>
+              </li>
+              <li className="header-li">
+                <Link to="/abcasdf" className={styles.headerLink}>
+                  Blog
+                </Link>
+              </li>
+              <li className="header-li">
+                <Link to="/explore" className={styles.headerLink}>
+                  Khám phá
+                </Link>
+              </li>
+            </ul>
+          )}
 
-        {showMenu && <SearchHeader />}
-
-        <NotiFicationHeader />
-
-        {accessToken ? (
-          <OutsideClickHandler
-            onOutsideClick={() => {
-              setIsToggleUser(false);
-            }}
-          >
-            <div className={styles.userOption}>
+          <div className={styles.headerOption}>
+            {!showMenu && (
               <button
-                className={styles.userAvatar}
-                onClick={() => setIsToggleUser(!isToggleUser)}
-              >
-                {avatar && (
-                  <LazyImage src={avatar} alt="" className={styles.avatar} />
-                )}
-              </button>
-
-              <ul
-                className={clsx(styles.listAction, {
-                  [styles.active]: isToggleUser,
+                className={clsx(styles.btnPublish, {
+                  [styles.activePublish]: !isActive,
                 })}
+                onClick={() => setPublish && setPublish(true)}
               >
-                <li className={styles.itemAction}>
-                  <Link to={ChatPathsEnum.CHAT} className={styles.linkAction}>
-                    <i className="lab la-rocketchat" /> Nhắn tin với bạn bè
-                  </Link>
-                </li>
-                <li className={styles.itemAction}>
-                  <Link
-                    to={NewPostPathsEnum.NEW_POST}
-                    className={styles.linkAction}
-                  >
-                    Viết blog
-                  </Link>
-                </li>
-                {authId && (
-                  <li className={styles.itemAction}>
-                    <Link
-                      to={ProfilePathsEnum.PROFILE.replace(/:user_id/, authId)}
-                      className={styles.linkAction}
-                    >
-                      Thông tin cá nhân
-                    </Link>
-                  </li>
-                )}
+                Xuất bản
+              </button>
+            )}
 
-                <li className={styles.itemAction} onClick={handleLogoutUser}>
-                  <span className={clsx(styles.linkAction, styles.btnLogout)}>
-                    Đăng xuất
-                  </span>
-                </li>
-              </ul>
-            </div>
-          </OutsideClickHandler>
-        ) : (
-          <Button to="/login">Login</Button>
-        )}
-      </div>
-    </header>
+            {showMenu && <SearchHeader />}
+
+            <NotiFicationHeader />
+
+            {accessToken ? (
+              <OutsideClickHandler
+                onOutsideClick={() => {
+                  setIsToggleUser(false);
+                }}
+              >
+                <div className={styles.userOption}>
+                  <button
+                    className={styles.userAvatar}
+                    onClick={() => setIsToggleUser(!isToggleUser)}
+                  >
+                    {avatar && (
+                      <img src={avatar} alt="" className={styles.avatar} />
+                    )}
+                  </button>
+
+                  <ul
+                    className={clsx(styles.listAction, {
+                      [styles.active]: isToggleUser,
+                    })}
+                  >
+                    <li className={styles.itemAction}>
+                      <Link
+                        to={ChatPathsEnum.CHAT}
+                        className={styles.linkAction}
+                      >
+                        <i className="lab la-rocketchat" /> Nhắn tin với bạn bè
+                      </Link>
+                    </li>
+                    <li className={styles.itemAction}>
+                      <Link
+                        to={NewPostPathsEnum.NEW_POST}
+                        className={styles.linkAction}
+                      >
+                        Viết blog
+                      </Link>
+                    </li>
+                    {authId && (
+                      <li className={styles.itemAction}>
+                        <Link
+                          to={ProfilePathsEnum.PROFILE.replace(
+                            /:user_id/,
+                            authId
+                          )}
+                          className={styles.linkAction}
+                        >
+                          Thông tin cá nhân
+                        </Link>
+                      </li>
+                    )}
+
+                    <li
+                      className={styles.itemAction}
+                      onClick={handleLogoutUser}
+                    >
+                      <span
+                        className={clsx(styles.linkAction, styles.btnLogout)}
+                      >
+                        Đăng xuất
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </OutsideClickHandler>
+            ) : (
+              <Button to="/login">Login</Button>
+            )}
+          </div>
+        </div>
+      </header>
+    </div>
   );
 };
 
-export default HeaderLayout;
+export default memo(HeaderLayout);

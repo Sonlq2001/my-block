@@ -77,6 +77,7 @@ const VideoPost = () => {
                 onProgress={handleProgressVideo}
                 setControlVideo={setControlVideo}
                 onEnded={handleEndVideo}
+                controls
               />
             )}
           </div>

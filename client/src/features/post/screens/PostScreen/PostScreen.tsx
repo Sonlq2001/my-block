@@ -148,7 +148,7 @@ const PostScreen = () => {
   };
 
   return (
-    <div>
+    <>
       {loadingPost && <LoadingPostDetail />}
       {!loadingPost && (
         <>
@@ -221,7 +221,7 @@ const PostScreen = () => {
           </div>
         </>
       )}
-    </div>
+    </>
   );
 };
 

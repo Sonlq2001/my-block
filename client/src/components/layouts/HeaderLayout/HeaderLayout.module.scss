@@ -1,9 +1,21 @@
 @import 'styles/variables';
 
+.header {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  background-color: $white-color;
+  z-index: 15;
+  transition: 0.3s ease;
+}
+
 .headerGroup {
   padding: $spacing-4 0;
   display: flex;
   align-items: center;
+  transition: ease 0.3s;
 
   .headerLogo {
     img {
@@ -93,4 +105,9 @@
       color: $white-color;
     }
   }
+}
+
+// hide header
+.hideHeader {
+  top: -100px;
 }

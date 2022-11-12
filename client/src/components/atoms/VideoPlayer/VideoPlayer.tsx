@@ -1,7 +1,7 @@
 import { useRef, memo } from 'react';
 
 import ReactPlayer from 'react-player/lazy';
-import VideoControls from './VideoControls';
+// import VideoControls from './VideoControls';
 import styles from './VideoPlayer.module.scss';
 import { VideoPlayDef } from 'types/app.types';
 import IconPlayVideo from 'components/atoms/IconPlayVideo/IconPlayVideo';
@@ -14,6 +14,8 @@ interface VideoPlayerProps {
   onProgress: Function;
   onEnded: Function;
   setControlVideo: (controls: VideoPlayDef) => void;
+  controls?: boolean;
+  customIcon?: boolean;
 }
 const VideoPlayer: React.FC<VideoPlayerProps> = ({
   url,
@@ -23,6 +25,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   onProgress,
   onEnded,
   setControlVideo,
+  controls = false,
+  customIcon,
 }) => {
   const videoRef = useRef<ReactPlayer>(null);
 
@@ -34,6 +38,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         width="100%"
         height="100%"
         ref={videoRef}
+        controls={controls}
         config={{
           youtube: {
             playerVars: {
@@ -45,7 +50,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
               showinfo: 0,
               fs: 0,
               modestbranding: 1,
-              controls: 0,
+              controls: controls ? 1 : 0,
+              origin: window.location.origin,
             },
           },
         }}
@@ -62,12 +68,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         //value volume 0 - 1
         volume={controlVideo.volume / 100}
       />
-      <VideoControls
+      {/* <VideoControls
         setControlVideo={setControlVideo}
         controlVideo={controlVideo}
         videoRef={videoRef}
-      />
-      {!controlVideo.playing && controlVideo.loadedSeconds === 0 && (
+      /> */}
+      {customIcon && !controlVideo.playing && controlVideo.loadedSeconds === 0 && (
         <div className={styles.playVideoMain}>
           <IconPlayVideo
             width={112}

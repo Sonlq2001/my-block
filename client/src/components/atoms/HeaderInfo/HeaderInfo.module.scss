@@ -1,0 +1,24 @@
+.headerInfo {
+  background-color: #111827;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+  transition: 0.3s ease;
+  header {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+}
+.existHeaderMain {
+  top: 8rem;
+}
+.infoPost {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  img {
+    width: 44px;
+    border-radius: 50%;
+  }
+}
