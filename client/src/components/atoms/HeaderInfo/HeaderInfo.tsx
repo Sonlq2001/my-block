@@ -6,10 +6,10 @@ import styles from './HeaderInfo.module.scss';
 import ProgressBar from 'components/atoms/ProgressBar/ProgressBar';
 
 interface HeaderInfoProps {
-  showHeaderInfo?: boolean;
+  existHeaderMain?: boolean;
 }
 
-const HeaderInfo: React.FC<HeaderInfoProps> = ({ showHeaderInfo = false }) => {
+const HeaderInfo: React.FC<HeaderInfoProps> = ({ existHeaderMain = false }) => {
   const [isShowHeaderInfo, setIsShowHeaderInfo] = useState<boolean>(false);
   useEffect(() => {
     const handleScroll = () => {
@@ -29,7 +29,7 @@ const HeaderInfo: React.FC<HeaderInfoProps> = ({ showHeaderInfo = false }) => {
     <div
       className={clsx(
         styles.headerInfo,
-        showHeaderInfo && styles.showHeaderInfo
+        existHeaderMain && styles.existHeaderMain
       )}
     >
       <header className={'container-full'}>

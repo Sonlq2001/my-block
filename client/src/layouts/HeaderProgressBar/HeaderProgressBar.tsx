@@ -26,7 +26,7 @@ const HeaderProgressBar: React.FC = ({ children }) => {
   return (
     <div id="app-layout">
       <HeaderLayout showMenu hideHeader={isHideHeader} />
-      <HeaderInfo showHeaderInfo={!isHideHeader} />
+      <HeaderInfo existHeaderMain={!isHideHeader} />
       <div className="mr-fix">{children}</div>
       <FooterLayout />
     </div>
