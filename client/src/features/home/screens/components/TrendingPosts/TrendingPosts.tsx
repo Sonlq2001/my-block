@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import clsx from 'clsx';
 
 import TitleMain from 'components/atoms/TitleMain/TitleMain';
 import { ReactComponent as IconTrending } from 'assets/images/trending.svg';
@@ -19,6 +20,7 @@ const TrendingPosts = () => {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const listPostTrending = useAppSelector((state) => state.home?.postsTrending);
+
   useEffect(() => {
     dispatch(
       getPostsHome({ params: { type: TYPE_POST.LIFE, page: 1, per_page: 4 } })
@@ -61,14 +63,16 @@ const TrendingPosts = () => {
                         ),
                         state: postTrendingItem?._id,
                       }}
-                      className={styles.linkPost}
+                      className={clsx(
+                        !postTrendingItem?.excerpt && styles.fillItem
+                      )}
                     >
                       <h3 className={styles.postTitle}>
                         {postTrendingItem?.title}
                       </h3>
                     </Link>
                     {postTrendingItem?.excerpt && (
-                      <p className={styles.postDes}>
+                      <p className={clsx(styles.fillItem, styles.postDes)}>
                         {postTrendingItem?.excerpt}
                       </p>
                     )}

@@ -138,7 +138,10 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
         {isAdvancedMenu && (
           <div className={styles.listMenuSub}>
             <button
-              onClick={() => editor.chain().focus().setTextAlign('left').run()}
+              onClick={() => {
+                editor.chain().focus().setTextAlign('left').run();
+                setIsAdvancedMenu(false);
+              }}
               className={clsx(
                 editor.isActive({ textAlign: 'left' }) ? styles.isActive : '',
                 styles.itemEditor
@@ -148,9 +151,10 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
               <IconAlignLeft />
             </button>
             <button
-              onClick={() =>
-                editor.chain().focus().setTextAlign('center').run()
-              }
+              onClick={() => {
+                editor.chain().focus().setTextAlign('center').run();
+                setIsAdvancedMenu(false);
+              }}
               className={clsx(
                 editor.isActive({ textAlign: 'center' }) ? styles.isActive : '',
                 styles.itemEditor
@@ -160,7 +164,10 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
               <IconAlignCenter />
             </button>
             <button
-              onClick={() => editor.chain().focus().setTextAlign('right').run()}
+              onClick={() => {
+                editor.chain().focus().setTextAlign('right').run();
+                setIsAdvancedMenu(false);
+              }}
               className={clsx(
                 editor.isActive({ textAlign: 'right' }) ? styles.isActive : '',
                 styles.itemEditor
@@ -170,7 +177,10 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
               <IconAlignRight />
             </button>
             <button
-              onClick={() => editor.chain().focus().toggleUnderline().run()}
+              onClick={() => {
+                editor.chain().focus().toggleUnderline().run();
+                setIsAdvancedMenu(false);
+              }}
               className={clsx(
                 editor.isActive('underline') ? 'is-active' : '',
                 styles.itemEditor
@@ -180,7 +190,10 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
               <IconUnderLine />
             </button>
             <button
-              onClick={() => editor.chain().focus().toggleStrike().run()}
+              onClick={() => {
+                editor.chain().focus().toggleStrike().run();
+                setIsAdvancedMenu(false);
+              }}
               disabled={!editor.can().chain().focus().toggleStrike().run()}
               className={clsx(
                 editor.isActive('strike') ? styles.isActive : '',
@@ -191,13 +204,14 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
               <IconStrike />
             </button>
             <button
-              onClick={() =>
+              onClick={() => {
                 editor
                   .chain()
                   .focus()
                   .toggleHighlight({ color: '#ffa8a8' })
-                  .run()
-              }
+                  .run();
+                setIsAdvancedMenu(false);
+              }}
               className={clsx(
                 editor.isActive('highlight', { color: '#ffa8a8' })
                   ? styles.isActive
@@ -213,21 +227,30 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
             <MenuYoutube editor={editor} />
 
             <button
-              onClick={() => editor.chain().focus().setHorizontalRule().run()}
+              onClick={() => {
+                editor.chain().focus().setHorizontalRule().run();
+                setIsAdvancedMenu(false);
+              }}
               className={styles.itemEditor}
               type="button"
             >
               <IconHorizontalRule />
             </button>
             <button
-              onClick={() => editor.chain().focus().setHardBreak().run()}
+              onClick={() => {
+                editor.chain().focus().setHardBreak().run();
+                setIsAdvancedMenu(false);
+              }}
               className={styles.itemEditor}
               type="button"
             >
               <IconHardBreak />
             </button>
             <button
-              onClick={() => editor.chain().focus().undo().run()}
+              onClick={() => {
+                editor.chain().focus().undo().run();
+                setIsAdvancedMenu(false);
+              }}
               disabled={!editor.can().chain().focus().undo().run()}
               className={styles.itemEditor}
               type="button"
@@ -235,7 +258,10 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
               <IconUndo />
             </button>
             <button
-              onClick={() => editor.chain().focus().redo().run()}
+              onClick={() => {
+                editor.chain().focus().redo().run();
+                setIsAdvancedMenu(false);
+              }}
               disabled={!editor.can().chain().focus().redo().run()}
               className={styles.itemEditor}
               type="button"
