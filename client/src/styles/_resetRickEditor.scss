@@ -38,8 +38,11 @@
 
   // set max with default image
   img {
-    max-width: 50rem;
+    max-width: 100%;
     width: auto;
+    height: auto;
+    display: flex;
+    margin: auto;
   }
 
   // custom ul
