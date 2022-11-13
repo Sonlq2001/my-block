@@ -8,6 +8,8 @@
   // post main trending
   .postMain {
     width: 50%;
+    display: flex;
+    flex-direction: column;
 
     .postHeader {
       img {
@@ -16,21 +18,37 @@
         height: 47.1rem;
       }
     }
+  }
 
-    .postBody {
-      margin-top: 3.6rem;
+  .postBody {
+    margin-top: 2.6rem;
+    height: 100%;
 
-      .postTitle {
-        font-size: 2.4rem;
-        line-height: 3.2rem;
-      }
+    .postBodyContent {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .linkPost {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+    .postTitle {
+      font-size: 2.4rem;
+      line-height: 3.2rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      color: $text-color;
+    }
 
-      .postDes {
-        margin: 2rem 0 2rem 0;
-        font-size: 1.6rem;
-        line-height: 2.4rem;
-        color: $text-title-color;
-      }
+    .postDes {
+      margin: 1rem 0 2rem 0;
+      font-size: 1.6rem;
+      line-height: 2.4rem;
+      color: $text-title-color;
     }
   }
 

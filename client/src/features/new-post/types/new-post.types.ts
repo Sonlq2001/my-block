@@ -50,8 +50,8 @@ export type PostHomeTypeDef = {
   view: number;
   avatar: { img: string; idImage: string };
   _id: string;
-  description: string;
   title: string;
   totalComment?: number;
   videoUrl?: string;
+  excerpt?: string;
 };

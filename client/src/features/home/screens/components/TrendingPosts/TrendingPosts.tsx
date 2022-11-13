@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 
@@ -17,16 +17,12 @@ import { TYPE_POST } from 'features/home/home';
 
 const TrendingPosts = () => {
   const dispatch = useAppDispatch();
-  const { listPostTrending, isLoadingPostsTrending } = useAppSelector(
-    (state) => ({
-      listPostTrending: state.home?.postsTrending,
-      isLoadingPostsTrending: state.home.isLoadingPostsTrending,
-    })
-  );
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const listPostTrending = useAppSelector((state) => state.home?.postsTrending);
   useEffect(() => {
     dispatch(
       getPostsHome({ params: { type: TYPE_POST.LIFE, page: 1, per_page: 4 } })
-    );
+    ).finally(() => setIsLoading(false));
   }, [dispatch]);
 
   const { postTrendingItem, listPost } = useMemo(
@@ -39,7 +35,7 @@ const TrendingPosts = () => {
 
   return (
     <div className="container">
-      {isLoadingPostsTrending ? (
+      {isLoading ? (
         <LoadingTrending />
       ) : (
         <>
@@ -56,7 +52,7 @@ const TrendingPosts = () => {
                 </div>
 
                 <div className={styles.postBody}>
-                  <h3 className={styles.postTitle}>
+                  <div className={styles.postBodyContent}>
                     <Link
                       to={{
                         pathname: PostPathsEnum.POST.replace(
@@ -65,22 +61,24 @@ const TrendingPosts = () => {
                         ),
                         state: postTrendingItem?._id,
                       }}
+                      className={styles.linkPost}
                     >
-                      {postTrendingItem?.title}
+                      <h3 className={styles.postTitle}>
+                        {postTrendingItem?.title}
+                      </h3>
                     </Link>
-                  </h3>
-                  <p className={styles.postDes}>
-                    {postTrendingItem?.description}
-                  </p>
-
-                  <PostCardAuth
-                    auth={postTrendingItem?.authPost.name}
-                    time={moment(postTrendingItem?.createdAt).fromNow()}
-                    avatar={postTrendingItem?.authPost.avatar}
-                  />
+                    {postTrendingItem?.excerpt && (
+                      <p className={styles.postDes}>
+                        {postTrendingItem?.excerpt}
+                      </p>
+                    )}
+                    <PostCardAuth
+                      auth={postTrendingItem?.authPost.name}
+                      time={moment(postTrendingItem?.createdAt).fromNow()}
+                      avatar={postTrendingItem?.authPost.avatar}
+                    />
+                  </div>
                 </div>
-
-                <div className="post-footer"></div>
               </div>
             )}
 

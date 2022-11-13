@@ -26,6 +26,9 @@
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      a {
+        color: $text-color;
+      }
     }
 
     .postDes {
@@ -40,11 +43,9 @@
   }
 
   .postImg {
-    width: 35%;
-
     img {
-      width: 20.9rem;
-      height: 19.7rem;
+      width: 19.2rem;
+      height: 19.2rem;
       border-radius: 2.5rem;
     }
   }

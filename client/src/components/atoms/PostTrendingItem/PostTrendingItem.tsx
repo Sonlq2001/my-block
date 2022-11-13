@@ -26,17 +26,25 @@ const PostTrendingItem: React.FC<PostTrendingItemProps> = ({ post }) => {
               {post.title}
             </Link>
           </div>
-          <p className={styles.postDes}>{post.description}</p>
+          {post.excerpt && <p className={styles.postDes}>{post.excerpt}</p>}
         </div>
 
         <PostCardAuth
-          auth="sonel"
+          auth={post.authPost.name}
           time={moment(post.createdAt).fromNow()}
           avatar={post.authPost.avatar}
         />
       </div>
+
       <div className={styles.postImg}>
-        <img src={post.avatar.img} alt="" />
+        <Link
+          to={{
+            pathname: PostPathsEnum.POST.replace(/:slug/, post.slug),
+            state: post._id,
+          }}
+        >
+          <img src={post.avatar.img} alt="" />
+        </Link>
       </div>
     </div>
   );
