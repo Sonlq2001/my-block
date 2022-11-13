@@ -21,4 +21,24 @@
     width: 44px;
     border-radius: 50%;
   }
+  .titlePost {
+    margin-left: 1.6rem;
+    font-size: 1.8rem;
+    font-weight: 400;
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .dataPost {
+    display: flex;
+    align-items: center;
+    margin-left: 10rem;
+  }
+  .postInfoLine {
+    border-left: 1px solid #36404f;
+    height: 2.5rem;
+    margin: 0 1rem;
+  }
 }
