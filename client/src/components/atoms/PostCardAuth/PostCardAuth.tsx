@@ -80,7 +80,7 @@ const PostCardAuth: React.FC<PostCardAuthProps> = ({
           )}
           <span className={styles.postTime}>{time}</span>
           {column && auth && <span className={styles.dot}></span>}
-          {/* {minute && <span className={styles.postTime}>3 minutes</span>} */}
+          {minute && <span className={styles.postTime}>3 minutes</span>}
         </div>
       </div>
     </div>

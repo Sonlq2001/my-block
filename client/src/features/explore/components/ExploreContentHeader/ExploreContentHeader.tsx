@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { ReactComponent as IconSearch } from 'assets/images/icon-search.svg';
 
 import styles from './ExploreContentHeader.module.scss';
@@ -9,17 +7,19 @@ import { DefaultParams } from '../../types/explore.types';
 interface ExploreContentHeaderProps {
   query: DefaultParams;
   fetchData: (pageNumber: DefaultParams, hasSearch: boolean) => void;
+  setQuery: (data: DefaultParams) => void;
 }
 
 const ExploreContentHeader: React.FC<ExploreContentHeaderProps> = ({
   query,
   fetchData,
+  setQuery,
 }) => {
-  const [querySearch, setQuerySearch] = useState<string>('');
-
   const handleSubmitSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    fetchData({ ...query, q: querySearch, page: 1 }, true);
+    if (query.q) {
+      fetchData({ ...query, q: query.q, page: 1 }, true);
+    }
   };
 
   return (
@@ -41,8 +41,8 @@ const ExploreContentHeader: React.FC<ExploreContentHeaderProps> = ({
             type="text"
             placeholder="Khám phá thế giới"
             className={styles.searchInput}
-            value={querySearch}
-            onChange={(e) => setQuerySearch(e.target.value)}
+            value={query.q}
+            onChange={(e) => setQuery({ ...query, q: e.target.value })}
             autoFocus
           />
           <button className={styles.searchBtn}>

@@ -51,7 +51,11 @@ const ExploreScreen = () => {
   return (
     <div>
       <ExploreHeader>
-        <ExploreContentHeader query={query} fetchData={fetchData} />
+        <ExploreContentHeader
+          query={query}
+          fetchData={fetchData}
+          setQuery={setQuery}
+        />
       </ExploreHeader>
 
       <div className="container">

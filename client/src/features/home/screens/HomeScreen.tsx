@@ -4,12 +4,15 @@ import TrendingPosts from './components/TrendingPosts/TrendingPosts';
 import HotTopics from './components/HotTopics/HotTopics';
 import LifeStyles from './components/LifeStyles/LifeStyles';
 import VideoPost from '../components/VideoPost/VideoPost';
+import SlidePost from './../components/SlidePost/SlidePost';
 
 import styles from './HomeScreen.module.scss';
 
 const HomeScreen = () => {
   return (
     <div className={styles.homeGroup}>
+      <SlidePost />
+
       <TrendingPosts />
 
       <HotTopics />
