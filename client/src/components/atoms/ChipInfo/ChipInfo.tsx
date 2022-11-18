@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import styles from './ChipInfo.module.scss';
 
 interface ChipInfoProps {
-  icon?: React.ReactNode;
+  icon: React.ReactNode;
   total?: number | string;
   download?: boolean;
   dark?: boolean;
