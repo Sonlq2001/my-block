@@ -6,6 +6,7 @@
   padding: 3px 1rem 3px 1rem;
   color: $text-color;
   display: inline-block;
+  user-select: none;
 
   .chipInfoGroup {
     display: flex;
@@ -37,4 +38,18 @@
 .dark {
   background-color: $gray6-color;
   color: $gray1-color;
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+.colorLike {
+  background: #ffe4e6;
+  color: $red-fresh;
+  .chipInfoIcon {
+    svg {
+      fill: $red-fresh;
+    }
+  }
 }

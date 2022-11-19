@@ -32,6 +32,7 @@ export interface PostItemType extends Omit<PostType, 'tags'> {
   slug: string;
   title: string;
   tags: { tag: string; _id: string }[];
+  likes: string[];
 }
 
 export type PostHomeType = {

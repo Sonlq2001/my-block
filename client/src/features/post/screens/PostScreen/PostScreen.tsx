@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import PostHeader from './../../components/PostHeader/PostHeader';
@@ -21,7 +21,7 @@ import { ReactComponent as IconHeart } from 'assets/images/icon-heart.svg';
 import styles from './PostScreen.module.scss';
 
 import { useAppDispatch, useAppSelector } from 'redux/store';
-import { getPost, getComments, patchViewPost } from './../../redux/post.slice';
+import { getPost, getComments } from './../../redux/post.slice';
 import { postComment, resetComments } from './../../redux/post.slice';
 import { usePostSocket } from './../../socket/post.socket';
 import { createNotify } from 'features/notify/notify';
@@ -32,14 +32,14 @@ interface PostParams {
 const PostScreen = () => {
   const dispatch = useAppDispatch();
   usePostSocket();
-  const [timeView, setTimeView] = useState<number>(0);
+  // const [timeView, setTimeView] = useState<number>(0);
   const [loadingPost, setLoadingPost] = useState<boolean>(true);
   const [loadingComment, setLoadingComment] = useState<boolean>(false);
   const [query, setQuery] = useState<{ page: number; perPage: number }>({
     page: 1,
     perPage: 3,
   });
-  const idTime = useRef<any>();
+  // const idTime = useRef<any>();
   const { slug } = useParams<PostParams>();
   const { location } = useHistory<string>();
 
@@ -110,24 +110,24 @@ const PostScreen = () => {
     }
   };
 
-  useEffect(() => {
-    if (idTime.current) {
-      clearInterval(idTime.current);
-    }
-    idTime.current = setInterval(() => {
-      setTimeView((pre) => pre + 1);
-    }, 1000);
-    return () => {
-      clearInterval(idTime.current);
-    };
-  }, []);
+  // useEffect(() => {
+  //   if (idTime.current) {
+  //     clearInterval(idTime.current);
+  //   }
+  //   idTime.current = setInterval(() => {
+  //     setTimeView((pre) => pre + 1);
+  //   }, 1000);
+  //   return () => {
+  //     clearInterval(idTime.current);
+  //   };
+  // }, []);
 
-  useEffect(() => {
-    if (timeView >= 60) {
-      clearInterval(idTime.current);
-      dispatch(patchViewPost(post_id));
-    }
-  }, [timeView, post_id, dispatch]);
+  // useEffect(() => {
+  //   if (timeView >= 60) {
+  //     clearInterval(idTime.current);
+  //     dispatch(patchViewPost(post_id));
+  //   }
+  // }, [timeView, post_id, dispatch]);
 
   useEffect(() => {
     return () => {

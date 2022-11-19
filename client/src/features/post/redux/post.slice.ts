@@ -91,6 +91,7 @@ export const patchSavePost = createAsyncThunk(
     }
   }
 );
+
 export const patchUnSavePost = createAsyncThunk(
   `post/patchSavePost`,
   async (postId: string, { rejectWithValue }) => {
@@ -102,6 +103,30 @@ export const patchUnSavePost = createAsyncThunk(
     }
   }
 );
+
+export const patchLikePost = createAsyncThunk<
+  string,
+  { postId: string; idUser: string }
+>(`post/patchLikePost`, async ({ postId, idUser }, { rejectWithValue }) => {
+  try {
+    await postApi.patchLikePostApi(postId);
+    return idUser;
+  } catch (error: any) {
+    return rejectWithValue(error.response.msg);
+  }
+});
+
+export const patchUnLikePost = createAsyncThunk<
+  string,
+  { postId: string; idUser: string }
+>(`post/patchUnLikePost`, async ({ postId, idUser }, { rejectWithValue }) => {
+  try {
+    await postApi.patchUnLikePostApi(postId);
+    return idUser;
+  } catch (error: any) {
+    return rejectWithValue(error.response.msg);
+  }
+});
 
 interface PostSlice {
   // post item
@@ -180,6 +205,23 @@ const postSlice = createSlice({
     },
     [getComments.rejected.type]: (state) => {
       state.comments.isLoadingComments = false;
+    },
+
+    [patchLikePost.fulfilled.type]: (state, action) => {
+      if (state.post) {
+        state.post = {
+          ...state.post,
+          likes: [...state.post.likes, action.payload],
+        };
+      }
+    },
+    [patchUnLikePost.fulfilled.type]: (state, action) => {
+      if (state.post) {
+        state.post = {
+          ...state.post,
+          likes: state.post.likes.filter((item) => item !== action.payload),
+        };
+      }
     },
   },
 });

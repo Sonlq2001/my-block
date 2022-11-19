@@ -4,7 +4,7 @@ import slug from "mongoose-slug-generator";
 mongoose.plugin(slug);
 
 const tagSchema = new mongoose.Schema({
-	tag: { type: String, required: true, unique: true },
+	tag: { type: String, required: true },
 });
 
 const postSchema = new mongoose.Schema(
@@ -40,6 +40,7 @@ const postSchema = new mongoose.Schema(
 		videoUrl: {
 			type: String,
 		},
+		likes: [{ type: mongoose.Types.ObjectId, ref: "users" }],
 	},
 	{ timestamps: true }
 );

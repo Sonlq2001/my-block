@@ -352,3 +352,36 @@ export const getPostsVideo = async (req, res) => {
 		return res.status(500).json({ message: error.message });
 	}
 };
+
+export const patchLikePost = async (req, res) => {
+	try {
+		const likedPost = await Post.find({
+			_id: req.params.id,
+			likes: req.user._id,
+		});
+
+		if (likedPost.length) {
+			return res.status(400).json({ message: "You liked post" });
+		}
+
+		await Post.findOneAndUpdate(
+			{ _id: req.params.id },
+			{ $push: { likes: req.user._id } }
+		);
+		return res.status(200).json({ message: "Like post success" });
+	} catch (error) {
+		return res.status(500).json({ message: error.message });
+	}
+};
+
+export const patchUnLikePost = async (req, res) => {
+	try {
+		await Post.findOneAndUpdate(
+			{ _id: req.params.id },
+			{ $pull: { likes: req.user._id } }
+		);
+		return res.status(200).json({ message: "UnLike post success" });
+	} catch (error) {
+		return res.status(500).json({ message: error.message });
+	}
+};
