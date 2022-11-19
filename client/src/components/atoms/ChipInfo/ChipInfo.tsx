@@ -3,11 +3,13 @@ import clsx from 'clsx';
 
 import styles from './ChipInfo.module.scss';
 
-interface ChipInfoProps {
+interface ChipInfoProps extends React.DOMAttributes<HTMLDivElement> {
   icon: React.ReactNode;
   total?: number | string;
   download?: boolean;
   dark?: boolean;
+  cursor?: boolean;
+  colorLike?: boolean;
 }
 
 const ChipInfo: React.FC<ChipInfoProps> = ({
@@ -15,13 +17,19 @@ const ChipInfo: React.FC<ChipInfoProps> = ({
   total,
   download = false,
   dark = false,
+  cursor = false,
+  colorLike = false,
+  ...rest
 }) => {
   return (
     <div
       className={clsx(styles.chipInfo, {
         [styles.iconDownload]: download,
         [styles.dark]: dark,
+        [styles.cursor]: cursor,
+        [styles.colorLike]: colorLike,
       })}
+      {...rest}
     >
       <div className={styles.chipInfoGroup}>
         {icon && <span className={styles.chipInfoIcon}>{icon}</span>}

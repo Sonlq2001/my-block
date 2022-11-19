@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import ChipTag from 'components/atoms/ChipTag/ChipTag';
 import ChipInfo from 'components/atoms/ChipInfo/ChipInfo';
 import PostCardAuth from 'components/atoms/PostCardAuth/PostCardAuth';
@@ -12,12 +13,17 @@ import { UserItem } from 'features/auth/auth';
 import { TopicType } from 'features/master-data/master-data';
 import { ProfilePathsEnum } from 'features/profile/profile';
 
+import { useAppDispatch, useAppSelector } from 'redux/store';
+import { patchLikePost, patchUnLikePost } from '../../redux/post.slice';
+import { useDataToken } from 'hooks/hooks';
+
 interface PostContentHeaderProps {
   title: string;
   authPost: UserItem;
   topics: TopicType[];
   totalComment: number;
   view: number;
+  _id: string;
 }
 
 const PostContentHeader: React.FC<PostContentHeaderProps> = ({
@@ -26,7 +32,25 @@ const PostContentHeader: React.FC<PostContentHeaderProps> = ({
   topics,
   totalComment,
   view,
+  _id,
 }) => {
+  const dispatch = useAppDispatch();
+  const likesPost = useAppSelector((state) => state.post.post?.likes);
+  const { _id: idUser } = useDataToken();
+  const [activeLike, setActiveLike] = useState<boolean>(
+    likesPost?.includes(idUser as string) || false
+  );
+
+  const handleLikePost = () => {
+    if (!idUser || !likesPost) {
+      return;
+    }
+    activeLike
+      ? dispatch(patchUnLikePost({ postId: _id, idUser }))
+      : dispatch(patchLikePost({ postId: _id, idUser }));
+    setActiveLike(!activeLike);
+  };
+
   return (
     <div className={styles.postContentHeader}>
       {topics?.map((topic) => (
@@ -54,7 +78,14 @@ const PostContentHeader: React.FC<PostContentHeaderProps> = ({
             <ChipInfo total={view || 0} icon={<IconEye />} dark />
             <ChipInfo total={totalComment} icon={<IconChat />} dark />
             <div className={styles.postInfoLine}></div>
-            <ChipInfo total="20" icon={<IconHeart />} dark />
+            <ChipInfo
+              total={likesPost?.length || 0}
+              icon={<IconHeart />}
+              dark
+              onClick={handleLikePost}
+              cursor
+              colorLike={activeLike}
+            />
             <ChipInfo icon={<IconDownload />} download dark />
           </div>
         </div>

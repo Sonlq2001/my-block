@@ -49,6 +49,14 @@ const patchUnSavePost = (postId: string): Promise<AxiosResponse> => {
   return api.patch(PostEndpointsEnum.PATCH_UN_SAVE_POST, { postId });
 };
 
+const patchLikePostApi = (postId: string): Promise<AxiosResponse> => {
+  return api.patch(PostEndpointsEnum.PATCH_LIKE_POST.replace(/:id/, postId));
+};
+
+const patchUnLikePostApi = (postId: string): Promise<AxiosResponse> => {
+  return api.patch(PostEndpointsEnum.PATCH_UNLIKE_POST.replace(/:id/, postId));
+};
+
 export const postApi = {
   getPostApi,
   postCommentApi,
@@ -58,4 +66,6 @@ export const postApi = {
   patchViewPost,
   patchSavePost,
   patchUnSavePost,
+  patchLikePostApi,
+  patchUnLikePostApi,
 };

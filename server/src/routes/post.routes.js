@@ -13,6 +13,8 @@ import {
 	getPostExplore,
 	getPostsType,
 	getPostsVideo,
+	patchLikePost,
+	patchUnLikePost,
 } from "./../controllers/postController";
 import { verifyToken } from "./../middleware/verifyToken";
 
@@ -30,5 +32,8 @@ route.get("/post_newest", verifyToken, getPostNewest);
 route.get("/post_explore", getPostExplore);
 route.get("/posts-type", getPostsType);
 route.get("/posts-video", getPostsVideo);
+
+route.patch("/like_post/:id", verifyToken, patchLikePost);
+route.patch("/unlike_post/:id", verifyToken, patchUnLikePost);
 
 export default route;
