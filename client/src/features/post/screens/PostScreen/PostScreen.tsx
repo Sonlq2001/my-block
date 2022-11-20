@@ -25,6 +25,7 @@ import { getPost, getComments } from './../../redux/post.slice';
 import { postComment, resetComments } from './../../redux/post.slice';
 import { usePostSocket } from './../../socket/post.socket';
 import { createNotify } from 'features/notify/notify';
+import { useDataToken } from 'hooks/hooks';
 interface PostParams {
   slug: string;
 }
@@ -42,17 +43,14 @@ const PostScreen = () => {
   // const idTime = useRef<any>();
   const { slug } = useParams<PostParams>();
   const { location } = useHistory<string>();
+  const { _id: userId } = useDataToken();
 
   const post_id = location?.state;
 
-  const { postItem, comments, socketData, totalComment } = useAppSelector(
-    (state) => ({
-      postItem: state.post.post,
-      comments: state.post.comments.list,
-      totalComment: state.post.comments.total,
-      socketData: state.socket.socketData,
-    })
-  );
+  const postItem = useAppSelector((state) => state.post.postDetail);
+  const commentsPost = useAppSelector((state) => state.post.comments.list);
+  const totalComment = useAppSelector((state) => state.post.comments.total);
+  const socketData = useAppSelector((state) => state.socket.socketData);
 
   const fetchPostAndComments = useCallback(
     (postId) => {
@@ -63,10 +61,10 @@ const PostScreen = () => {
             query,
           })
         ),
-        dispatch(getPost({ slug })),
+        dispatch(getPost({ slug, userId: userId || '' })),
       ]).finally(() => setLoadingPost(false));
     },
-    [dispatch, query, slug]
+    [dispatch, query, slug, userId]
   );
 
   useEffect(() => {
@@ -197,10 +195,10 @@ const PostScreen = () => {
                   {/* comment */}
                   <>
                     <InputComment getValue={handleComment} />
-                    {comments.map((comment) => (
+                    {commentsPost.map((comment) => (
                       <Comments key={comment._id} comment={comment} />
                     ))}
-                    {comments.length < totalComment && (
+                    {commentsPost.length < totalComment && (
                       <button
                         className={styles.btnMoreComment}
                         onClick={handleLoadMoreComment}

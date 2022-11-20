@@ -10,19 +10,24 @@ import ProgressBar from 'components/atoms/ProgressBar/ProgressBar';
 import ChipInfo from 'components/atoms/ChipInfo/ChipInfo';
 import { useAppSelector } from 'redux/store';
 
+import { useToggleLikePost } from 'hooks/useToggleLikePost';
+
 interface HeaderInfoProps {
   existHeaderMain?: boolean;
 }
 
 const HeaderInfo: React.FC<HeaderInfoProps> = ({ existHeaderMain = false }) => {
   const [isShowHeaderInfo, setIsShowHeaderInfo] = useState<boolean>(false);
+
   const { avatarAuthPost, titlePost, viewPost, totalCommentPost } =
     useAppSelector((state) => ({
-      avatarAuthPost: state.post.post?.authPost.avatar,
-      titlePost: state.post.post?.title,
-      viewPost: state.post.post?.view,
-      totalCommentPost: state.post.post?.totalComment,
+      avatarAuthPost: state.post.postDetail?.authPost.avatar,
+      titlePost: state.post.postDetail?.title,
+      viewPost: state.post.postDetail?.view,
+      totalCommentPost: state.post.postDetail?.totalComment,
     }));
+
+  const postId = useAppSelector((state) => state.post.postDetail?._id);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,6 +43,10 @@ const HeaderInfo: React.FC<HeaderInfoProps> = ({ existHeaderMain = false }) => {
     };
   }, []);
 
+  const { activeLike, totalLike, handleLikePost } = useToggleLikePost(
+    postId as string
+  );
+
   return isShowHeaderInfo ? (
     <div
       className={clsx(
@@ -52,7 +61,14 @@ const HeaderInfo: React.FC<HeaderInfoProps> = ({ existHeaderMain = false }) => {
 
           <div className={styles.dataPost}>
             <ChipInfo icon={<IconEye />} total={viewPost} dark />
-            <ChipInfo icon={<IconHeart />} total={5} dark />
+            <ChipInfo
+              icon={<IconHeart />}
+              total={totalLike}
+              dark
+              onClick={handleLikePost}
+              activeLike={activeLike}
+              cursor
+            />
             <div className={styles.postInfoLine}></div>
             <ChipInfo icon={<IconChat />} total={totalCommentPost} dark />
           </div>

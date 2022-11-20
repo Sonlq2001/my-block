@@ -9,7 +9,7 @@ interface ChipInfoProps extends React.DOMAttributes<HTMLDivElement> {
   download?: boolean;
   dark?: boolean;
   cursor?: boolean;
-  colorLike?: boolean;
+  activeLike?: boolean;
 }
 
 const ChipInfo: React.FC<ChipInfoProps> = ({
@@ -18,7 +18,7 @@ const ChipInfo: React.FC<ChipInfoProps> = ({
   download = false,
   dark = false,
   cursor = false,
-  colorLike = false,
+  activeLike = false,
   ...rest
 }) => {
   return (
@@ -27,7 +27,7 @@ const ChipInfo: React.FC<ChipInfoProps> = ({
         [styles.iconDownload]: download,
         [styles.dark]: dark,
         [styles.cursor]: cursor,
-        [styles.colorLike]: colorLike,
+        [styles.colorLike]: activeLike,
       })}
       {...rest}
     >

@@ -4,11 +4,17 @@ import { PostItemType } from 'features/new-post/types/new-post.types';
 import { postApi } from './../api/post.api';
 
 export const getPost = createAsyncThunk(
-  `getPost`,
-  async ({ slug }: { slug: string }, { rejectWithValue }) => {
+  `post/getPost`,
+  async (
+    { slug, userId }: { slug: string; userId: string },
+    { rejectWithValue }
+  ) => {
     try {
       const res = await postApi.getPostApi(slug);
-      return res.data;
+      return {
+        postItem: res.data.postItem,
+        userId,
+      };
     } catch (error: any) {
       return rejectWithValue(error.response.msg);
     }
@@ -106,11 +112,11 @@ export const patchUnSavePost = createAsyncThunk(
 
 export const patchLikePost = createAsyncThunk<
   string,
-  { postId: string; idUser: string }
->(`post/patchLikePost`, async ({ postId, idUser }, { rejectWithValue }) => {
+  { postId: string; userId: string }
+>(`post/patchLikePost`, async ({ postId, userId }, { rejectWithValue }) => {
   try {
     await postApi.patchLikePostApi(postId);
-    return idUser;
+    return userId;
   } catch (error: any) {
     return rejectWithValue(error.response.msg);
   }
@@ -118,11 +124,11 @@ export const patchLikePost = createAsyncThunk<
 
 export const patchUnLikePost = createAsyncThunk<
   string,
-  { postId: string; idUser: string }
->(`post/patchUnLikePost`, async ({ postId, idUser }, { rejectWithValue }) => {
+  { postId: string; userId: string }
+>(`post/patchUnLikePost`, async ({ postId, userId }, { rejectWithValue }) => {
   try {
     await postApi.patchUnLikePostApi(postId);
-    return idUser;
+    return userId;
   } catch (error: any) {
     return rejectWithValue(error.response.msg);
   }
@@ -130,7 +136,7 @@ export const patchUnLikePost = createAsyncThunk<
 
 interface PostSlice {
   // post item
-  post: PostItemType | null;
+  postDetail: PostItemType | null;
   isLoadingPost: boolean;
 
   // comments
@@ -143,7 +149,7 @@ interface PostSlice {
 
 const initialState: PostSlice = {
   // post item
-  post: null,
+  postDetail: null,
   isLoadingPost: false,
 
   // comments
@@ -177,6 +183,11 @@ const postSlice = createSlice({
         isLoadingComments: false,
       };
     },
+    updateActiveLike: (state, action) => {
+      if (state.postDetail) {
+        state.postDetail = { ...state.postDetail, activeLike: !action.payload };
+      }
+    },
   },
   extraReducers: {
     // get post
@@ -185,7 +196,12 @@ const postSlice = createSlice({
     },
     [getPost.fulfilled.type]: (state, action) => {
       state.isLoadingPost = false;
-      state.post = action.payload.postItem;
+      state.postDetail = {
+        ...action.payload.postItem,
+        activeLike: !!action.payload.postItem.likes.includes(
+          action.payload.userId
+        ),
+      };
     },
     [getPost.rejected.type]: (state) => {
       state.isLoadingPost = false;
@@ -208,18 +224,20 @@ const postSlice = createSlice({
     },
 
     [patchLikePost.fulfilled.type]: (state, action) => {
-      if (state.post) {
-        state.post = {
-          ...state.post,
-          likes: [...state.post.likes, action.payload],
+      if (state.postDetail) {
+        state.postDetail = {
+          ...state.postDetail,
+          likes: [...state.postDetail.likes, action.payload],
         };
       }
     },
     [patchUnLikePost.fulfilled.type]: (state, action) => {
-      if (state.post) {
-        state.post = {
-          ...state.post,
-          likes: state.post.likes.filter((item) => item !== action.payload),
+      if (state.postDetail) {
+        state.postDetail = {
+          ...state.postDetail,
+          likes: state.postDetail.likes.filter(
+            (item) => item !== action.payload
+          ),
         };
       }
     },
@@ -227,5 +245,9 @@ const postSlice = createSlice({
 });
 
 export const postReducer = postSlice.reducer;
-export const { updateComment, updateCommentReply, resetComments } =
-  postSlice.actions;
+export const {
+  updateComment,
+  updateCommentReply,
+  resetComments,
+  updateActiveLike,
+} = postSlice.actions;
