@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import ChipTag from 'components/atoms/ChipTag/ChipTag';
 import ChipInfo from 'components/atoms/ChipInfo/ChipInfo';
 import PostCardAuth from 'components/atoms/PostCardAuth/PostCardAuth';
@@ -13,9 +12,7 @@ import { UserItem } from 'features/auth/auth';
 import { TopicType } from 'features/master-data/master-data';
 import { ProfilePathsEnum } from 'features/profile/profile';
 
-import { useAppDispatch, useAppSelector } from 'redux/store';
-import { patchLikePost, patchUnLikePost } from '../../redux/post.slice';
-import { useDataToken } from 'hooks/hooks';
+import { useToggleLikePost } from 'hooks/useToggleLikePost';
 
 interface PostContentHeaderProps {
   title: string;
@@ -34,22 +31,7 @@ const PostContentHeader: React.FC<PostContentHeaderProps> = ({
   view,
   _id,
 }) => {
-  const dispatch = useAppDispatch();
-  const likesPost = useAppSelector((state) => state.post.post?.likes);
-  const { _id: idUser } = useDataToken();
-  const [activeLike, setActiveLike] = useState<boolean>(
-    likesPost?.includes(idUser as string) || false
-  );
-
-  const handleLikePost = () => {
-    if (!idUser || !likesPost) {
-      return;
-    }
-    activeLike
-      ? dispatch(patchUnLikePost({ postId: _id, idUser }))
-      : dispatch(patchLikePost({ postId: _id, idUser }));
-    setActiveLike(!activeLike);
-  };
+  const { activeLike, handleLikePost, totalLike } = useToggleLikePost(_id);
 
   return (
     <div className={styles.postContentHeader}>
@@ -79,12 +61,12 @@ const PostContentHeader: React.FC<PostContentHeaderProps> = ({
             <ChipInfo total={totalComment} icon={<IconChat />} dark />
             <div className={styles.postInfoLine}></div>
             <ChipInfo
-              total={likesPost?.length || 0}
+              total={totalLike}
               icon={<IconHeart />}
               dark
               onClick={handleLikePost}
               cursor
-              colorLike={activeLike}
+              activeLike={activeLike}
             />
             <ChipInfo icon={<IconDownload />} download dark />
           </div>
