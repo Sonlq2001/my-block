@@ -20,3 +20,8 @@ export const TOPIC_TAB: { label: string; slug: string }[] = [
     slug: 'sport',
   },
 ];
+
+export enum DEFAULT_PAGINATION {
+  PAGE = 1,
+  PER_PAGE = 2,
+}

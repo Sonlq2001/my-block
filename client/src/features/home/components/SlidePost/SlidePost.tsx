@@ -12,21 +12,21 @@ import NavigationCarousel from 'components/atoms/NavigationCarousel/NavigationCa
 
 import { useAppDispatch, useAppSelector } from 'redux/store';
 import { getPostsSlide } from '../../redux/home.slice';
-import { TYPE_POST } from '../../constants/home.constants';
+import { TYPE_POST, DEFAULT_PAGINATION } from '../../constants/home.constants';
 
 const SlidePost = () => {
   const dispatch = useAppDispatch();
   let [currentSlide, setCurrentSlide] = useState<number>(0);
-  const idRefSlide = useRef<any>(0);
+  const slideIdRef = useRef<any>(0);
 
   const postsSlide = useAppSelector((state) => state.home.postsSlide);
 
   useEffect(() => {
-    if (idRefSlide.current) {
-      clearInterval(idRefSlide.current);
+    if (slideIdRef.current) {
+      clearInterval(slideIdRef.current);
     }
 
-    idRefSlide.current = setTimeout(() => {
+    slideIdRef.current = setTimeout(() => {
       setCurrentSlide(
         currentSlide >= (postsSlide?.list.length || 0) - 1
           ? 0
@@ -35,7 +35,7 @@ const SlidePost = () => {
     }, 4000);
 
     return () => {
-      clearInterval(idRefSlide.current);
+      clearInterval(slideIdRef.current);
     };
   }, [currentSlide, postsSlide?.list.length]);
 
@@ -55,8 +55,8 @@ const SlidePost = () => {
     dispatch(
       getPostsSlide({
         type: TYPE_POST.FAVORITE,
-        page: 1,
-        per_page: 5,
+        page: DEFAULT_PAGINATION.PAGE,
+        per_page: DEFAULT_PAGINATION.PER_PAGE,
       })
     );
   }, [dispatch]);
@@ -66,7 +66,7 @@ const SlidePost = () => {
       <TitleMain
         title={postsSlide?.topic || ''}
         icon="💡"
-        description={postsSlide?.description}
+        description={postsSlide?.description || ''}
       />
 
       <div className={styles.slidePost}>
@@ -82,13 +82,13 @@ const SlidePost = () => {
                         {slide &&
                           slide.topics.length > 0 &&
                           slide.topics.map((topic, index) => (
-                            <ChipTag title={topic.name} key={index} />
+                            <ChipTag title={topic.name || ''} key={index} />
                           ))}
 
                         <h2 className={styles.titleSlide}>{slide.title}</h2>
                         <PostCardAuth
-                          auth={slide.authPost.name}
-                          avatar={slide.authPost.avatar}
+                          auth={slide.authPost.name || ''}
+                          avatar={slide.authPost.avatar || ''}
                           column
                           time="16-11-2022"
                           minute="3"
@@ -97,11 +97,11 @@ const SlidePost = () => {
                         <div className={styles.viewSlide}>
                           <ChipInfo
                             icon={<IconHeart />}
-                            total={slide.totalLikes}
+                            total={slide.totalLikes || 0}
                           />
                           <ChipInfo
                             icon={<IconChat />}
-                            total={slide.totalComments}
+                            total={slide.totalComments || 0}
                           />
                         </div>
                       </div>
@@ -113,7 +113,7 @@ const SlidePost = () => {
                       </div>
                     </div>
                     <div className={styles.imageSlide}>
-                      <img src={slide.avatar.img} alt="" />
+                      <img src={slide.avatar.img || ''} alt="" />
                     </div>
                   </div>
                 )}
@@ -131,6 +131,7 @@ const SlidePost = () => {
                   currentSlide === index && styles.active
                 )}
                 key={index}
+                onClick={() => setCurrentSlide(index)}
               />
             ))}
         </ul>
