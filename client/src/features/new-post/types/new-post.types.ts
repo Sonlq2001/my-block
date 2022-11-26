@@ -40,7 +40,7 @@ export type PostHomeType = {
   _id: string;
   topic: string;
   description: string;
-  data: PostHomeTypeDef[];
+  list: PostHomeTypeDef[];
 };
 
 export type PostHomeTypeDef = {
@@ -53,7 +53,8 @@ export type PostHomeTypeDef = {
   avatar: { img: string; idImage: string };
   _id: string;
   title: string;
-  totalComment?: number;
+  totalComments?: number;
   videoUrl?: string;
   excerpt?: string;
+  totalLikes?: number;
 };

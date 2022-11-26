@@ -23,16 +23,16 @@ const TrendingPosts = () => {
 
   useEffect(() => {
     dispatch(
-      getPostsHome({ params: { type: TYPE_POST.LIFE, page: 1, per_page: 4 } })
+      getPostsHome({ type: TYPE_POST.LIFE, page: 1, per_page: 4 })
     ).finally(() => setIsLoading(false));
   }, [dispatch]);
 
   const { postTrendingItem, listPost } = useMemo(
     () => ({
-      postTrendingItem: listPostTrending?.data[0],
-      listPost: listPostTrending?.data.slice(1),
+      postTrendingItem: listPostTrending?.list[0],
+      listPost: listPostTrending?.list.slice(1),
     }),
-    [listPostTrending?.data]
+    [listPostTrending?.list]
   );
 
   return (
@@ -47,7 +47,7 @@ const TrendingPosts = () => {
             description={listPostTrending?.description}
           />
           <div className={styles.trendingGroup}>
-            {listPostTrending && listPostTrending.data.length > 0 && (
+            {listPostTrending && listPostTrending.list.length > 0 && (
               <div className={styles.postMain}>
                 <div className={styles.postHeader}>
                   <LazyImage src={postTrendingItem?.avatar.img || ''} alt="" />

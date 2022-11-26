@@ -1,8 +1,11 @@
+import mongoose from "mongoose";
+
 import Post from "./../models/postModel";
 import Topic from "./../models/topicModel";
 
 import { ApiFeatures, pagination } from "../helpers/features.helpers";
-import { FORMAT_POST } from "../constants/post.constants";
+import { FORMAT_POST, SLUG_TOPICS } from "../constants/post.constants";
+import { PER_PAGE_SLIDE } from "../constants/app.constants";
 
 export const createPost = async (req, res) => {
 	try {
@@ -310,30 +313,85 @@ export const getPostsType = async (req, res) => {
 			return res.status(400).json({ message: "Not Found topic" });
 		}
 
-		const listPost = await Post.find({
-			topics: topic._id,
-			format: FORMAT_POST.STANDARD,
-		})
-			.populate({
-				path: "topics",
-				select: "name",
-			})
-			.populate({
-				path: "authPost",
-				select: "name avatar",
-			})
-			.skip(skip)
-			.limit(perPage)
-			.sort({ createdAt: -1 });
+		const topLikesPost = await Post.aggregate([
+			{ $addFields: { totalLikes: { $size: "$likes" } } },
+			{ $sort: { totalLikes: -1 } },
+			{ $project: { totalLikes: 1 } },
+			{ $limit: PER_PAGE_SLIDE },
+		]);
+
+		const listPost = await Post.aggregate([
+			{
+				$match: {
+					$and: [
+						{ topics: topic._id },
+						{
+							_id: {
+								$nin: topLikesPost.map((item) =>
+									mongoose.Types.ObjectId(item._id)
+								),
+							},
+						},
+					],
+				},
+			},
+			{
+				$lookup: {
+					from: "users",
+					localField: "authPost",
+					foreignField: "_id",
+					as: "authPost",
+				},
+			},
+			{ $unwind: "$authPost" },
+			{
+				$lookup: {
+					from: "topics",
+					localField: "topics",
+					foreignField: "_id",
+					as: "topics",
+				},
+			},
+			{ $unwind: "$authPost" },
+			{
+				$lookup: {
+					from: "comments",
+					localField: "_id",
+					foreignField: "postId",
+					as: "comments",
+				},
+			},
+			{ $addFields: { totalComments: { $size: "$comments" } } },
+			{ $addFields: { totalLikes: { $size: "$likes" } } },
+			{ $sort: { createdAt: -1 } },
+			{
+				$project: {
+					title: 1,
+					totalLikes: 1,
+					"topics.name": 1,
+					"authPost.name": 1,
+					"authPost.avatar": 1,
+					avatar: 1,
+					view: 1,
+					createdAt: 1,
+					updatedAt: 1,
+					format: 1,
+					slug: 1,
+					totalComments: 1,
+				},
+			},
+			{ $skip: skip },
+			{ $limit: perPage },
+		]);
 
 		const total = await Post.count({ topics: topic._id });
 
 		return res.status(200).json({
-			list: {
+			data: {
 				...topic._doc,
 				name: undefined,
 				topic: topic.name,
-				data: listPost,
+				list: listPost,
 				total,
 			},
 		});
@@ -342,6 +400,7 @@ export const getPostsType = async (req, res) => {
 	}
 };
 
+// [GET] - [/posts-video]
 export const getPostsVideo = async (req, res) => {
 	try {
 		const listVideo = await Post.find({ format: FORMAT_POST.VIDEO }).sort({
@@ -353,6 +412,7 @@ export const getPostsVideo = async (req, res) => {
 	}
 };
 
+// [PATCH] - [/like_post/:id]
 export const patchLikePost = async (req, res) => {
 	try {
 		const likedPost = await Post.find({
@@ -374,6 +434,7 @@ export const patchLikePost = async (req, res) => {
 	}
 };
 
+// [PATCH] - [/unlike_post/:id]
 export const patchUnLikePost = async (req, res) => {
 	try {
 		await Post.findOneAndUpdate(
@@ -381,6 +442,86 @@ export const patchUnLikePost = async (req, res) => {
 			{ $pull: { likes: req.user._id } }
 		);
 		return res.status(200).json({ message: "UnLike post success" });
+	} catch (error) {
+		return res.status(500).json({ message: error.message });
+	}
+};
+
+// [GET] - [/post_slide]
+export const getPostSlide = async (req, res) => {
+	try {
+		const { skip, perPage } = pagination(req);
+
+		if (req.query.type !== SLUG_TOPICS.FAVORITE) {
+			return res.status(400).json({ message: "Not Found topic" });
+		}
+
+		const topic = await Topic.findOne({ slug: req.query.type }).select({
+			createdAt: 0,
+			updatedAt: 0,
+			__v: 0,
+		});
+
+		if (!topic) {
+			return res.status(400).json({ message: "Not Found topic" });
+		}
+
+		const listPostSlide = await Post.aggregate([
+			{
+				$lookup: {
+					from: "users",
+					localField: "authPost",
+					foreignField: "_id",
+					as: "authPost",
+				},
+			},
+			{ $unwind: "$authPost" },
+			{
+				$lookup: {
+					from: "topics",
+					localField: "topics",
+					foreignField: "_id",
+					as: "topics",
+				},
+			},
+			{
+				$lookup: {
+					from: "comments",
+					localField: "_id",
+					foreignField: "postId",
+					as: "comments",
+				},
+			},
+
+			{ $addFields: { totalComments: { $size: "$comments" } } },
+			{ $addFields: { totalLikes: { $size: "$likes" } } },
+			{ $sort: { totalLikes: -1, createAt: -1 } },
+			{ $limit: perPage },
+			{ $skip: skip },
+
+			{
+				$project: {
+					title: 1,
+					"authPost.name": 1,
+					"authPost.avatar": 1,
+					totalComments: 1,
+					totalLikes: 1,
+					"topics.name": 1,
+					slug: 1,
+					createdAt: 1,
+					updatedAt: 1,
+					avatar: 1,
+				},
+			},
+		]);
+		return res.status(200).json({
+			data: {
+				...topic._doc,
+				name: undefined,
+				topic: topic.name,
+				list: listPostSlide,
+			},
+		});
 	} catch (error) {
 		return res.status(500).json({ message: error.message });
 	}

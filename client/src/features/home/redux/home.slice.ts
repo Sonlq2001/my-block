@@ -39,6 +39,18 @@ export const getPostsVideo = createAsyncThunk(
   }
 );
 
+export const getPostsSlide = createAsyncThunk(
+  'home/getPostsSlide',
+  async (params: ParamsHomePost, { rejectWithValue }) => {
+    try {
+      const res = await homeApi.getPostsSlideApi(params);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 interface HomeSlice {
   // post trending
   postsTrending: PostHomeType | null;
@@ -48,10 +60,14 @@ interface HomeSlice {
   postsNewest: PostItemType[];
   isLoadingPostsNewest: boolean;
 
-  // post styles
+  // posts styles
   postsStyle: PostHomeType | null;
 
+  // posts video
   postsVideo: PostHomeTypeDef[] | null;
+
+  // posts slide
+  postsSlide: PostHomeType | null;
 }
 
 const initialState: HomeSlice = {
@@ -68,6 +84,9 @@ const initialState: HomeSlice = {
 
   // posts video
   postsVideo: null,
+
+  // posts slide
+  postsSlide: null,
 };
 
 const homeSlice = createSlice({
@@ -82,14 +101,14 @@ const homeSlice = createSlice({
     [getPostsHome.fulfilled.type]: (state, action) => {
       state.isLoadingPostsTrending = false;
 
-      switch (action.payload?.list.slug) {
+      switch (action.payload?.data.slug) {
         case TYPE_POST.LIFE:
-          state.postsTrending = action.payload?.list;
+          state.postsTrending = action.payload?.data;
           break;
         case TYPE_POST.NATURE:
         case TYPE_POST.ANIMAL:
         case TYPE_POST.SPORT:
-          state.postsStyle = action.payload?.list;
+          state.postsStyle = action.payload?.data;
           break;
         default:
           break;
@@ -114,6 +133,14 @@ const homeSlice = createSlice({
     // posts video
     [getPostsVideo.fulfilled.type]: (state, action) => {
       state.postsVideo = action.payload.list;
+    },
+
+    // posts slide
+    [getPostsSlide.fulfilled.type]: (state, action) => {
+      state.postsSlide = action.payload.data;
+    },
+    [getPostsSlide.rejected.type]: (state, action) => {
+      state.postsSlide = null;
     },
   },
 });

@@ -1,3 +1,5 @@
 export type ParamsHomePost = {
-  params: { type: string; page: number; per_page: number };
+  type: string;
+  page: number;
+  per_page: number;
 };

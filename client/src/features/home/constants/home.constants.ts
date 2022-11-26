@@ -3,6 +3,7 @@ export enum TYPE_POST {
   NATURE = 'nature',
   ANIMAL = 'animal',
   SPORT = 'sport',
+  FAVORITE = 'favorite',
 }
 
 export const TOPIC_TAB: { label: string; slug: string }[] = [
@@ -19,3 +20,8 @@ export const TOPIC_TAB: { label: string; slug: string }[] = [
     slug: 'sport',
   },
 ];
+
+export enum DEFAULT_PAGINATION {
+  PAGE = 1,
+  PER_PAGE = 2,
+}

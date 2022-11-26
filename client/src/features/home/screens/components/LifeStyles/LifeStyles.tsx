@@ -15,9 +15,7 @@ const LifeStyles: React.FC = () => {
   const [tabIndex, setTabIndex] = useState<string>(TYPE_POST.NATURE);
 
   useEffect(() => {
-    dispatch(
-      getPostsHome({ params: { type: tabIndex, page: 1, per_page: 6 } })
-    );
+    dispatch(getPostsHome({ type: tabIndex, page: 1, per_page: 6 }));
   }, [dispatch, tabIndex]);
 
   const postsStyle = useAppSelector((state) => state.home?.postsStyle);
@@ -55,7 +53,7 @@ const LifeStyles: React.FC = () => {
 
           <div className={styles.groupTabs}>
             <div className={styles.tabItem}>
-              {postsStyle?.data.map((item) => (
+              {postsStyle?.list.map((item) => (
                 <LifeStyleItem key={item._id} post={item} />
               ))}
             </div>
