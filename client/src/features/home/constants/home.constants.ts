@@ -3,6 +3,7 @@ export enum TYPE_POST {
   NATURE = 'nature',
   ANIMAL = 'animal',
   SPORT = 'sport',
+  FAVORITE = 'favorite',
 }
 
 export const TOPIC_TAB: { label: string; slug: string }[] = [
