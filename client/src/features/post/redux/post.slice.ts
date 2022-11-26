@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { PostItemType } from 'features/new-post/types/new-post.types';
+import { ParamsComment } from '../types/comment.types';
 import { postApi } from './../api/post.api';
 
 export const getPost = createAsyncThunk(
@@ -35,10 +36,7 @@ export const postComment = createAsyncThunk(
 
 export const getComments = createAsyncThunk(
   'getComments',
-  async (
-    params: { postId: string; query?: { page: number; perPage: number } },
-    { rejectWithValue }
-  ) => {
+  async (params: ParamsComment, { rejectWithValue }) => {
     try {
       const res = await postApi.getCommentApi(params);
       return res.data;

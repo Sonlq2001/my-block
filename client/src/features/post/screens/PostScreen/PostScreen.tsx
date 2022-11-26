@@ -1,12 +1,11 @@
 import { useEffect, useState, useCallback } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import PostHeader from './../../components/PostHeader/PostHeader';
 import PostContentHeader from './../../components/PostContentHeader/PostContentHeader';
 import SidebarBox from './../../components/SidebarBox/SidebarBox';
 import SidebarTag from './../../components/SidebarTag/SidebarTag';
 import SidebarItemTag from 'components/atoms/SidebarItemTag/SidebarItemTag';
-import ChipInfo from 'components/atoms/ChipInfo/ChipInfo';
 import InputComment from '../../components/Comments/InputComment/InputComment';
 import LoadingPostDetail from 'components/loading/LoadingPostDetail/LoadingPostDetail';
 import Comments from './../../components/Comments/Comments';
@@ -15,8 +14,6 @@ import SavePost from '../../components/SavePost/SavePost';
 import LoadingCircleDot from 'components/loading/LoadingCircleDot/LoadingCircleDot';
 
 import { ReactComponent as IconStar } from 'assets/images/icon-star.svg';
-import { ReactComponent as IconChat } from 'assets/images/icon-chat.svg';
-import { ReactComponent as IconHeart } from 'assets/images/icon-heart.svg';
 
 import styles from './PostScreen.module.scss';
 
@@ -42,10 +39,7 @@ const PostScreen = () => {
   });
   // const idTime = useRef<any>();
   const { slug } = useParams<PostParams>();
-  const { location } = useHistory<string>();
   const { _id: userId } = useDataToken();
-
-  const post_id = location?.state;
 
   const postItem = useAppSelector((state) => state.post.postDetail);
   const commentsPost = useAppSelector((state) => state.post.comments.list);
@@ -53,36 +47,36 @@ const PostScreen = () => {
   const socketData = useAppSelector((state) => state.socket.socketData);
 
   const fetchPostAndComments = useCallback(
-    (postId) => {
+    (slug) => {
       Promise.all([
         dispatch(
           getComments({
-            postId,
-            query,
+            slug,
+            ...query,
           })
         ),
         dispatch(getPost({ slug, userId: userId || '' })),
       ]).finally(() => setLoadingPost(false));
     },
-    [dispatch, query, slug, userId]
+    [dispatch, query, userId]
   );
 
   useEffect(() => {
     if (!loadingPost) return;
-    if (post_id) {
-      fetchPostAndComments(post_id);
+    if (slug) {
+      fetchPostAndComments(slug);
     }
-  }, [post_id, fetchPostAndComments, loadingPost, loadingComment]);
+  }, [slug, fetchPostAndComments, loadingPost, loadingComment]);
 
   // join room socket
   useEffect(() => {
-    if (!post_id || !socketData) return;
+    if (!postItem?._id || !socketData) return;
 
-    socketData.emit('joinPostDetail', post_id);
+    socketData.emit('joinPostDetail', postItem._id);
     return () => {
-      socketData.emit('outPostDetail', post_id);
+      socketData.emit('outPostDetail', postItem._id);
     };
-  }, [post_id, socketData]);
+  }, [postItem?._id, socketData]);
 
   const handleComment = async (value: string) => {
     const res = await dispatch(
@@ -139,8 +133,8 @@ const PostScreen = () => {
     setLoadingComment(true);
     dispatch(
       getComments({
-        postId: post_id,
-        query: newQuery,
+        slug,
+        ...newQuery,
       })
     ).finally(() => setLoadingComment(false));
   };
@@ -178,11 +172,6 @@ const PostScreen = () => {
 
                   <div className={styles.rowPostInfo}>
                     <div className={styles.rowPostInfoBox}>
-                      <ChipInfo icon={<IconHeart />} total="29" />
-                      <ChipInfo
-                        icon={<IconChat />}
-                        total={postItem?.totalComment}
-                      />
                       <SavePost
                         postId={postItem?._id}
                         authPostId={postItem?.authPost._id}

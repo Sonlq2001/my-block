@@ -1,19 +1,28 @@
 import mongoose from "mongoose";
 
 import Comment from "./../models/commentModel";
+import Post from "../models/postModel";
+
 import { pagination } from "../helpers/features.helpers";
 import { io } from "./../index";
 
 export const getComments = async (req, res) => {
 	try {
 		const { perPage, skip } = pagination(req);
+
+		const post = await Post.findOne({ slug: req.params.slug });
+
+		if (!post) {
+			return res.status(404).json({ message: "Post not found" });
+		}
+
 		const data = await Comment.aggregate([
 			{
 				$facet: {
 					totalData: [
 						{
 							$match: {
-								postId: mongoose.Types.ObjectId(req.params.post_id),
+								postId: mongoose.Types.ObjectId(post._id),
 								rootComment: { $exists: false },
 								replyUser: { $exists: false },
 							},
@@ -69,7 +78,7 @@ export const getComments = async (req, res) => {
 					totalCount: [
 						{
 							$match: {
-								postId: mongoose.Types.ObjectId(req.params.post_id),
+								postId: mongoose.Types.ObjectId(post._id),
 								rootComment: { $exists: false },
 								replyUser: { $exists: false },
 							},

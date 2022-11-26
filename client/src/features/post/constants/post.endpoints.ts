@@ -1,7 +1,7 @@
 export enum PostEndpointsEnum {
   GET_POST = '/post/:slug',
   POST_COMMENT = '/comment',
-  GET_COMMENTS = '/comments/:post_id',
+  GET_COMMENTS = '/comments/:slug',
   POST_REPLY_COMMENT = '/reply',
   PATCH_REACTION = '/reaction/:comment_id',
   PATCH_VIEW_POST = '/view_post/:post_id',

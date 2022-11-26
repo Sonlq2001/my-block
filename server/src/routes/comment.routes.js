@@ -10,7 +10,7 @@ import { verifyToken } from "./../middleware/verifyToken";
 
 const route = express.Router();
 
-route.get("/comments/:post_id", verifyToken, getComments);
+route.get("/comments/:slug", verifyToken, getComments);
 route.post("/comment", verifyToken, createComment);
 route.post("/reply", verifyToken, replyComment);
 route.post("/reply", verifyToken, replyComment);
