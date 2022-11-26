@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
+import { Link } from 'react-router-dom';
 
 import styles from './SlidePost.module.scss';
 import TitleMain from 'components/atoms/TitleMain/TitleMain';
@@ -13,6 +14,7 @@ import NavigationCarousel from 'components/atoms/NavigationCarousel/NavigationCa
 import { useAppDispatch, useAppSelector } from 'redux/store';
 import { getPostsSlide } from '../../redux/home.slice';
 import { TYPE_POST, DEFAULT_PAGINATION } from '../../constants/home.constants';
+import { PostPathsEnum } from 'features/post/post';
 
 const SlidePost = () => {
   const dispatch = useAppDispatch();
@@ -78,7 +80,10 @@ const SlidePost = () => {
                 {currentSlide === index && (
                   <div className={styles.itemSlide}>
                     <div className={styles.wrapContentSlide}>
-                      <div className={styles.contentSlide}>
+                      <Link
+                        to={PostPathsEnum.POST.replace(/:slug/, slide.slug)}
+                        className={styles.contentSlide}
+                      >
                         {slide &&
                           slide.topics.length > 0 &&
                           slide.topics.map((topic, index) => (
@@ -104,7 +109,7 @@ const SlidePost = () => {
                             total={slide.totalComments || 0}
                           />
                         </div>
-                      </div>
+                      </Link>
                       <div className={styles.controlSlide}>
                         <NavigationCarousel
                           handleNext={handleNext}

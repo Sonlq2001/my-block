@@ -2,6 +2,7 @@ import { AxiosResponse } from 'axios';
 
 import api from 'api/api';
 import { PostEndpointsEnum } from './../constants/post.endpoints';
+import { ParamsComment } from '../types/comment.types';
 
 const getPostApi = (slug: string): Promise<AxiosResponse> => {
   return api.get(PostEndpointsEnum.GET_POST.replace(/:slug/, slug));
@@ -12,14 +13,12 @@ const postCommentApi = (comment: any): Promise<AxiosResponse> => {
 };
 
 const getCommentApi = ({
-  postId,
-  query,
-}: {
-  postId: string;
-  query?: { page: number; perPage: number };
-}): Promise<AxiosResponse> => {
-  return api.get(PostEndpointsEnum.GET_COMMENTS.replace(/:post_id/, postId), {
-    params: { page: query?.page, per_page: query?.perPage },
+  slug,
+  page,
+  perPage,
+}: ParamsComment): Promise<AxiosResponse> => {
+  return api.get(PostEndpointsEnum.GET_COMMENTS.replace(/:slug/, slug), {
+    params: { page, per_page: perPage },
   });
 };
 
