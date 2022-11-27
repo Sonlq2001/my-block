@@ -13,7 +13,7 @@ import LazyImage from 'components/atoms/LazyImage/LazyImage';
 
 import { useAppDispatch, useAppSelector } from 'redux/store';
 import { getPostsHome } from 'features/home/home';
-import { TYPE_POST } from 'features/home/home';
+import { SLUG_TOPICS } from 'features/home/home';
 import { formatDate } from 'helpers/convert/date';
 
 const TrendingPosts = () => {
@@ -23,7 +23,7 @@ const TrendingPosts = () => {
 
   useEffect(() => {
     dispatch(
-      getPostsHome({ type: TYPE_POST.LIFE, page: 1, per_page: 4 })
+      getPostsHome({ type: SLUG_TOPICS.LIFE, page: 1, per_page: 4 })
     ).finally(() => setIsLoading(false));
   }, [dispatch]);
 

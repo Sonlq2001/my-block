@@ -7,7 +7,7 @@ import {
   PostHomeTypeDef,
 } from 'features/new-post/new-post';
 import { ParamsHomePost } from '../types/home.types';
-import { TYPE_POST } from '../constants/home.constants';
+import { SLUG_TOPICS } from '../constants/home.constants';
 
 export const getPostsHome = createAsyncThunk(
   `home/getPostsTrending`,
@@ -102,12 +102,12 @@ const homeSlice = createSlice({
       state.isLoadingPostsTrending = false;
 
       switch (action.payload?.data.slug) {
-        case TYPE_POST.LIFE:
+        case SLUG_TOPICS.LIFE:
           state.postsTrending = action.payload?.data;
           break;
-        case TYPE_POST.NATURE:
-        case TYPE_POST.ANIMAL:
-        case TYPE_POST.SPORT:
+        case SLUG_TOPICS.NATURE:
+        case SLUG_TOPICS.ANIMAL:
+        case SLUG_TOPICS.SPORT:
           state.postsStyle = action.payload?.data;
           break;
         default:

@@ -1,4 +1,4 @@
-export enum TYPE_POST {
+export enum SLUG_TOPICS {
   LIFE = 'life',
   NATURE = 'nature',
   ANIMAL = 'animal',
