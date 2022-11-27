@@ -380,6 +380,7 @@ export const getPostsType = async (req, res) => {
 					slug: 1,
 					totalComments: 1,
 					excerpt: 1,
+					content: 1,
 				},
 			},
 			{ $skip: skip },

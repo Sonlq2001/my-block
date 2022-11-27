@@ -67,7 +67,6 @@
   .itemBody {
     position: absolute;
     bottom: 0;
-    color: $gray1-color;
     padding: 2.4rem;
     z-index: 2;
 
@@ -76,13 +75,14 @@
       line-height: 2.8rem;
       font-weight: 600;
       margin-top: 1.8rem;
+      color: $white-color;
     }
 
     .itemBodyDes {
       margin-top: 6px;
       font-size: 1.6rem;
       line-height: 2.4rem;
-      color: $text-card-color;
+      color: $gray2-color;
       overflow: hidden;
       display: -webkit-box;
       -webkit-box-orient: vertical;

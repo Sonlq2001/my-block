@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from 'redux/store';
 import { getPostsHome } from 'features/home/home';
 import { SLUG_TOPICS } from 'features/home/home';
 import { formatDate } from 'helpers/convert/date';
+import { truncateText } from 'features/home/helpers/home.helpers';
 
 const TrendingPosts = () => {
   const dispatch = useAppDispatch();
@@ -63,9 +64,6 @@ const TrendingPosts = () => {
                         ),
                         state: postTrendingItem?._id,
                       }}
-                      className={clsx(
-                        !postTrendingItem?.excerpt && styles.fillItem
-                      )}
                     >
                       <h3
                         className={clsx(styles.truncateText, styles.postTitle)}
@@ -73,7 +71,7 @@ const TrendingPosts = () => {
                         {postTrendingItem?.title}
                       </h3>
                     </Link>
-                    {postTrendingItem?.excerpt && (
+                    {postTrendingItem?.excerpt ? (
                       <p
                         className={clsx(
                           styles.truncateText,
@@ -83,6 +81,15 @@ const TrendingPosts = () => {
                       >
                         {postTrendingItem?.excerpt}
                       </p>
+                    ) : (
+                      <p
+                        className={clsx(styles.postDes, styles.fillItem)}
+                        dangerouslySetInnerHTML={{
+                          __html: postTrendingItem?.content
+                            ? truncateText(postTrendingItem?.content, 140)
+                            : '',
+                        }}
+                      />
                     )}
                     <PostCardAuth
                       auth={postTrendingItem?.authPost.name}
