@@ -57,4 +57,5 @@ export type PostHomeTypeDef = {
   videoUrl?: string;
   excerpt?: string;
   totalLikes?: number;
+  content?: string;
 };

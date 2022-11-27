@@ -6,6 +6,7 @@ import styles from './PostTrendingItem.module.scss';
 import { PostHomeTypeDef } from 'features/new-post/new-post';
 import { PostPathsEnum } from 'features/post/post';
 import { formatDate } from 'helpers/convert/date';
+import { truncateText } from 'features/home/helpers/home.helpers';
 
 interface PostTrendingItemProps {
   post: PostHomeTypeDef;
@@ -26,7 +27,16 @@ const PostTrendingItem: React.FC<PostTrendingItemProps> = ({ post }) => {
               {post.title}
             </Link>
           </div>
-          {post.excerpt && <p className={styles.postDes}>{post.excerpt}</p>}
+          {post.excerpt ? (
+            <p className={styles.postDes}>{post.excerpt}</p>
+          ) : (
+            <p
+              className={styles.postDes}
+              dangerouslySetInnerHTML={{
+                __html: post.content ? truncateText(post.content, 100) : '',
+              }}
+            />
+          )}
         </div>
 
         <PostCardAuth

@@ -1,16 +1,8 @@
 @import 'styles/variables';
 
 .carouselItem {
-  min-width: calc(20% - 2.5rem);
-  margin: 0 1.5rem;
-
-  &:nth-child(1) {
-    margin-left: 0;
-  }
-
-  &:nth-child(5) {
-    margin-right: 0;
-  }
+  min-width: 20%;
+  padding: 0 1rem;
 
   .carouselHeader {
     position: relative;

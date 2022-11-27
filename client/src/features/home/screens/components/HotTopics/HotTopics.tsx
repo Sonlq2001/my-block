@@ -4,31 +4,46 @@ import TitleMain from 'components/atoms/TitleMain/TitleMain';
 import NavigationCarousel from 'components/atoms/NavigationCarousel/NavigationCarousel';
 import styles from './HotTopics.module.scss';
 import HotTopicCarouselItem from 'components/atoms/HotTopicCarouselItem/HotTopicCarouselItem';
+import { data } from 'features/home/constants/thumy-data';
+import { smoothHorizontalScroll } from 'helpers/smoothHorizontalScroll';
 
-import { useAppSelector, useAppDispatch } from 'redux/store';
+import { useAppDispatch } from 'redux/store';
 import { getTopics } from 'features/master-data/master-data';
 
 const HotTopics: React.FC = () => {
   const dispatch = useAppDispatch();
-  const carouselApp = useRef<HTMLDivElement>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const itemCarouselRef = useRef<any>();
 
   const handleNext = () => {
-    const slide = carouselApp.current;
-    if (slide) {
-      slide.scrollLeft -= slide.offsetWidth;
-      if (slide.scrollLeft <= 0) {
-        slide.scrollLeft = slide.scrollWidth;
-      }
+    if (!carouselRef.current || !itemCarouselRef.current) {
+      return;
+    }
+
+    const maxScrollLeft =
+      carouselRef.current?.scrollWidth - carouselRef.current?.clientWidth;
+    if (carouselRef.current.scrollLeft <= maxScrollLeft) {
+      smoothHorizontalScroll(
+        carouselRef.current,
+        200,
+        itemCarouselRef.current?.clientWidth(),
+        carouselRef.current?.scrollLeft
+      );
     }
   };
 
   const handlePrev = () => {
-    const slide = carouselApp.current;
-    if (slide) {
-      slide.scrollLeft += slide.offsetWidth;
-      if (slide.scrollLeft >= slide.scrollWidth - slide.offsetWidth) {
-        slide.scrollLeft = 0;
-      }
+    if (!carouselRef.current || !itemCarouselRef.current) {
+      return;
+    }
+
+    if (carouselRef.current.scrollLeft > 0) {
+      smoothHorizontalScroll(
+        carouselRef.current,
+        200,
+        -itemCarouselRef.current?.clientWidth(),
+        carouselRef.current?.scrollLeft
+      );
     }
   };
 
@@ -36,26 +51,22 @@ const HotTopics: React.FC = () => {
     dispatch(getTopics());
   }, [dispatch]);
 
-  const topics = useAppSelector((state) => state.masterData.topics);
+  // const topics = useAppSelector((state) => state.masterData.topics);
 
   return (
     <div className={styles.hotTopicsBg}>
       <div className="container">
-        <div>
-          <div className={styles.hotTopicHeader}>
-            <TitleMain
-              title="Hot topics"
-              description="Discover more 200 topics"
-            />
+        <div className={styles.hotTopicHeader}>
+          <TitleMain
+            title="Hot topics"
+            description="Discover more 200 topics"
+          />
 
-            <NavigationCarousel
-              handlePrev={handlePrev}
-              handleNext={handleNext}
-            />
-          </div>
+          <NavigationCarousel handlePrev={handlePrev} handleNext={handleNext} />
+        </div>
 
-          <div className={styles.carouselHotTopic}>
-            <div className={styles.carouselGroup} ref={carouselApp}>
+        <div className={styles.carouselHotTopic}>
+          {/* <div className={styles.carouselGroup} ref={carouselApp}>
               {topics &&
                 topics.map((item) => (
                   <HotTopicCarouselItem
@@ -64,7 +75,18 @@ const HotTopics: React.FC = () => {
                     topic={item.name}
                   />
                 ))}
-            </div>
+            </div> */}
+          <div className={styles.carouselGroup} ref={carouselRef}>
+            {data.map((item, index) => {
+              return (
+                <HotTopicCarouselItem
+                  topic={`topic ${index + 1}`}
+                  image={item.img}
+                  key={item.id}
+                  ref={itemCarouselRef}
+                />
+              );
+            })}
           </div>
         </div>
       </div>
