@@ -41,9 +41,9 @@ const LifeStyleItem: React.FC<LifeStyleItemProps> = ({ post }) => {
 
         <div className={styles.interactive}>
           <div className={styles.interactiveInfo}>
-            <ChipInfo icon={<IconHeart />} total={10} />
+            <ChipInfo icon={<IconHeart />} total={post.totalLikes || 0} />
 
-            <ChipInfo icon={<IconChat />} total={5} />
+            <ChipInfo icon={<IconChat />} total={post.totalComments || 0} />
           </div>
 
           <div className="interactiveDownload">

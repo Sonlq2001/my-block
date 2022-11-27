@@ -40,7 +40,7 @@ const LatestArticlesCarouselItem: React.FC<LatestArticlesCarouselItemProps> = ({
           <div className={styles.authPost}>
             <PostCardAuth
               column
-              time={moment(post.createdAt).fromNow()}
+              date={moment(post.createdAt).fromNow()}
               size="large"
               auth={post.authPost.name}
               avatar={post.authPost.avatar}

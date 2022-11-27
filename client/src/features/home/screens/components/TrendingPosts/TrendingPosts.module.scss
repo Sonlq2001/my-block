@@ -34,13 +34,15 @@
       flex-direction: column;
       flex-grow: 1;
     }
-    .postTitle {
-      font-size: 2.4rem;
-      line-height: 3.2rem;
+    .truncateText {
       display: -webkit-box;
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
       overflow: hidden;
+    }
+    .postTitle {
+      font-size: 2.4rem;
+      line-height: 3.2rem;
       color: $text-color;
     }
 
@@ -49,6 +51,7 @@
       font-size: 1.6rem;
       line-height: 2.4rem;
       color: $text-title-color;
+      -webkit-line-clamp: 2;
     }
   }
 

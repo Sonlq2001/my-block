@@ -54,7 +54,7 @@ const SocketClient = () => {
 
     socketData.emit('userOnline', userInfo);
   }, [socketData, userInfo]);
-  return <div></div>;
+  return null;
 };
 
 export default SocketClient;

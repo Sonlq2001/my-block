@@ -315,7 +315,8 @@ export const getPostsType = async (req, res) => {
 
 		const topLikesPost = await Post.aggregate([
 			{ $addFields: { totalLikes: { $size: "$likes" } } },
-			{ $sort: { totalLikes: -1 } },
+			{ $match: { totalLikes: { $gt: 0 } } },
+			{ $sort: { totalLikes: -1, createdAt: -1 } },
 			{ $project: { totalLikes: 1 } },
 			{ $limit: PER_PAGE_SLIDE },
 		]);
@@ -378,6 +379,7 @@ export const getPostsType = async (req, res) => {
 					format: 1,
 					slug: 1,
 					totalComments: 1,
+					excerpt: 1,
 				},
 			},
 			{ $skip: skip },
@@ -467,6 +469,8 @@ export const getPostSlide = async (req, res) => {
 		}
 
 		const listPostSlide = await Post.aggregate([
+			{ $addFields: { totalLikes: { $size: "$likes" } } },
+			{ $match: { totalLikes: { $gt: 0 } } },
 			{
 				$lookup: {
 					from: "users",
@@ -494,8 +498,7 @@ export const getPostSlide = async (req, res) => {
 			},
 
 			{ $addFields: { totalComments: { $size: "$comments" } } },
-			{ $addFields: { totalLikes: { $size: "$likes" } } },
-			{ $sort: { totalLikes: -1, createAt: -1 } },
+			{ $sort: { totalLikes: -1, createdAt: -1 } },
 			{ $limit: perPage },
 			{ $skip: skip },
 

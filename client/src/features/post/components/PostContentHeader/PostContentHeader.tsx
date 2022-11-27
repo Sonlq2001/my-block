@@ -12,6 +12,7 @@ import { UserItem } from 'features/auth/auth';
 import { TopicType } from 'features/master-data/master-data';
 import { ProfilePathsEnum } from 'features/profile/profile';
 
+import { formatDate } from 'helpers/convert/date';
 import { useToggleLikePost } from 'hooks/useToggleLikePost';
 
 interface PostContentHeaderProps {
@@ -21,6 +22,7 @@ interface PostContentHeaderProps {
   totalComment: number;
   view: number;
   _id: string;
+  createdAt: string;
 }
 
 const PostContentHeader: React.FC<PostContentHeaderProps> = ({
@@ -30,6 +32,7 @@ const PostContentHeader: React.FC<PostContentHeaderProps> = ({
   totalComment,
   view,
   _id,
+  createdAt,
 }) => {
   const { activeLike, handleLikePost, totalLike } = useToggleLikePost(_id);
 
@@ -48,12 +51,12 @@ const PostContentHeader: React.FC<PostContentHeaderProps> = ({
             avatar={authPost?.avatar}
             column
             size="large"
-            minute="2"
             color="white"
             to={ProfilePathsEnum.PROFILE.replace(
               /:user_id/,
               authPost._id || ''
             )}
+            date={formatDate(createdAt)}
           />
 
           <div className={styles.postInfoBox}>
