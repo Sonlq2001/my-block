@@ -13,7 +13,10 @@ import NavigationCarousel from 'components/atoms/NavigationCarousel/NavigationCa
 
 import { useAppDispatch, useAppSelector } from 'redux/store';
 import { getPostsSlide } from '../../redux/home.slice';
-import { TYPE_POST, DEFAULT_PAGINATION } from '../../constants/home.constants';
+import {
+  SLUG_TOPICS,
+  DEFAULT_PAGINATION,
+} from '../../constants/home.constants';
 import { PostPathsEnum } from 'features/post/post';
 import { formatDate } from 'helpers/convert/date';
 
@@ -57,7 +60,7 @@ const SlidePost = () => {
   useEffect(() => {
     dispatch(
       getPostsSlide({
-        type: TYPE_POST.FAVORITE,
+        type: SLUG_TOPICS.FAVORITE,
         page: DEFAULT_PAGINATION.PAGE,
         per_page: DEFAULT_PAGINATION.PER_PAGE,
       })

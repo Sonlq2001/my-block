@@ -8,11 +8,11 @@ import stylesCommon from 'styles/common.module.scss';
 
 import LifeStyleItem from 'components/atoms/LifeStyleItem/LifeStyleItem';
 import { useAppDispatch, useAppSelector } from 'redux/store';
-import { getPostsHome, TOPIC_TAB, TYPE_POST } from 'features/home/home';
+import { getPostsHome, TOPIC_TAB, SLUG_TOPICS } from 'features/home/home';
 
 const LifeStyles: React.FC = () => {
   const dispatch = useAppDispatch();
-  const [tabIndex, setTabIndex] = useState<string>(TYPE_POST.NATURE);
+  const [tabIndex, setTabIndex] = useState<string>(SLUG_TOPICS.NATURE);
 
   useEffect(() => {
     dispatch(getPostsHome({ type: tabIndex, page: 1, per_page: 6 }));

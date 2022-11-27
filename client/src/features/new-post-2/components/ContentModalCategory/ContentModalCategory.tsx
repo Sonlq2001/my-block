@@ -3,11 +3,12 @@ import clsx from 'clsx';
 import { useFormikContext } from 'formik';
 
 import styles from './ContentModalCategory.module.scss';
-import { getTopics } from 'features/master-data/master-data';
 import { ReactComponent as IconChecked } from 'assets/images/icon-svg/icon-checked.svg';
-import { TypeInitForm } from '../../types/new-post.types';
 
+import { getTopics } from 'features/master-data/master-data';
+import { TypeInitForm } from '../../types/new-post.types';
 import { useAppDispatch, useAppSelector } from 'redux/store';
+import { SLUG_TOPICS } from 'features/home/home';
 
 interface ContentModalCategoryProps {
   name: string;
@@ -23,7 +24,11 @@ const ContentModalCategory: React.FC<ContentModalCategoryProps> = ({
   );
   const dispatch = useAppDispatch();
 
-  const topics = useAppSelector((state) => state.masterData.topics);
+  const topics = useAppSelector((state) =>
+    state.masterData.topics?.filter(
+      (topic) => topic.slug !== SLUG_TOPICS.FAVORITE
+    )
+  );
 
   useEffect(() => {
     dispatch(getTopics()).finally(() => setIsLoading(false));
