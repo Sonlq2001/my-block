@@ -3,8 +3,6 @@ import { forwardRef, useImperativeHandle, useRef } from 'react';
 import LazyImage from 'components/atoms/LazyImage/LazyImage';
 import styles from './HotTopicCarouselItem.module.scss';
 
-export type Ref = HTMLButtonElement;
-
 interface HotTopicCarouselItemProps {
   image: string;
   topic: string;
