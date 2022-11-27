@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
 import clsx from 'clsx';
 
 import TitleMain from 'components/atoms/TitleMain/TitleMain';
@@ -15,6 +14,7 @@ import LazyImage from 'components/atoms/LazyImage/LazyImage';
 import { useAppDispatch, useAppSelector } from 'redux/store';
 import { getPostsHome } from 'features/home/home';
 import { TYPE_POST } from 'features/home/home';
+import { formatDate } from 'helpers/convert/date';
 
 const TrendingPosts = () => {
   const dispatch = useAppDispatch();
@@ -67,18 +67,30 @@ const TrendingPosts = () => {
                         !postTrendingItem?.excerpt && styles.fillItem
                       )}
                     >
-                      <h3 className={styles.postTitle}>
+                      <h3
+                        className={clsx(styles.truncateText, styles.postTitle)}
+                      >
                         {postTrendingItem?.title}
                       </h3>
                     </Link>
                     {postTrendingItem?.excerpt && (
-                      <p className={clsx(styles.fillItem, styles.postDes)}>
+                      <p
+                        className={clsx(
+                          styles.truncateText,
+                          styles.fillItem,
+                          styles.postDes
+                        )}
+                      >
                         {postTrendingItem?.excerpt}
                       </p>
                     )}
                     <PostCardAuth
                       auth={postTrendingItem?.authPost.name}
-                      time={moment(postTrendingItem?.createdAt).fromNow()}
+                      date={
+                        postTrendingItem?.createdAt
+                          ? formatDate(postTrendingItem?.createdAt)
+                          : ''
+                      }
                       avatar={postTrendingItem?.authPost.avatar}
                     />
                   </div>

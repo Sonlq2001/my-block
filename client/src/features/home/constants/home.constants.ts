@@ -23,5 +23,5 @@ export const TOPIC_TAB: { label: string; slug: string }[] = [
 
 export enum DEFAULT_PAGINATION {
   PAGE = 1,
-  PER_PAGE = 2,
+  PER_PAGE = 5,
 }

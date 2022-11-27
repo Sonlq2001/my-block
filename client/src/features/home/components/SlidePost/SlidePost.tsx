@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from 'redux/store';
 import { getPostsSlide } from '../../redux/home.slice';
 import { TYPE_POST, DEFAULT_PAGINATION } from '../../constants/home.constants';
 import { PostPathsEnum } from 'features/post/post';
+import { formatDate } from 'helpers/convert/date';
 
 const SlidePost = () => {
   const dispatch = useAppDispatch();
@@ -95,8 +96,7 @@ const SlidePost = () => {
                           auth={slide.authPost.name || ''}
                           avatar={slide.authPost.avatar || ''}
                           column
-                          time="16-11-2022"
-                          minute="3"
+                          date={formatDate(slide.createdAt, 'DD/MM/yyyy')}
                           size="medium"
                         />
                         <div className={styles.viewSlide}>

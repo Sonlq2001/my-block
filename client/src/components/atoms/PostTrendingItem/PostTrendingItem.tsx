@@ -1,11 +1,11 @@
 import React from 'react';
-import moment from 'moment';
 import { Link } from 'react-router-dom';
 
 import PostCardAuth from 'components/atoms/PostCardAuth/PostCardAuth';
 import styles from './PostTrendingItem.module.scss';
 import { PostHomeTypeDef } from 'features/new-post/new-post';
 import { PostPathsEnum } from 'features/post/post';
+import { formatDate } from 'helpers/convert/date';
 
 interface PostTrendingItemProps {
   post: PostHomeTypeDef;
@@ -31,7 +31,7 @@ const PostTrendingItem: React.FC<PostTrendingItemProps> = ({ post }) => {
 
         <PostCardAuth
           auth={post.authPost.name}
-          time={moment(post.createdAt).fromNow()}
+          date={formatDate(post.createdAt)}
           avatar={post.authPost.avatar}
         />
       </div>
