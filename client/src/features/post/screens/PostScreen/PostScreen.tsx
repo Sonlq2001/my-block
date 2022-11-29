@@ -3,17 +3,14 @@ import { useParams } from 'react-router-dom';
 
 import PostHeader from './../../components/PostHeader/PostHeader';
 import PostContentHeader from './../../components/PostContentHeader/PostContentHeader';
-import SidebarBox from './../../components/SidebarBox/SidebarBox';
-import SidebarTag from './../../components/SidebarTag/SidebarTag';
+
 import SidebarItemTag from 'components/atoms/SidebarItemTag/SidebarItemTag';
 import InputComment from '../../components/Comments/InputComment/InputComment';
 import LoadingPostDetail from 'components/loading/LoadingPostDetail/LoadingPostDetail';
 import Comments from './../../components/Comments/Comments';
 import SharePost from './../../components/SharePost/SharePost';
-import SavePost from '../../components/SavePost/SavePost';
-import LoadingCircleDot from 'components/loading/LoadingCircleDot/LoadingCircleDot';
 
-import { ReactComponent as IconStar } from 'assets/images/icon-star.svg';
+import LoadingCircleDot from 'components/loading/LoadingCircleDot/LoadingCircleDot';
 
 import styles from './PostScreen.module.scss';
 
@@ -102,25 +99,6 @@ const PostScreen = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (idTime.current) {
-  //     clearInterval(idTime.current);
-  //   }
-  //   idTime.current = setInterval(() => {
-  //     setTimeView((pre) => pre + 1);
-  //   }, 1000);
-  //   return () => {
-  //     clearInterval(idTime.current);
-  //   };
-  // }, []);
-
-  // useEffect(() => {
-  //   if (timeView >= 60) {
-  //     clearInterval(idTime.current);
-  //     dispatch(patchViewPost(post_id));
-  //   }
-  // }, [timeView, post_id, dispatch]);
-
   useEffect(() => {
     return () => {
       dispatch(resetComments());
@@ -151,58 +129,41 @@ const PostScreen = () => {
           )}
 
           <div className="container">
-            <div className={styles.rowPost}>
-              <div className={styles.rowPostLeft}>
-                {postItem?.content && (
-                  <div
-                    className="content-post"
-                    dangerouslySetInnerHTML={{ __html: postItem.content }}
-                  />
-                )}
+            <div className={styles.rowPostLeft}>
+              {postItem?.content && (
+                <div
+                  className="content-post"
+                  dangerouslySetInnerHTML={{ __html: postItem.content }}
+                />
+              )}
 
-                <div className={styles.rowPostFooter}>
-                  <div className={styles.rowPostTags}>
-                    {postItem?.tags.map((tagItem) => (
-                      <SidebarItemTag
-                        tag={`#${tagItem.tag}`}
-                        key={tagItem._id}
-                      />
-                    ))}
-                  </div>
-
-                  <div className={styles.rowPostInfo}>
-                    <div className={styles.rowPostInfoBox}>
-                      <SavePost
-                        postId={postItem?._id}
-                        authPostId={postItem?.authPost._id}
-                      />
-                    </div>
-
-                    <SharePost />
-                  </div>
-
-                  {/* comment */}
-                  <>
-                    <InputComment getValue={handleComment} />
-                    {commentsPost.map((comment) => (
-                      <Comments key={comment._id} comment={comment} />
-                    ))}
-                    {commentsPost.length < totalComment && (
-                      <button
-                        className={styles.btnMoreComment}
-                        onClick={handleLoadMoreComment}
-                      >
-                        <span>Xem thêm bình luận</span>
-                        {!loadingComment && <i className="las la-angle-down" />}
-                        {loadingComment && <LoadingCircleDot />}
-                      </button>
-                    )}
-                  </>
+              <div className={styles.rowPostFooter}>
+                <div className={styles.rowPostTags}>
+                  {postItem?.tags.map((tagItem) => (
+                    <SidebarItemTag tag={`#${tagItem.tag}`} key={tagItem._id} />
+                  ))}
                 </div>
-              </div>
-              <div className={styles.rowPostRight}>
-                <SidebarBox title="Trending topic" icon={<IconStar />} />
-                <SidebarTag title="Trending topic" icon={<IconStar />} />
+
+                {/* Share post */}
+                <SharePost />
+
+                {/* Comment */}
+                <>
+                  <InputComment getValue={handleComment} />
+                  {commentsPost.map((comment) => (
+                    <Comments key={comment._id} comment={comment} />
+                  ))}
+                  {commentsPost.length < totalComment && (
+                    <button
+                      className={styles.btnMoreComment}
+                      onClick={handleLoadMoreComment}
+                    >
+                      <span>Xem thêm bình luận</span>
+                      {!loadingComment && <i className="las la-angle-down" />}
+                      {loadingComment && <LoadingCircleDot />}
+                    </button>
+                  )}
+                </>
               </div>
             </div>
           </div>

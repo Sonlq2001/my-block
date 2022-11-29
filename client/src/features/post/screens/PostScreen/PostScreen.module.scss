@@ -1,40 +1,31 @@
 @import 'styles/variables';
 
-.rowPost {
-  display: flex;
-  justify-content: space-between;
+.rowPostLeft {
+  max-width: 850px;
+  font-size: 1.8rem;
+  line-height: 3.2rem;
+  text-align: justify;
   margin-top: 4rem;
+  margin-left: auto;
+  margin-right: auto;
 
-  .rowPostLeft {
-    width: 65%;
-    font-size: 1.8rem;
-    line-height: 3.2rem;
-    margin-right: 8rem;
-    text-align: justify;
-
-    .rowPostFooter {
-      margin-top: 4rem;
-    }
-
-    .rowPostTags {
-      margin-bottom: 3rem;
-    }
-
-    .rowPostInfo {
-      padding-bottom: 3rem;
-      border-bottom: 1px solid $gray5-color;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      .rowPostInfoBox {
-        display: flex;
-        align-items: center;
-      }
-    }
+  .rowPostFooter {
+    margin-top: 4rem;
   }
 
-  .rowPostRight {
-    width: 35%;
+  .rowPostTags {
+    margin-bottom: 3rem;
+  }
+
+  .rowPostInfoBox {
+    display: flex;
+    align-items: center;
+    border: 1px solid red;
+    padding: 1rem;
+    border-radius: 1rem;
+  }
+  .titleSavePost {
+    font-size: 1.6rem;
   }
 }
 

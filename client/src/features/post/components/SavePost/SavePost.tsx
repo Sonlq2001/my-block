@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
 import StarActive from 'assets/images/star-active.png';
-import StarNotActive from 'assets/images/star-not-active.png';
+// import StarNotActive from 'assets/images/star-not-active.png';
+import { ReactComponent as IconBookMark } from 'assets/images/icon-svg/icon-bookmark-active.svg';
 import styles from './SavePost.module.scss';
 
 import { useAppSelector, useAppDispatch } from 'redux/store';
@@ -33,7 +34,8 @@ const SavePost: React.FC<SavePostProps> = ({ postId }) => {
       {isSave ? (
         <img src={StarActive} alt="" />
       ) : (
-        <img src={StarNotActive} alt="" />
+        // <img src={StarNotActive} alt="" />
+        <IconBookMark className={styles.iconBookMark} />
       )}
     </div>
   );

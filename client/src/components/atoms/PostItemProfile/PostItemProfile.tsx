@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import ChipTag from 'components/atoms/ChipTag/ChipTag';
 import ChipInfo from 'components/atoms/ChipInfo/ChipInfo';
@@ -8,13 +9,20 @@ import { ReactComponent as IconHeart } from 'assets/images/icon-heart.svg';
 import { ReactComponent as IconChat } from 'assets/images/icon-chat.svg';
 import styles from './PostItemProfile.module.scss';
 
+import { TypePostUserDef } from 'features/profile/profile';
+import { formatDate } from 'helpers/convert/date';
+import { PostPathsEnum } from 'features/post/post';
+
 interface PostItemProfileProps {
-  post: any;
+  post: TypePostUserDef;
 }
 
 const PostItemProfile: React.FC<PostItemProfileProps> = ({ post }) => {
   return (
-    <div className={styles.postItem}>
+    <Link
+      to={PostPathsEnum.POST.replace(/:slug/, post.slug)}
+      className={styles.postItem}
+    >
       <div className={styles.postHeader}>
         <img src={post.avatar.img} alt="" />
       </div>
@@ -22,20 +30,28 @@ const PostItemProfile: React.FC<PostItemProfileProps> = ({ post }) => {
       <div className={styles.postBody}>
         <div className={styles.postContent}>
           <div className={styles.postAuth}>
-            <PostCardAuth auth={post.authPost.name} />
+            <PostCardAuth
+              auth={post.authPost.name || ''}
+              avatar={post.authPost.avatar}
+              date={formatDate(post.createdAt, 'DD/MM/yyyy')}
+            />
           </div>
-          <h3 className={styles.postTitle}>{post.title}</h3>
+          <h3 className={styles.postTitle}>{post.title || ''}</h3>
         </div>
         <div className={styles.postFooter}>
-          <ChipInfo total="10" icon={<IconHeart />} />
-          <ChipInfo total="10" icon={<IconChat />} />
+          <ChipInfo total={post.totalLikes || 0} icon={<IconHeart />} />
+          <ChipInfo total={post.totalComments || 0} icon={<IconChat />} />
         </div>
       </div>
 
       <div className={styles.postTag}>
-        <ChipTag title={post.topic.name} />
+        {post.topics &&
+          post.topics.length > 0 &&
+          post.topics.map((topic, index) => (
+            <ChipTag title={topic.name || ''} key={index} />
+          ))}
       </div>
-    </div>
+    </Link>
   );
 };
 

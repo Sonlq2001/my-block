@@ -1,7 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { profileApi } from './../api/profile.api';
-import { ProfileUser, QueryParams } from './../types/profile.types';
+import {
+  ProfileUser,
+  QueryParams,
+  TypePostUser,
+} from './../types/profile.types';
 
 export const getProfile = createAsyncThunk(
   'getProfile',
@@ -46,11 +50,7 @@ interface ProfileSlice {
   profileUser: ProfileUser | null;
   isLoadingProfileUser: boolean;
 
-  postsUser: {
-    list: any[];
-    total: number;
-    isLoadingPostsUser: boolean;
-  };
+  postsUser: TypePostUser | null;
 
   postsSaved: any[];
   isLoadingPostsSaved: boolean;
@@ -62,11 +62,7 @@ const initialState: ProfileSlice = {
   isLoadingProfileUser: false,
 
   // post user
-  postsUser: {
-    list: [],
-    total: 0,
-    isLoadingPostsUser: false,
-  },
+  postsUser: null,
 
   // post saved
   postsSaved: [],
@@ -81,11 +77,7 @@ const profileSlice = createSlice({
       state.profileUser = null;
     },
     resetPostUser: (state) => {
-      state.postsUser = {
-        list: [],
-        total: 0,
-        isLoadingPostsUser: false,
-      };
+      state.postsUser = null;
     },
   },
   extraReducers: {
@@ -102,19 +94,8 @@ const profileSlice = createSlice({
     },
 
     // get post user
-    [getPostsUser.pending.type]: (state) => {
-      state.postsUser.isLoadingPostsUser = true;
-    },
     [getPostsUser.fulfilled.type]: (state, action) => {
-      state.postsUser.isLoadingPostsUser = false;
-      state.postsUser.list = [
-        ...state.postsUser.list,
-        ...action.payload.postsUser,
-      ];
-      state.postsUser.total = action.payload.total;
-    },
-    [getPostsUser.rejected.type]: (state) => {
-      state.postsUser.isLoadingPostsUser = false;
+      state.postsUser = action.payload;
     },
 
     // get post saved

@@ -13,7 +13,7 @@ import styles from './SharePost.module.scss';
 
 const SharePost: React.FC = () => {
   return (
-    <div>
+    <div className={styles.groupShare}>
       <FacebookShareButton url="as" className={styles.itemShare}>
         <FacebookIcon size={30} round />
       </FacebookShareButton>

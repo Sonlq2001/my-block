@@ -171,27 +171,78 @@ export const getPostsTrending = async (req, res) => {
 	}
 };
 
+// [GET] - [/posts_user/:user_id]
 export const getPostsUser = async (req, res) => {
 	try {
-		const features = new ApiFeatures(
-			Post.find({
-				authPost: req.params.user_id,
-			}),
-			req.query
-		)
-			.pagination()
-			.sorting();
+		const { skip, perPage } = pagination(req);
 
-		const postsUser = await features.query.populate({
-			path: "authPost topic",
-			select: "name",
-		});
-		const total = await Post.count({
-			authPost: req.params.user_id,
-		});
-		return res.status(200).json({ postsUser, total });
+		const listPost = await Post.aggregate([
+			{
+				$facet: {
+					data: [
+						{
+							$match: { authPost: mongoose.Types.ObjectId(req.params.user_id) },
+						},
+						{
+							$lookup: {
+								from: "users",
+								localField: "authPost",
+								foreignField: "_id",
+								as: "authPost",
+							},
+						},
+						{ $unwind: "$authPost" },
+						{
+							$lookup: {
+								from: "topics",
+								localField: "topics",
+								foreignField: "_id",
+								as: "topics",
+							},
+						},
+						{
+							$lookup: {
+								from: "comments",
+								localField: "_id",
+								foreignField: "postId",
+								as: "comments",
+							},
+						},
+						{ $addFields: { totalLikes: { $size: "$likes" } } },
+						{ $addFields: { totalComments: { $size: "$comments" } } },
+						{
+							$project: {
+								title: 1,
+								avatar: 1,
+								"topics.name": 1,
+								createdAt: 1,
+								updatedAt: 1,
+								slug: 1,
+								totalLikes: 1,
+								totalComments: 1,
+								format: 1,
+								"authPost.name": 1,
+								"authPost.avatar": 1,
+							},
+						},
+						{ $skip: skip },
+						{ $limit: perPage },
+					],
+					total: [
+						{
+							$match: { authPost: mongoose.Types.ObjectId(req.params.user_id) },
+						},
+						{ $count: "totalPost" },
+					],
+				},
+			},
+		]);
+
+		const data = listPost[0].data || [];
+		const total = listPost[0].total[0].totalPost || 0;
+		return res.status(200).json({ data, total });
 	} catch (error) {
-		return res.status(500).json({ msg: error.message });
+		return res.status(500).json({ message: error.message });
 	}
 };
 
