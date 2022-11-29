@@ -20,7 +20,6 @@ import {
   getProfile,
   getPostsUser,
   resetProfile,
-  getPostsSaved,
   resetPostUser,
 } from './../../redux/profile.slice';
 
@@ -33,35 +32,23 @@ const ProfileScreen = () => {
   const { user_id } = useParams<QueryParams>();
   const [toggleSelect, setToggleSelect] = useState<boolean>(false);
   const [tab, setTab] = useState<number>(1);
+  const [isLoadingUser, setIsLoadingUser] = useState<boolean>(false);
+  const [isLoadingPost, setIsLoadingPost] = useState<boolean>(false);
+
   const [query, setQuery] = useState<any>({
     page: 1,
     perPage: 8,
     sort: LIST_SELECT[0].id,
   });
 
-  const {
-    isLoadingProfileUser,
-    profileUser,
-    postsUser,
-    isLoadingPostsUser,
-    userInfo,
-    postsSaved,
-    isLoadingPostsSaved,
-    totalPostUser,
-  } = useAppSelector((state) => ({
-    isLoadingProfileUser: state.profile.isLoadingProfileUser,
-    profileUser: state.profile.profileUser,
-    postsUser: state.profile.postsUser.list,
-    userInfo: state.user.userInfo,
-    isLoadingPostsUser: state.profile.postsUser.isLoadingPostsUser,
-    postsSaved: state.profile.postsSaved,
-    isLoadingPostsSaved: state.profile.isLoadingPostsSaved,
-    totalPostUser: state.profile.postsUser.total,
-  }));
+  const profileUser = useAppSelector((state) => state.profile.profileUser);
+  const userInfo = useAppSelector((state) => state.user.userInfo);
+  const postsUser = useAppSelector((state) => state.profile.postsUser);
 
   useEffect(() => {
     if (user_id !== userInfo?._id) {
-      dispatch(getProfile(user_id));
+      setIsLoadingUser(true);
+      dispatch(getProfile(user_id)).finally(() => setIsLoadingUser(false));
     }
     return () => {
       dispatch(resetProfile());
@@ -69,15 +56,16 @@ const ProfileScreen = () => {
   }, [user_id, dispatch, userInfo]);
 
   useEffect(() => {
-    if (tab === 1)
+    if (tab === 1) {
+      setIsLoadingPost(true);
       dispatch(
         getPostsUser({
           userId: user_id,
           query,
         })
-      );
-    if (tab === 2 && user_id === userInfo?._id) dispatch(getPostsSaved(query));
-  }, [tab, user_id, dispatch, userInfo, query]);
+      ).finally(() => setIsLoadingPost(false));
+    }
+  }, [user_id, dispatch, query, tab]);
 
   const handleShowMore = () => {
     setQuery({ ...query, page: ++query.page });
@@ -87,12 +75,12 @@ const ProfileScreen = () => {
     return () => {
       dispatch(resetPostUser());
     };
-  }, [dispatch]);
+  }, [dispatch, tab]);
 
   return (
     <div>
-      {isLoadingProfileUser && <LoadingProfile />}
-      {!isLoadingProfileUser && (profileUser || userInfo) && (
+      {isLoadingUser && <LoadingProfile />}
+      {!isLoadingUser && (profileUser || userInfo) && (
         <ProfileHeader>
           <ProfileContentHeader profileUser={profileUser || userInfo} />
         </ProfileHeader>
@@ -108,7 +96,7 @@ const ProfileScreen = () => {
                 })}
                 onClick={() => setTab(1)}
               >
-                Bài đăng
+                Công khai
               </button>
               {user_id === userInfo?._id && (
                 <button
@@ -117,13 +105,26 @@ const ProfileScreen = () => {
                   })}
                   onClick={() => {
                     setTab(2);
-                    dispatch(resetPostUser());
                     setQuery({ ...query, page: 1 });
                   }}
                 >
                   Đã lưu
                 </button>
               )}
+              <button
+                className={clsx(stylesCommon.navigationTabItem, {
+                  [stylesCommon.active]: tab === 3,
+                })}
+              >
+                Lưu nháp
+              </button>
+              <button
+                className={clsx(stylesCommon.navigationTabItem, {
+                  [stylesCommon.active]: tab === 4,
+                })}
+              >
+                Chỉ mình tôi
+              </button>
             </div>
             <div className={styles.groupSelect}>
               <button
@@ -166,29 +167,21 @@ const ProfileScreen = () => {
           <div className={styles.groupTabs}>
             {tab === 1 && (
               <div className={styles.itemTab}>
-                {isLoadingPostsUser && <LoadingCardProfile count={8} />}
-                {!isLoadingPostsUser &&
-                  postsUser.length > 0 &&
-                  postsUser.map((post: any) => {
+                {isLoadingPost && <LoadingCardProfile count={4} />}
+                {!isLoadingPost &&
+                  postsUser?.data &&
+                  postsUser.data.length > 0 &&
+                  postsUser.data.map((post: any) => {
                     return <PostItemProfile key={post._id} post={post} />;
                   })}
               </div>
             )}
-            {tab === 2 && (
-              <div className={styles.itemTab}>
-                {isLoadingPostsSaved && <LoadingCardProfile count={8} />}
-                {!isLoadingPostsSaved &&
-                  postsSaved.length > 0 &&
-                  postsSaved.map((post) => {
-                    return <PostItemProfile key={post._id} post={post} />;
-                  })}
-              </div>
-            )}
+            {tab === 2 && <div className={styles.itemTab}>tab 2</div>}
           </div>
 
           <div className={styles.groupBtn}>
             <Button
-              disabled={postsUser.length === totalPostUser}
+              // disabled={postsUser.length === totalPostUser}
               onClick={handleShowMore}
             >
               Xem thêm

@@ -10,3 +10,22 @@ export type QueryParams = {
   perPage: string;
   sort: string;
 };
+
+export type TypePostUser = {
+  data: TypePostUserDef[];
+  total: number;
+};
+
+export type TypePostUserDef = {
+  _id: string;
+  title: string;
+  avatar: { idImg: string; img: string };
+  topics: { name: string }[];
+  createdAt: string;
+  updatedAt: string;
+  slug: string;
+  format: number;
+  totalLikes: number;
+  totalComments: number;
+  authPost: { name: string; avatar: string };
+};

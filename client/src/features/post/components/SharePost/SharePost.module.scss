@@ -1,3 +1,10 @@
+@import 'styles/variables';
+
+.groupShare {
+  padding-bottom: 3rem;
+  border-bottom: 1px solid $gray5-color;
+}
+
 .itemShare + .itemShare {
   margin-left: 5px;
 }
