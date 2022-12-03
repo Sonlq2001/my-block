@@ -42,6 +42,7 @@ const PostScreen = () => {
   const commentsPost = useAppSelector((state) => state.post.comments.list);
   const totalComment = useAppSelector((state) => state.post.comments.total);
   const socketData = useAppSelector((state) => state.socket.socketData);
+  const savePost = useAppSelector((state) => state.user.userInfo?.savePost);
 
   const fetchPostAndComments = useCallback(
     (slug) => {
@@ -52,10 +53,12 @@ const PostScreen = () => {
             ...query,
           })
         ),
-        dispatch(getPost({ slug, userId: userId || '' })),
+        dispatch(
+          getPost({ slug, userId: userId || '', savedPost: savePost || [] })
+        ),
       ]).finally(() => setLoadingPost(false));
     },
-    [dispatch, query, userId]
+    [dispatch, query, savePost, userId]
   );
 
   useEffect(() => {
@@ -63,7 +66,7 @@ const PostScreen = () => {
     if (slug) {
       fetchPostAndComments(slug);
     }
-  }, [slug, fetchPostAndComments, loadingPost, loadingComment]);
+  }, [slug, fetchPostAndComments, loadingPost]);
 
   // join room socket
   useEffect(() => {
