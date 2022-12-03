@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { userApi } from './../api/user.api';
+import { UserInfoType } from '../types/user.types';
 
 export const getUserInfo = createAsyncThunk(`user/getUserInfo`, async () => {
   try {
@@ -10,7 +11,7 @@ export const getUserInfo = createAsyncThunk(`user/getUserInfo`, async () => {
 });
 
 interface UserSlice {
-  userInfo: any | null;
+  userInfo: UserInfoType | null;
   isLoadingUser: boolean;
 }
 
@@ -19,10 +20,23 @@ const initialState: UserSlice = {
   isLoadingUser: false,
 };
 
-const useSlice = createSlice({
+const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    updatePostSavedUser: (state, action) => {
+      if (state.userInfo) {
+        state.userInfo = {
+          ...state.userInfo,
+          savePost: state.userInfo?.savePost.includes(action.payload)
+            ? state.userInfo?.savePost?.filter(
+                (post) => post !== action.payload
+              )
+            : [...state.userInfo?.savePost, action.payload],
+        };
+      }
+    },
+  },
   extraReducers: {
     [getUserInfo.pending.type]: (state) => {
       state.isLoadingUser = true;
@@ -39,4 +53,5 @@ const useSlice = createSlice({
   },
 });
 
-export const userReducer = useSlice.reducer;
+export const userReducer = userSlice.reducer;
+export const { updatePostSavedUser } = userSlice.actions;

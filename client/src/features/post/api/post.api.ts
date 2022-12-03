@@ -41,11 +41,15 @@ const patchViewPost = (id: string): Promise<AxiosResponse> => {
 };
 
 const patchSavePost = (postId: string): Promise<AxiosResponse> => {
-  return api.patch(PostEndpointsEnum.PATCH_SAVE_POST, { postId });
+  return api.patch(
+    PostEndpointsEnum.PATCH_SAVE_POST.replace(/:post_id/, postId)
+  );
 };
 
 const patchUnSavePost = (postId: string): Promise<AxiosResponse> => {
-  return api.patch(PostEndpointsEnum.PATCH_UN_SAVE_POST, { postId });
+  return api.patch(
+    PostEndpointsEnum.PATCH_UN_SAVE_POST.replace(/:post_id/, postId)
+  );
 };
 
 const patchLikePostApi = (postId: string): Promise<AxiosResponse> => {

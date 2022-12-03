@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 
 import styles from './ProfileContentHeader.module.scss';
 
-import { ProfileUser } from './../../types/profile.types';
+import { UserInfoType } from 'features/user/user';
 import { ProfilePathsEnum } from '../../constants/profile.paths';
 
 interface ProfileContentHeaderProps {
-  profileUser: ProfileUser;
+  profileUser: UserInfoType;
 }
 
 const ProfileContentHeader: React.FC<ProfileContentHeaderProps> = ({

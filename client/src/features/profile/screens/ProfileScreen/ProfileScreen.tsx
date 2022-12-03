@@ -46,14 +46,14 @@ const ProfileScreen = () => {
   const postsUser = useAppSelector((state) => state.profile.postsUser);
 
   useEffect(() => {
-    if (user_id !== userInfo?._id) {
+    if (user_id) {
       setIsLoadingUser(true);
       dispatch(getProfile(user_id)).finally(() => setIsLoadingUser(false));
     }
     return () => {
       dispatch(resetProfile());
     };
-  }, [user_id, dispatch, userInfo]);
+  }, [user_id, dispatch]);
 
   useEffect(() => {
     if (tab === 1) {
@@ -80,9 +80,9 @@ const ProfileScreen = () => {
   return (
     <div>
       {isLoadingUser && <LoadingProfile />}
-      {!isLoadingUser && (profileUser || userInfo) && (
+      {!isLoadingUser && profileUser && (
         <ProfileHeader>
-          <ProfileContentHeader profileUser={profileUser || userInfo} />
+          <ProfileContentHeader profileUser={profileUser} />
         </ProfileHeader>
       )}
 

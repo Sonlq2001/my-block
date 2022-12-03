@@ -34,6 +34,7 @@ export interface PostItemType extends Omit<PostType, 'tags'> {
   tags: { tag: string; _id: string }[];
   likes: string[];
   activeLike?: boolean;
+  activePostSaved?: boolean;
 }
 
 export type PostHomeType = {

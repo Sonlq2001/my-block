@@ -1,11 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { profileApi } from './../api/profile.api';
-import {
-  ProfileUser,
-  QueryParams,
-  TypePostUser,
-} from './../types/profile.types';
+import { QueryParams, TypePostUser } from './../types/profile.types';
+import { UserInfoType } from 'features/user/user';
 
 export const getProfile = createAsyncThunk(
   'getProfile',
@@ -47,7 +44,7 @@ export const getPostsSaved = createAsyncThunk(
 );
 
 interface ProfileSlice {
-  profileUser: ProfileUser | null;
+  profileUser: UserInfoType | null;
   isLoadingProfileUser: boolean;
 
   postsUser: TypePostUser | null;

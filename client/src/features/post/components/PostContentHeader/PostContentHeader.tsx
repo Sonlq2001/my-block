@@ -2,10 +2,10 @@ import ChipTag from 'components/atoms/ChipTag/ChipTag';
 import ChipInfo from 'components/atoms/ChipInfo/ChipInfo';
 import PostCardAuth from 'components/atoms/PostCardAuth/PostCardAuth';
 
-import { ReactComponent as IconEye } from 'assets/images/icon-eye.svg';
 import { ReactComponent as IconHeart } from 'assets/images/icon-heart.svg';
 import { ReactComponent as IconChat } from 'assets/images/icon-chat.svg';
 import { ReactComponent as IconDownload } from 'assets/images/icon-download.svg';
+import SavePost from '../SavePost/SavePost';
 
 import styles from './PostContentHeader.module.scss';
 import { UserItem } from 'features/auth/auth';
@@ -20,7 +20,6 @@ interface PostContentHeaderProps {
   authPost: UserItem;
   topics: TopicType[];
   totalComment: number;
-  view: number;
   _id: string;
   createdAt: string;
 }
@@ -30,7 +29,6 @@ const PostContentHeader: React.FC<PostContentHeaderProps> = ({
   authPost,
   topics,
   totalComment,
-  view,
   _id,
   createdAt,
 }) => {
@@ -60,7 +58,8 @@ const PostContentHeader: React.FC<PostContentHeaderProps> = ({
           />
 
           <div className={styles.postInfoBox}>
-            <ChipInfo total={view || 0} icon={<IconEye />} dark />
+            <SavePost postId={_id} />
+
             <ChipInfo total={totalComment} icon={<IconChat />} dark />
             <div className={styles.postInfoLine}></div>
             <ChipInfo

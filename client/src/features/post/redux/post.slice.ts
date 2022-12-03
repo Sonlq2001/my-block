@@ -7,7 +7,11 @@ import { postApi } from './../api/post.api';
 export const getPost = createAsyncThunk(
   `post/getPost`,
   async (
-    { slug, userId }: { slug: string; userId: string },
+    {
+      slug,
+      userId,
+      savedPost,
+    }: { slug: string; userId: string; savedPost: string[] },
     { rejectWithValue }
   ) => {
     try {
@@ -15,6 +19,7 @@ export const getPost = createAsyncThunk(
       return {
         postItem: res.data.postItem,
         userId,
+        savedPost,
       };
     } catch (error: any) {
       return rejectWithValue(error.response.msg);
@@ -88,8 +93,8 @@ export const patchSavePost = createAsyncThunk(
   `post/patchSavePost`,
   async (postId: string, { rejectWithValue }) => {
     try {
-      const res = await postApi.patchSavePost(postId);
-      return res.data;
+      await postApi.patchSavePost(postId);
+      return null;
     } catch (error: any) {
       return rejectWithValue(error.response.msg);
     }
@@ -97,7 +102,7 @@ export const patchSavePost = createAsyncThunk(
 );
 
 export const patchUnSavePost = createAsyncThunk(
-  `post/patchSavePost`,
+  `post/patchUnSavePost`,
   async (postId: string, { rejectWithValue }) => {
     try {
       const res = await postApi.patchUnSavePost(postId);
@@ -186,6 +191,14 @@ const postSlice = createSlice({
         state.postDetail = { ...state.postDetail, activeLike: !action.payload };
       }
     },
+    updateActivePostSaved: (state, action) => {
+      if (state.postDetail) {
+        state.postDetail = {
+          ...state.postDetail,
+          activePostSaved: !action.payload,
+        };
+      }
+    },
   },
   extraReducers: {
     // get post
@@ -198,6 +211,9 @@ const postSlice = createSlice({
         ...action.payload.postItem,
         activeLike: !!action.payload.postItem.likes.includes(
           action.payload.userId
+        ),
+        activePostSaved: !!action.payload.savedPost.includes(
+          action.payload.postItem._id
         ),
       };
     },
@@ -221,6 +237,7 @@ const postSlice = createSlice({
       state.comments.isLoadingComments = false;
     },
 
+    // like post
     [patchLikePost.fulfilled.type]: (state, action) => {
       if (state.postDetail) {
         state.postDetail = {
@@ -248,4 +265,5 @@ export const {
   updateCommentReply,
   resetComments,
   updateActiveLike,
+  updateActivePostSaved,
 } = postSlice.actions;

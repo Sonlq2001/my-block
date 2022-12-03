@@ -5,11 +5,11 @@ import styles from './HeaderInfo.module.scss';
 
 import { ReactComponent as IconHeart } from 'assets/images/icon-heart.svg';
 import { ReactComponent as IconChat } from 'assets/images/icon-chat.svg';
-import { ReactComponent as IconEye } from 'assets/images/icon-eye.svg';
 import ProgressBar from 'components/atoms/ProgressBar/ProgressBar';
 import ChipInfo from 'components/atoms/ChipInfo/ChipInfo';
-import { useAppSelector } from 'redux/store';
+import SavePost from 'features/post/components/SavePost/SavePost';
 
+import { useAppSelector } from 'redux/store';
 import { useToggleLikePost } from 'hooks/useToggleLikePost';
 
 interface HeaderInfoProps {
@@ -19,14 +19,13 @@ interface HeaderInfoProps {
 const HeaderInfo: React.FC<HeaderInfoProps> = ({ existHeaderMain = false }) => {
   const [isShowHeaderInfo, setIsShowHeaderInfo] = useState<boolean>(false);
 
-  const { avatarAuthPost, titlePost, viewPost, totalCommentPost } =
-    useAppSelector((state) => ({
-      avatarAuthPost: state.post.postDetail?.authPost.avatar,
-      titlePost: state.post.postDetail?.title,
-      viewPost: state.post.postDetail?.view,
-      totalCommentPost: state.post.postDetail?.totalComment,
-    }));
-
+  const titlePost = useAppSelector((state) => state.post.postDetail?.title);
+  const avatarAuthPost = useAppSelector(
+    (state) => state.post.postDetail?.avatar.img
+  );
+  const totalCommentPost = useAppSelector(
+    (state) => state.post.postDetail?.totalComment
+  );
   const postId = useAppSelector((state) => state.post.postDetail?._id);
 
   useEffect(() => {
@@ -56,11 +55,11 @@ const HeaderInfo: React.FC<HeaderInfoProps> = ({ existHeaderMain = false }) => {
     >
       <header className={'container-full'}>
         <div className={styles.infoPost}>
-          <img src={avatarAuthPost || ''} alt="" width={44} height={44} />
+          <img src={avatarAuthPost || ''} alt="" />
           <div className={styles.titlePost}>{titlePost || ''}</div>
 
           <div className={styles.dataPost}>
-            <ChipInfo icon={<IconEye />} total={viewPost} dark />
+            <SavePost postId={postId || ''} />
             <ChipInfo
               icon={<IconHeart />}
               total={totalLike}

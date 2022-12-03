@@ -11,27 +11,35 @@ export const getUser = async (req, res) => {
 	}
 };
 
-export const useSavePost = async (req, res) => {
+// [PATCH] - [/user_save_post/:post_id]
+export const patchUseSavePost = async (req, res) => {
 	try {
-		const resData = await User.findOneAndUpdate(
+		const existPost = await User.findOne({ savePost: req.params.post_id });
+
+		if (existPost) {
+			return res.status(400).json({ message: "Bài viết đã được lưu" });
+		}
+
+		await User.findOneAndUpdate(
 			{ _id: req.user._id },
-			{ $push: { savePost: req.body.postId } },
+			{ $push: { savePost: req.params.post_id } },
 			{ new: true }
 		);
-		return res.status(200).json({ resData });
+		return res.status(200).json({ message: "Thêm vào mục đã lưu" });
 	} catch (error) {
 		return res.status(500).json({ msg: error.message });
 	}
 };
 
+// [PATCH] - [/user_un_save_post/:post_id]
 export const useUnSavePost = async (req, res) => {
 	try {
-		const resData = await User.findOneAndUpdate(
+		await User.findOneAndUpdate(
 			{ _id: req.user._id },
-			{ $pull: { savePost: req.body.postId } },
+			{ $pull: { savePost: req.params.post_id } },
 			{ new: true }
 		);
-		return res.status(200).json({ resData });
+		return res.status(200).json({ message: "Xóa khỏi mục đã lưu" });
 	} catch (error) {
 		return res.status(500).json({ msg: error.message });
 	}
