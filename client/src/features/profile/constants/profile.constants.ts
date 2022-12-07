@@ -4,12 +4,8 @@ export const LIST_SELECT = [
     name: 'Mới nhất',
   },
   {
-    id: '-view',
-    name: 'Yêu thích',
-  },
-  {
-    id: '-total_comment',
-    name: 'Lượt phản hồi',
+    id: 'createdAt',
+    name: 'Lâu nhất',
   },
 ];
 
@@ -45,3 +41,10 @@ export const DATA_ARTICLES = [
     img: 'https://cdn.pixabay.com/photo/2022/01/12/19/28/mountains-6933693__340.jpg',
   },
 ];
+
+export enum TAB_PROFILE {
+  PUBLIC = 'public',
+  SAVE = 'save',
+  DRAFT = 'draft',
+  ALONE = 'alone',
+}

@@ -131,7 +131,7 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({
                       <li className={styles.itemAction}>
                         <Link
                           to={ProfilePathsEnum.PROFILE.replace(
-                            /:user_id/,
+                            /:userId/,
                             authId
                           )}
                           className={styles.linkAction}

@@ -10,23 +10,29 @@ const getUserApi = (userId: string): Promise<AxiosResponse> => {
 
 const getPostsUserApi = ({
   userId,
-  query,
+  queries,
 }: {
   userId: string;
-  query: QueryParams;
+  queries: QueryParams;
 }): Promise<AxiosResponse> => {
   return api.get(
     ProfileEndpointsEnum.GET_POSTS_USER.replace(/:user_id/, userId),
-    { params: { page: query.page, per_page: query.perPage, sort: query.sort } }
+    {
+      params: {
+        page: queries.page,
+        per_page: queries.perPage,
+        sort: queries.sort,
+      },
+    }
   );
 };
 
-const getPostsSavedApi = (params: QueryParams): Promise<AxiosResponse> => {
+const getPostsSavedApi = (queries: QueryParams): Promise<AxiosResponse> => {
   return api.get(ProfileEndpointsEnum.GET_POSTS_SAVED, {
     params: {
-      sort: params.sort,
-      page: params.page,
-      per_page: params.perPage,
+      page: queries.page,
+      per_page: queries.perPage,
+      sort: queries.sort,
     },
   });
 };

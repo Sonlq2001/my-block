@@ -1,3 +1,5 @@
+import { TAB_PROFILE } from '../constants/profile.constants';
+
 export type ProfileUser = {
   _id: string;
   email: string;
@@ -6,8 +8,9 @@ export type ProfileUser = {
 };
 
 export type QueryParams = {
-  page: string;
-  perPage: string;
+  page?: number;
+  perPage?: number;
+  tab: TAB_PROFILE;
   sort: string;
 };
 
