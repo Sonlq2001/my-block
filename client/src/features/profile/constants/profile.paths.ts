@@ -1,4 +1,4 @@
 export enum ProfilePathsEnum {
-  PROFILE = '/profile/:user_id',
+  PROFILE = '/profile/:userId',
   PROFILE_SETTING = '/profile-setting',
 }

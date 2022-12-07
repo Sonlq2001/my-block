@@ -50,10 +50,7 @@ const PostContentHeader: React.FC<PostContentHeaderProps> = ({
             column
             size="large"
             color="white"
-            to={ProfilePathsEnum.PROFILE.replace(
-              /:user_id/,
-              authPost._id || ''
-            )}
+            to={ProfilePathsEnum.PROFILE.replace(/:userId/, authPost._id || '')}
             date={formatDate(createdAt)}
           />
 

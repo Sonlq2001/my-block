@@ -26,3 +26,11 @@ export class ApiFeatures {
 		return this;
 	}
 }
+
+export const convertsQuery = (req) => {
+	const sort = req.query.sort;
+	const flagSort = sort.charAt(0);
+	const fieldSort = flagSort === "-" ? sort.slice(1) : sort;
+	const valueSort = flagSort === "-" ? -1 : 1;
+	return { [fieldSort]: valueSort };
+};

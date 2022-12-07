@@ -11,7 +11,7 @@ interface AvatarCommentProps {
 const AvatarComment: React.FC<AvatarCommentProps> = ({ avatar, userId }) => {
   return (
     <div className={styles.avatarComment}>
-      <Link to={ProfilePathsEnum.PROFILE.replace(/:user_id/, userId)}>
+      <Link to={ProfilePathsEnum.PROFILE.replace(/:userId/, userId)}>
         <img src={avatar} alt="" />
       </Link>
     </div>
