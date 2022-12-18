@@ -12,6 +12,8 @@ import Button from 'components/atoms/Button/Button';
 import LoadingProfile from 'components/loading/LoadingProfile/LoadingProfile';
 import LoadingCardProfile from 'components/loading/LoadingCardProfile/LoadingCardProfile';
 import TabContent from '../../components/TabContent/TabContent';
+import SearchPost from '../../components/SearchPost/SearchPost';
+import { useDebounce } from 'hooks/hooks';
 
 import styles from './ProfileScreen.module.scss';
 import stylesCommon from 'styles/common.module.scss';
@@ -22,7 +24,6 @@ import {
   getPostsUser,
   resetProfile,
   resetPostUser,
-  getPostsSaved,
 } from './../../redux/profile.slice';
 import useQueryState from 'hooks/useQueryState';
 import { QueryParams } from '../../types/profile.types';
@@ -31,17 +32,18 @@ const ProfileScreen = () => {
   const dispatch = useAppDispatch();
   const { userId } = useParams<{ userId: string }>();
   const [toggleSelect, setToggleSelect] = useState<boolean>(false);
-  const [queries, setQueries] = useQueryState<QueryParams>({
-    tab: TAB_PROFILE.PUBLIC,
-    sort: '-createdAt',
-  });
-  const [paramsPage, setParamsPage] = useState<{
-    page: number;
-    perPage: number;
-  }>({
-    page: 1,
-    perPage: 8,
-  });
+  const [queries, setQueries] = useQueryState<QueryParams>(
+    {
+      tab: TAB_PROFILE.PUBLIC,
+      sort: '-createdAt',
+      q: '',
+      page: 1,
+      perPage: 8,
+    },
+    {},
+    ['page', 'perPage']
+  );
+
   const [isLoadingUser, setIsLoadingUser] = useState<boolean>(false);
   const [isLoadingPost, setIsLoadingPost] = useState<boolean>(false);
 
@@ -51,6 +53,9 @@ const ProfileScreen = () => {
     (state) => state.profile.postsUser.total
   );
   const postsUserData = useAppSelector((state) => state.profile.postsUser.data);
+
+  const keyDebounce = useDebounce(queries.q);
+  const loadingDebounce = useDebounce(true);
 
   useEffect(() => {
     if (userId) {
@@ -63,36 +68,39 @@ const ProfileScreen = () => {
   }, [userId, dispatch]);
 
   useEffect(() => {
-    setIsLoadingPost(true);
-    if (queries.tab === TAB_PROFILE.PUBLIC) {
-      dispatch(
-        getPostsUser({
-          userId,
-          queries: { ...queries, ...paramsPage },
-        })
-      ).finally(() => setIsLoadingPost(false));
-    }
-    if (queries.tab === TAB_PROFILE.SAVE) {
-      dispatch(getPostsSaved({ ...queries, ...paramsPage })).finally(() =>
-        setIsLoadingPost(false)
-      );
-    }
-  }, [userId, dispatch, queries, paramsPage]);
+    setIsLoadingPost(loadingDebounce);
+    dispatch(
+      getPostsUser({
+        userId,
+        queries: {
+          sort: queries.sort,
+          page: queries.page,
+          perPage: queries.perPage,
+          tab: queries.tab,
+          q: keyDebounce,
+        },
+      })
+    ).finally(() => setIsLoadingPost(false));
+  }, [
+    dispatch,
+    queries.sort,
+    queries.page,
+    queries.perPage,
+    queries.tab,
+    keyDebounce,
+    userId,
+    loadingDebounce,
+  ]);
 
   const handleShowMore = () => {
-    setParamsPage({ ...paramsPage, page: ++paramsPage.page });
-  };
-
-  const handleResetPage = () => {
-    setParamsPage({ ...paramsPage, page: 1 });
+    setQueries({ ...queries, page: ++queries.page });
   };
 
   useEffect(() => {
-    dispatch(resetPostUser());
     return () => {
       dispatch(resetPostUser());
     };
-  }, [dispatch, queries]);
+  }, [dispatch, queries.tab, queries.sort, keyDebounce]);
 
   return (
     <div>
@@ -106,14 +114,17 @@ const ProfileScreen = () => {
       <div className="container">
         <div className={styles.groupPost}>
           <div className={styles.navigationTabs}>
-            <div>
+            <div className={styles.groupBtnNav}>
               <button
                 className={clsx(stylesCommon.navigationTabItem, {
                   [stylesCommon.active]: queries.tab === TAB_PROFILE.PUBLIC,
                 })}
                 onClick={() => {
-                  setQueries({ ...queries, tab: TAB_PROFILE.PUBLIC });
-                  handleResetPage();
+                  setQueries({
+                    ...queries,
+                    tab: TAB_PROFILE.PUBLIC,
+                    page: 1,
+                  });
                 }}
               >
                 Công khai
@@ -125,8 +136,11 @@ const ProfileScreen = () => {
                       [stylesCommon.active]: queries.tab === TAB_PROFILE.SAVE,
                     })}
                     onClick={() => {
-                      setQueries({ ...queries, tab: TAB_PROFILE.SAVE });
-                      handleResetPage();
+                      setQueries({
+                        ...queries,
+                        tab: TAB_PROFILE.SAVE,
+                        page: 1,
+                      });
                     }}
                   >
                     Đã lưu
@@ -148,6 +162,10 @@ const ProfileScreen = () => {
                 </>
               )}
             </div>
+
+            <SearchPost queries={queries} setQueries={setQueries} />
+
+            {/* btn sort */}
             <OutsideClickHandler onOutsideClick={() => setToggleSelect(false)}>
               <div className={styles.groupSelect}>
                 <button
@@ -172,8 +190,7 @@ const ProfileScreen = () => {
                         key={item.id}
                         onClick={() => {
                           setToggleSelect(false);
-                          setQueries({ ...queries, sort: item.id });
-                          handleResetPage();
+                          setQueries({ ...queries, sort: item.id, page: 1 });
                         }}
                       >
                         <span className={styles.iconSelect}>
@@ -188,6 +205,7 @@ const ProfileScreen = () => {
             </OutsideClickHandler>
           </div>
 
+          {/* list post */}
           {isLoadingPost ? (
             <LoadingCardProfile count={4} />
           ) : (

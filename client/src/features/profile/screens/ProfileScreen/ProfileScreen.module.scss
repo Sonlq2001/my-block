@@ -5,9 +5,12 @@
 
   .navigationTabs {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     margin-bottom: 3.5rem;
+
+    .groupBtnNav {
+      flex-grow: 1;
+    }
 
     .groupSelect {
       position: relative;
@@ -17,7 +20,7 @@
       display: flex;
       align-items: center;
       border: 1px solid $gray2-color;
-      padding: 1rem 1.6rem;
+      padding: 7px 1.6rem;
       border-radius: 2rem;
 
       &:hover {
@@ -55,6 +58,7 @@
         cursor: default;
         font-size: 1.4rem;
         line-height: 2rem;
+        cursor: pointer;
 
         &:hover {
           background-color: $gray8-color;

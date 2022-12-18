@@ -7,6 +7,7 @@ import {
   TypePostUserDef,
 } from './../types/profile.types';
 import { UserInfoType } from 'features/user/user';
+import { TAB_PROFILE } from '../constants/profile.constants';
 
 export const getProfile = createAsyncThunk(
   'getProfile',
@@ -21,35 +22,21 @@ export const getProfile = createAsyncThunk(
 );
 
 export const getPostsUser = createAsyncThunk<
-  TypePostUser,
+  { data: TypePostUser; tab: string },
   { userId: string; queries: QueryParams }
->('profile/getPostsUser', async (queries, { rejectWithValue }) => {
+>('profile/getPostsUser', async (queryParams, { rejectWithValue }) => {
   try {
-    const res = await profileApi.getPostsUserApi(queries);
-    return res.data;
+    const res = await profileApi.getPostsUserApi(queryParams);
+    return { data: res.data, tab: queryParams.queries.tab };
   } catch (error: any) {
     return rejectWithValue(error.response.data.msg);
   }
 });
 
-export const getPostsSaved = createAsyncThunk(
-  `profile/getPostsSaved`,
-  async (queries: QueryParams, { rejectWithValue }) => {
-    try {
-      const res = await profileApi.getPostsSavedApi(queries);
-      return res.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response.data.msg);
-    }
-  }
-);
-
 interface ProfileSlice {
   profileUser: UserInfoType | null;
   isLoadingProfileUser: boolean;
-
   postsUser: { data: TypePostUserDef[]; total: number };
-
   postsSaved: { data: TypePostUserDef[]; total: number };
 }
 
@@ -57,7 +44,6 @@ const initialState: ProfileSlice = {
   // profile user
   profileUser: null,
   isLoadingProfileUser: false,
-
   // post user
   postsUser: { data: [], total: 0 },
 
@@ -92,17 +78,24 @@ const profileSlice = createSlice({
 
     // get post user
     [getPostsUser.fulfilled.type]: (state, action) => {
-      state.postsUser.data = [...state.postsUser.data, ...action.payload.data];
-      state.postsUser.total = action.payload.total;
-    },
-
-    // get post saved
-    [getPostsSaved.fulfilled.type]: (state, action) => {
-      state.postsSaved.data = [
-        ...state.postsSaved.data,
-        ...action.payload.data,
-      ];
-      state.postsSaved.total = action.payload.total;
+      switch (action.payload.tab) {
+        case TAB_PROFILE.PUBLIC:
+          state.postsUser.data = [
+            ...state.postsUser.data,
+            ...action.payload.data.data,
+          ];
+          state.postsUser.total = action.payload.data.total;
+          break;
+        case TAB_PROFILE.SAVE:
+          state.postsSaved.data = [
+            ...state.postsSaved.data,
+            ...action.payload.data.data,
+          ];
+          state.postsSaved.total = action.payload.data.total;
+          break;
+        default:
+          break;
+      }
     },
   },
 });

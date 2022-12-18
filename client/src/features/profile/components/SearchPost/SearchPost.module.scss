@@ -1,0 +1,36 @@
+@import 'styles/variables';
+
+.searchPost {
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1.5rem;
+  transition: 0.3s ease-in;
+  &.showBg {
+    background-color: $gray1-color;
+  }
+}
+.inputSearch {
+  border: none;
+  background: transparent;
+  width: 0;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  &.showInput {
+    padding: 7px 1.5rem;
+    width: 20rem;
+  }
+}
+
+.btnSearch {
+  line-height: 0;
+  svg {
+    width: 27px;
+    height: 27px;
+    fill: $gray7-color;
+  }
+  padding: 7px;
+  border-radius: 50%;
+  background-color: $gray1-color;
+}
