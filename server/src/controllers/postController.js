@@ -4,7 +4,11 @@ import Post from "./../models/postModel";
 import Topic from "./../models/topicModel";
 
 import { pagination } from "../helpers/features.helpers";
-import { FORMAT_POST, SLUG_TOPICS } from "../constants/post.constants";
+import {
+	FORMAT_POST,
+	SLUG_TOPICS,
+	TYPE_SEARCH,
+} from "../constants/post.constants";
 import { PER_PAGE_SLIDE } from "../constants/app.constants";
 import { convertsQuery } from "../helpers/features.helpers";
 
@@ -175,14 +179,32 @@ export const getPostsTrending = async (req, res) => {
 // [GET] - [/posts_user/:user_id]
 export const getPostsUser = async (req, res) => {
 	try {
+		const { q, tab } = req.query;
 		const { skip, perPage } = pagination(req);
+
+		let queriesSearch = {};
+		switch (tab) {
+			// search post save
+			case TYPE_SEARCH.SAVE:
+				queriesSearch = { _id: { $in: req.user?.savePost || [] } };
+				break;
+			case TYPE_SEARCH.PUBLIC:
+				// search post public
+				queriesSearch = {
+					authPost: mongoose.Types.ObjectId(req.params.user_id),
+				};
+			default:
+				break;
+		}
 
 		const listPost = await Post.aggregate([
 			{
 				$facet: {
 					data: [
 						{
-							$match: { authPost: mongoose.Types.ObjectId(req.params.user_id) },
+							$match: {
+								$and: [{ title: { $regex: q || "" } }, queriesSearch],
+							},
 						},
 						{
 							$lookup: {
@@ -232,7 +254,9 @@ export const getPostsUser = async (req, res) => {
 					],
 					total: [
 						{
-							$match: { authPost: mongoose.Types.ObjectId(req.params.user_id) },
+							$match: {
+								$and: [{ title: { $regex: q || "" } }, queriesSearch],
+							},
 						},
 						{ $count: "totalPost" },
 					],
@@ -240,87 +264,11 @@ export const getPostsUser = async (req, res) => {
 			},
 		]);
 
-		const data = listPost[0].data || [];
-		const total = listPost[0].total[0].totalPost || 0;
+		const data = listPost[0]?.data || [];
+		const total = listPost[0]?.total[0]?.totalPost || 0;
 		return res.status(200).json({ data, total });
 	} catch (error) {
 		return res.status(500).json({ message: error.message });
-	}
-};
-
-// [GET] - [/post_saved]
-export const getPostsSaved = async (req, res) => {
-	try {
-		const { skip, perPage } = pagination(req);
-
-		const postSaved = await Post.aggregate([
-			{
-				$facet: {
-					data: [
-						{
-							$match: { _id: { $in: req.user.savePost } },
-						},
-						{
-							$lookup: {
-								from: "users",
-								localField: "authPost",
-								foreignField: "_id",
-								as: "authPost",
-							},
-						},
-						{ $unwind: "$authPost" },
-						{
-							$lookup: {
-								from: "topics",
-								localField: "topics",
-								foreignField: "_id",
-								as: "topics",
-							},
-						},
-						{
-							$lookup: {
-								from: "comments",
-								localField: "_id",
-								foreignField: "postId",
-								as: "comments",
-							},
-						},
-						{ $addFields: { totalComments: { $size: "$comments" } } },
-						{ $addFields: { totalLikes: { $size: "$likes" } } },
-						{ $sort: convertsQuery(req) },
-						{
-							$project: {
-								title: 1,
-								avatar: 1,
-								totalLikes: 1,
-								"topics.name": 1,
-								slug: 1,
-								createdAt: 1,
-								updatedAt: 1,
-								"authPost.name": 1,
-								"authPost.avatar": 1,
-								totalComments: 1,
-							},
-						},
-						{ $skip: skip },
-						{ $limit: perPage },
-					],
-					total: [
-						{
-							$match: { _id: { $in: req.user.savePost } },
-						},
-						{ $count: "totalPost" },
-					],
-				},
-			},
-		]);
-
-		const data = postSaved[0].data || [];
-		const total = postSaved[0].total[0].totalPost || 0;
-
-		return res.status(200).json({ data, total });
-	} catch (error) {
-		return res.status(500).json({ msg: error.message });
 	}
 };
 

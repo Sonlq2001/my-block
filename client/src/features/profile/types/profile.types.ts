@@ -8,10 +8,11 @@ export type ProfileUser = {
 };
 
 export type QueryParams = {
-  page?: number;
-  perPage?: number;
+  page: number;
+  perPage: number;
   tab: TAB_PROFILE;
   sort: string;
+  q?: string;
 };
 
 export type TypePostUser = {

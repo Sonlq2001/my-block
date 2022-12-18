@@ -22,23 +22,14 @@ const getPostsUserApi = ({
         page: queries.page,
         per_page: queries.perPage,
         sort: queries.sort,
+        tab: queries.tab,
+        q: queries.q,
       },
     }
   );
 };
 
-const getPostsSavedApi = (queries: QueryParams): Promise<AxiosResponse> => {
-  return api.get(ProfileEndpointsEnum.GET_POSTS_SAVED, {
-    params: {
-      page: queries.page,
-      per_page: queries.perPage,
-      sort: queries.sort,
-    },
-  });
-};
-
 export const profileApi = {
   getUserApi,
   getPostsUserApi,
-  getPostsSavedApi,
 };

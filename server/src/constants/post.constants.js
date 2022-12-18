@@ -10,3 +10,8 @@ export const SLUG_TOPICS = {
 	SPORT: "sport",
 	FAVORITE: "favorite",
 };
+
+export const TYPE_SEARCH = {
+	SAVE: "save",
+	PUBLIC: "public",
+};

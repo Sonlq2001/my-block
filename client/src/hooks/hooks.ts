@@ -26,7 +26,7 @@ export const useDataToken = (): {
   }
 };
 
-export const useDebounce = (value: any, delay: number) => {
+export const useDebounce = <T = unknown>(value: T, delay = 500) => {
   const [debounceValue, setDebounceValue] = useState(value);
 
   useEffect(() => {
