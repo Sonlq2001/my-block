@@ -2,11 +2,15 @@ import { useState, useCallback } from 'react';
 
 import qs from 'qs';
 
-const useQueryState = <T = unknown>(
-  initValue: T,
-  parseOptions?: qs.IParseOptions,
-  keys?: string[]
-): [T, (newQueries: T) => void] => {
+const useQueryState = <T = unknown>({
+  initValue,
+  parseOptions,
+  keys,
+}: {
+  initValue: T;
+  parseOptions?: qs.IParseOptions;
+  keys?: string[];
+}): [T, (newQueries: T) => void] => {
   const [queries, setQueries] = useState<T>(() => {
     const parsedQuery = qs.parse(window.location.search, {
       ignoreQueryPrefix: true,
@@ -23,10 +27,12 @@ const useQueryState = <T = unknown>(
       const keyQueries = Object.keys(newQueries as Object).filter(
         (item) => !keys?.includes(item)
       );
-      const valueQueries = Object.values(newQueries as Object);
 
       const filterQueries = Object.fromEntries(
-        keyQueries.map((item, index) => [item, valueQueries[index]])
+        keyQueries.map((item, index) => [
+          keyQueries[index],
+          (newQueries as Record<string, unknown>)[item],
+        ])
       );
       setQueries(newQueries);
       const queryString = qs.stringify(filterQueries, {
