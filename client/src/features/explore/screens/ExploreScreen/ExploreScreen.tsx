@@ -16,19 +16,20 @@ import { getExplores, resetData } from './../../redux/explore.slice';
 const ExploreScreen = () => {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
   const [query, setQuery] = useState<DefaultParams>({
     page: 1,
     perPage: 10,
-    q: '',
     hasSearch: false,
+    q: new URLSearchParams(window.location.search).get('q') || '',
   });
 
-  const { listPost, isLoadingListPost, canLoadMore } = useAppSelector(
-    (state) => ({
-      listPost: state.explore.listPost.data,
-      isLoadingListPost: state.explore.listPost.isLoading,
-      canLoadMore: state.explore.listPost.canLoadMore,
-    })
+  const isLoadingListPost = useAppSelector(
+    (state) => state.explore.explore.isLoading
+  );
+  const listPost = useAppSelector((state) => state.explore.explore.data);
+  const canLoadMore = useAppSelector(
+    (state) => state.explore.explore.canLoadMore
   );
 
   const fetchData = (dataQuery: DefaultParams, hasSearch = false) => {

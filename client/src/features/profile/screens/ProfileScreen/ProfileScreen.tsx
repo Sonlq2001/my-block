@@ -32,17 +32,16 @@ const ProfileScreen = () => {
   const dispatch = useAppDispatch();
   const { userId } = useParams<{ userId: string }>();
   const [toggleSelect, setToggleSelect] = useState<boolean>(false);
-  const [queries, setQueries] = useQueryState<QueryParams>(
-    {
+  const [queries, setQueries] = useQueryState<QueryParams>({
+    initValue: {
       tab: TAB_PROFILE.PUBLIC,
       sort: '-createdAt',
       q: '',
       page: 1,
       perPage: 8,
     },
-    {},
-    ['page', 'perPage']
-  );
+    keys: ['page', 'perPage'],
+  });
 
   const [isLoadingUser, setIsLoadingUser] = useState<boolean>(false);
   const [isLoadingPost, setIsLoadingPost] = useState<boolean>(false);

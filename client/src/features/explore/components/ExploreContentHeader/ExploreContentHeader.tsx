@@ -17,9 +17,15 @@ const ExploreContentHeader: React.FC<ExploreContentHeaderProps> = ({
 }) => {
   const handleSubmitSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (query.q) {
-      fetchData({ ...query, q: query.q, page: 1 }, true);
-    }
+    fetchData({ ...query, q: query.q, page: 1 }, true);
+
+    const newSearch = query.q ? `?q=${query.q}` : '';
+
+    window.history.pushState(
+      '',
+      document.title,
+      `${window.location.pathname}${newSearch}`
+    );
   };
 
   return (
@@ -31,11 +37,7 @@ const ExploreContentHeader: React.FC<ExploreContentHeaderProps> = ({
         </p>
       </div>
 
-      <form
-        action=""
-        className={styles.formSearch}
-        onSubmit={handleSubmitSearch}
-      >
+      <form className={styles.formSearch} onSubmit={handleSubmitSearch}>
         <div className={styles.formSearchGroup}>
           <input
             type="text"

@@ -17,7 +17,7 @@ export const getExplores = createAsyncThunk(
 );
 
 interface ExploreSlice {
-  listPost: {
+  explore: {
     data: PostItemType[];
     isLoading: boolean;
     total: number;
@@ -27,7 +27,7 @@ interface ExploreSlice {
 }
 
 const initialState: ExploreSlice = {
-  listPost: {
+  explore: {
     data: [],
     isLoading: false,
     total: 0,
@@ -42,28 +42,28 @@ const exploreSlice = createSlice({
   initialState,
   reducers: {
     resetData(state) {
-      state.listPost.data = [];
-      state.listPost.isLoading = false;
+      state.explore.data = [];
+      state.explore.isLoading = false;
     },
   },
   extraReducers: {
     [getExplores.pending.type]: (state) => {
-      state.listPost.isLoading = true;
+      state.explore.isLoading = true;
     },
     [getExplores.fulfilled.type]: (state, action) => {
       const { data, hasSearch } = action.payload;
-      if (!state.listPost.data || hasSearch) {
-        state.listPost.data = data.list;
+      if (!state.explore.data || hasSearch) {
+        state.explore.data = data.list;
       } else {
-        state.listPost.data = [...state.listPost.data, ...data.list];
+        state.explore.data = [...state.explore.data, ...data.list];
       }
-      state.listPost.isLoading = false;
-      state.listPost.total = data.total;
-      state.listPost.canLoadMore =
-        state.listPost.data.length < state.listPost.total;
+      state.explore.isLoading = false;
+      state.explore.total = data.total;
+      state.explore.canLoadMore =
+        state.explore.data.length < state.explore.total;
     },
     [getExplores.rejected.type]: (state) => {
-      state.listPost.isLoading = false;
+      state.explore.isLoading = false;
     },
   },
 });
