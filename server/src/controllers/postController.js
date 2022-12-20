@@ -307,28 +307,26 @@ export const getPostExplore = async (req, res) => {
 								as: "topics",
 							},
 						},
-						// { $unwind: "$topic" },
 						{
 							$lookup: {
 								from: "comments",
 								localField: "_id",
 								foreignField: "postId",
-								as: "totalComment",
+								as: "comments",
 							},
 						},
-						// count comment
-						{ $addFields: { totalComment: { $size: "$totalComment" } } },
+						{ $addFields: { totalComments: { $size: "$comments" } } },
+						{ $addFields: { totalLikes: { $size: "$likes" } } },
 						{
 							$project: {
 								avatar: 1,
 								"topics._id": 1,
 								"topics.name": 1,
-								totalComment: 1,
+								totalComments: 1,
 								createdAt: 1,
 								updatedAt: 1,
-								titleInside: 1,
-								titleOutside: 1,
 								slug: 1,
+								totalLikes: 1,
 							},
 						},
 						{ $skip: skip },
@@ -346,9 +344,9 @@ export const getPostExplore = async (req, res) => {
 				},
 			},
 		]);
-		const list = resData[0].posts;
-		const total = resData[0].totalCount[0]?.count;
-		return res.status(200).json({ list, total });
+		const data = resData[0]?.posts || [];
+		const total = resData[0]?.totalCount[0]?.count || 0;
+		return res.status(200).json({ data, total });
 	} catch (error) {
 		return res.status(500).json({ msg: error.message });
 	}

@@ -33,7 +33,7 @@ const ExploreContentHeader: React.FC<ExploreContentHeaderProps> = ({
       <div className={styles.exploreGroupIntro}>
         <h1 className={styles.exploreTitle}>Tìm kiếm</h1>
         <p className={styles.exploreCaption}>
-          8 Articles were found for keyword Me
+          Tất cả những bài viết từ mọi chủ đề
         </p>
       </div>
 

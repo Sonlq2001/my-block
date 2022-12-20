@@ -5,11 +5,11 @@ import { PostItemType } from 'features/new-post/new-post';
 import { DefaultParams } from './../types/explore.types';
 
 export const getExplores = createAsyncThunk(
-  `getExplores`,
+  `explore/getExplores`,
   async ({ hasSearch, ...rest }: DefaultParams, { rejectWithValue }) => {
     try {
       const res = await exploreApi.getExploreApi(rest);
-      return { data: res.data, hasSearch };
+      return { list: res.data, hasSearch };
     } catch (err: any) {
       return rejectWithValue(err.response.msg);
     }
@@ -51,14 +51,14 @@ const exploreSlice = createSlice({
       state.explore.isLoading = true;
     },
     [getExplores.fulfilled.type]: (state, action) => {
-      const { data, hasSearch } = action.payload;
+      const { list, hasSearch } = action.payload;
       if (!state.explore.data || hasSearch) {
-        state.explore.data = data.list;
+        state.explore.data = list.data;
       } else {
-        state.explore.data = [...state.explore.data, ...data.list];
+        state.explore.data = [...state.explore.data, ...list.data];
       }
       state.explore.isLoading = false;
-      state.explore.total = data.total;
+      state.explore.total = list.total;
       state.explore.canLoadMore =
         state.explore.data.length < state.explore.total;
     },
