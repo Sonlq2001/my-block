@@ -19,7 +19,7 @@ interface PostContentHeaderProps {
   title: string;
   authPost: UserItem;
   topics: TopicType[];
-  totalComment: number;
+  totalComments: number;
   _id: string;
   createdAt: string;
 }
@@ -28,7 +28,7 @@ const PostContentHeader: React.FC<PostContentHeaderProps> = ({
   title,
   authPost,
   topics,
-  totalComment,
+  totalComments,
   _id,
   createdAt,
 }) => {
@@ -57,7 +57,7 @@ const PostContentHeader: React.FC<PostContentHeaderProps> = ({
           <div className={styles.postInfoBox}>
             <SavePost postId={_id} />
 
-            <ChipInfo total={totalComment} icon={<IconChat />} dark />
+            <ChipInfo total={totalComments || 0} icon={<IconChat />} dark />
             <div className={styles.postInfoLine}></div>
             <ChipInfo
               total={totalLike}

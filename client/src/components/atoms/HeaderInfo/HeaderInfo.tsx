@@ -24,7 +24,7 @@ const HeaderInfo: React.FC<HeaderInfoProps> = ({ existHeaderMain = false }) => {
     (state) => state.post.postDetail?.avatar.img
   );
   const totalCommentPost = useAppSelector(
-    (state) => state.post.postDetail?.totalComment
+    (state) => state.post.postDetail?.totalComments
   );
   const postId = useAppSelector((state) => state.post.postDetail?._id);
 

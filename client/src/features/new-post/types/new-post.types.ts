@@ -23,7 +23,8 @@ export interface PostItemType extends Omit<PostType, 'tags'> {
   updatedAt: string;
   topics: TopicType[];
   authPost: UserItem;
-  totalComment: number;
+  totalComments: number;
+  totalLikes: number;
   view: number;
   avatar: {
     img: string;
