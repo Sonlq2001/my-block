@@ -13,7 +13,7 @@ import Modal from 'components/atoms/Modal/Modal';
 import FormTags from './../components/FormTags/FormTags';
 import RickText from './../components/RickText/RickText';
 import ContentModalCategory from '../components/ContentModalCategory/ContentModalCategory';
-import BoxSelectImage from '../components/BoxSelectImage/BoxSelectImage';
+import BoxSelectImage from 'components/atoms/BoxSelectImage/BoxSelectImage';
 import { initForm } from '../helpers/new-post.helpers';
 import Button from 'components/atoms/Button/Button';
 import { TypeInitForm, PostBody } from '../types/new-post.types';

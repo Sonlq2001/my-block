@@ -48,3 +48,11 @@ export enum TAB_PROFILE {
   DRAFT = 'draft',
   ALONE = 'alone',
 }
+
+export enum TAB_PROFILE_EDIT {
+  PROFILE = 'profile',
+  SOCIALS = 'socials',
+}
+
+export const MAX_NAME = 25;
+export const MAX_DESCRIPTION = 600;

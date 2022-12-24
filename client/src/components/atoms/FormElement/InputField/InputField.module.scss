@@ -1,0 +1,18 @@
+@import 'styles/variables';
+
+.labelInput {
+  display: block;
+  font-size: 1.4rem;
+  line-height: 2rem;
+}
+.inputField {
+  width: 100%;
+  padding: 1.2rem 1.6rem;
+  border-radius: 2.5rem;
+  border: 1px solid $gray3-color;
+  margin-top: 7px;
+
+  &:focus {
+    border: 1px solid $blue-color;
+  }
+}

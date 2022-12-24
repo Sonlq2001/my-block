@@ -1,0 +1,20 @@
+@import 'styles/variables';
+
+.labelTextarea {
+  display: block;
+  font-size: 1.4rem;
+  line-height: 2rem;
+}
+.textareaField {
+  outline: none;
+  border: 1px solid $gray3-color;
+  padding: 1rem 1.2rem;
+  border-radius: 1rem;
+  resize: none;
+  width: 100%;
+  margin-top: 7px;
+  line-height: 2.5rem;
+  &:focus {
+    border: 1px solid $blue-color;
+  }
+}

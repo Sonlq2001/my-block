@@ -7,7 +7,7 @@ import { ReactComponent as IconImage } from 'assets/images/icon-editor/icon-imag
 import stylesBase from '../RickText.module.scss';
 import styles from './MenuImage.module.scss';
 import Modal from 'components/atoms/Modal/Modal';
-import BoxSelectImage from '../../BoxSelectImage/BoxSelectImage';
+import BoxSelectImage from 'components/atoms/BoxSelectImage/BoxSelectImage';
 import { upLoadImage } from 'helpers/uploadImage';
 import { TAB_SET_IMAGE } from 'features/new-post-2/constants/new-post.constants';
 
