@@ -1,0 +1,16 @@
+@import 'styles/variables';
+
+.titleTabSetting {
+  font-size: 2.4rem;
+  line-height: 3rem;
+}
+.desTab {
+  font-size: 1.4rem;
+  color: $text-title-color;
+  margin-top: 8px;
+}
+.lineItemTab {
+  border: 1px solid $gray1-color;
+  width: 9.6rem;
+  margin: 2.8rem 0;
+}

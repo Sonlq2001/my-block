@@ -101,3 +101,18 @@
   position: relative;
   z-index: 1;
 }
+
+// style error
+.wrap-error {
+  .field-error {
+    border: 1px solid $red-fresh;
+    &:focus {
+      border: 1px solid $red-fresh;
+    }
+  }
+  .err-message {
+    color: $red-fresh;
+    font-size: 1.3rem;
+    margin-top: 6px;
+  }
+}
