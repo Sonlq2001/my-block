@@ -1,0 +1,16 @@
+@import 'styles/variables';
+
+.groupSocial {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 2.5rem 2rem;
+  .social {
+    width: calc(50% - 2rem);
+  }
+}
+.btnForm {
+  display: flex;
+  margin-left: auto;
+  margin-top: 3rem;
+}

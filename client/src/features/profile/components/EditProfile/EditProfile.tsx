@@ -52,9 +52,9 @@ const EditProfile = () => {
                 className={styles.elForm}
               />
 
-              <div className={styles.bottomButton}>
-                <Button type="submit">Cập nhập</Button>
-              </div>
+              <Button className={styles.bottomButton} type="submit">
+                Cập nhập
+              </Button>
             </Form>
           );
         }}

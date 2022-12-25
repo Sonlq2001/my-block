@@ -1,0 +1,37 @@
+@import 'styles/variables';
+
+.itemSocial {
+  width: 100%;
+}
+.titleSocial {
+  font-size: 1.4rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+.inputSocial {
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+}
+.iconSocial {
+  font-size: 2.6rem;
+  padding: 0.8rem 1rem;
+  background-color: #f9fafb;
+  border: 1px solid $gray3-color;
+  border-right: none;
+  border-radius: 2rem 0 0 2rem;
+  color: $gray4-color;
+}
+.linkSocial {
+  width: 100%;
+  outline: none;
+  padding: 0 1rem;
+  font-size: 1.5rem;
+  overflow: hidden;
+  border-radius: 0 2rem 2rem 0;
+  border: 1px solid $gray3-color;
+  &:focus {
+    border: 1px solid $blue-color;
+  }
+}
