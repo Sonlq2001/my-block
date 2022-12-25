@@ -38,7 +38,7 @@ const InputField: React.FC<InputFieldProps> = ({
               id={id}
               {...rest}
               {...field}
-              value={get(values, name)}
+              value={get(values, name) || ''}
             />
           );
         }}
