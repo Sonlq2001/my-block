@@ -40,7 +40,7 @@ const InputFileField: React.FC<InputFileFieldProps> = ({
         name={name}
         getImage={(file) => setFieldValue(name, file)}
         title={title}
-        size={size}
+        sizeBox={size}
         className="field-error"
         onClick={() => window.addEventListener('focus', handleFocusBack)}
         onChange={() => window.removeEventListener('focus', handleFocusBack)}

@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios';
 
 import api from 'api/api';
 import { ProfileEndpointsEnum } from './../constants/profile.endpoints';
-import { QueryParams } from './../types/profile.types';
+import { QueryParams, RequestUpdateUser } from './../types/profile.types';
 
 const getUserApi = (userId: string): Promise<AxiosResponse> => {
   return api.get(ProfileEndpointsEnum.GET_PROFILE.replace(/:user_id/, userId));
@@ -29,7 +29,12 @@ const getPostsUserApi = ({
   );
 };
 
+const patchUpdateUserApi = (data: RequestUpdateUser) => {
+  return api.patch(ProfileEndpointsEnum.PATCH_USER, data);
+};
+
 export const profileApi = {
   getUserApi,
   getPostsUserApi,
+  patchUpdateUserApi,
 };

@@ -17,7 +17,13 @@ const userSchema = new mongoose.Schema(
 		},
 		avatar: {
 			type: String,
+			required: true,
 		},
+		coverPhoto: {
+			type: String,
+			required: true,
+		},
+		description: { type: String, maxLength: 600, required: true },
 		savePost: [{ type: mongoose.Types.ObjectId, ref: "posts" }],
 		refresh_token: { type: String, select: false },
 	},

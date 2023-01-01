@@ -5,6 +5,7 @@ import {
   QueryParams,
   TypePostUser,
   TypePostUserDef,
+  RequestUpdateUser,
 } from './../types/profile.types';
 import { UserInfoType } from 'features/user/user';
 import { TAB_PROFILE } from '../constants/profile.constants';
@@ -22,7 +23,7 @@ export const getProfile = createAsyncThunk(
 );
 
 export const getPostsUser = createAsyncThunk<
-  { data: TypePostUser; tab: string },
+  { data: TypePostUser },
   { userId: string; queries: QueryParams }
 >('profile/getPostsUser', async (queryParams, { rejectWithValue }) => {
   try {
@@ -31,6 +32,16 @@ export const getPostsUser = createAsyncThunk<
   } catch (error: any) {
     return rejectWithValue(error.response.data.msg);
   }
+});
+
+export const patchUpdateUser = createAsyncThunk<
+  { data: UserInfoType },
+  RequestUpdateUser
+>('/profile/patchUpdateUser', async (data) => {
+  try {
+    const res = await profileApi.patchUpdateUserApi(data);
+    return res.data;
+  } catch (error) {}
 });
 
 interface ProfileSlice {

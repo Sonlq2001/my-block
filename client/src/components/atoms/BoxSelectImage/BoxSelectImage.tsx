@@ -1,17 +1,21 @@
 import { useState, useEffect, memo, useMemo } from 'react';
 import clsx from 'clsx';
+import { useFormikContext } from 'formik';
+import get from 'lodash.get';
 
 import { ReactComponent as IconTrash } from 'assets/images/icon-trash.svg';
 import { ReactComponent as IconAddImage } from 'assets/images/icon-add-image.svg';
 import styles from './BoxSelectImage.module.scss';
 
-interface BoxSelectImageProps extends React.DOMAttributes<HTMLDivElement> {
+interface BoxSelectImageProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   getImage: (image: File | string) => void;
   name: string;
   disabled?: boolean;
   title?: string;
-  size?: 'large' | 'medium' | 'small';
+  sizeBox?: 'large' | 'medium' | 'small';
   className?: string;
+  onDelete?: () => void;
 }
 
 const BoxSelectImage: React.FC<BoxSelectImageProps> = ({
@@ -19,23 +23,25 @@ const BoxSelectImage: React.FC<BoxSelectImageProps> = ({
   name,
   disabled,
   title,
-  size = 'large',
+  sizeBox = 'large',
   className,
   onChange: handleChange,
   onClick: handleClick,
+  onDelete,
   ...rest
 }) => {
+  const { values } = useFormikContext();
   const [imagePreview, setImagePreview] = useState<string>('');
 
   const withBoxImage = useMemo(() => {
-    if (size === 'small') {
+    if (sizeBox === 'small') {
       return styles.small; // 30%
     }
-    if (size === 'medium') {
+    if (sizeBox === 'medium') {
       return styles.medium; // 50%
     }
     return styles.large; // 100%
-  }, [size]);
+  }, [sizeBox]);
 
   useEffect(() => {
     return () => {
@@ -52,6 +58,8 @@ const BoxSelectImage: React.FC<BoxSelectImageProps> = ({
     }
   };
 
+  const imageData = get(values, name);
+
   return (
     <>
       {title && <div className={styles.titleImageBox}>{title}</div>}
@@ -65,9 +73,9 @@ const BoxSelectImage: React.FC<BoxSelectImageProps> = ({
           handlePreviewImage(file);
         }}
       >
-        {imagePreview ? (
+        {imagePreview || imageData ? (
           <img
-            src={imagePreview}
+            src={imagePreview || imageData}
             alt="preview-img"
             className={styles.imagePreview}
           />
@@ -84,9 +92,9 @@ const BoxSelectImage: React.FC<BoxSelectImageProps> = ({
         <input
           type="file"
           id={name}
-          name={name}
           hidden
           {...rest}
+          name={name}
           onChange={(e) => {
             const file = e.target.files ? e.target.files[0] : null;
             handlePreviewImage(file);
@@ -103,6 +111,9 @@ const BoxSelectImage: React.FC<BoxSelectImageProps> = ({
           onClick={() => {
             setImagePreview('');
             getImage('');
+            if (onDelete) {
+              onDelete();
+            }
           }}
           type="button"
         >

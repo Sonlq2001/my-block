@@ -6,6 +6,7 @@ import {
 	useUnSavePost,
 	getUserInfo,
 	getUserSearch,
+	patchUpdateUser,
 } from "./../controllers/userController";
 import { verifyToken } from "./../middleware/verifyToken";
 
@@ -16,5 +17,5 @@ route.patch("/user_save_post/:post_id", verifyToken, patchUseSavePost);
 route.patch("/user_un_save_post/:post_id", verifyToken, useUnSavePost);
 route.get("/user_info", verifyToken, getUserInfo);
 route.get("/users/search", getUserSearch);
-
+route.patch("/update_user", verifyToken, patchUpdateUser);
 export default route;

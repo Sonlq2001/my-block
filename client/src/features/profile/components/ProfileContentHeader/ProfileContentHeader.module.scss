@@ -7,7 +7,7 @@
   .authAvatar {
     border-radius: 50%;
     overflow: hidden;
-    min-width: 14.4rem;
+    max-width: 14.4rem;
     height: 14.4rem;
 
     img {
@@ -22,6 +22,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  width: 100%;
 
   .authName {
     font-size: 3rem;
@@ -35,7 +36,7 @@
     font-size: 1.6rem;
     line-height: 2.4rem;
     color: $gray4-color;
-    width: 70%;
+    max-width: 70%;
   }
 
   .btnFlow {

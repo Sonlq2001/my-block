@@ -34,16 +34,14 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({
   const [isToggleUser, setIsToggleUser] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
-  const { accessToken } = useAppSelector((state) => ({
-    accessToken: state.auth.accessToken,
-  }));
+  const accessToken = useAppSelector((state) => state.auth.accessToken);
+  const avatar = useAppSelector((state) => state.user.userInfo?.avatar);
 
   const handleLogoutUser = async () => {
     await dispatch(authLogout());
   };
 
-  const { avatar, _id: authId } = useDataToken();
-
+  const { _id: authId } = useDataToken();
   return (
     <div className={clsx(styles.header, hideHeader && styles.hideHeader)}>
       <header className="container-full">
