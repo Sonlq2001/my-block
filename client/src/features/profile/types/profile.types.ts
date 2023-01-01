@@ -1,10 +1,17 @@
 import { TAB_PROFILE } from '../constants/profile.constants';
 
-export type ProfileUser = {
-  _id: string;
-  email: string;
+export type ProfileUserInit = {
   name: string;
   avatar: string;
+  coverPhoto: string;
+  description: string;
+};
+
+export type RequestUpdateUser = {
+  name?: string;
+  avatar?: string;
+  coverPhoto?: string;
+  description?: string;
 };
 
 export type QueryParams = {

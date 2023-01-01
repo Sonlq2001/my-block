@@ -1,4 +1,7 @@
-import { Formik, Form } from 'formik';
+import { useMemo } from 'react';
+import { Formik, Form, FormikHelpers } from 'formik';
+import isEqual from 'lodash.isequal';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 import styles from './EditProfile.module.scss';
 
@@ -8,12 +11,72 @@ import InputFileField from 'components/atoms/FormElement/InputFileField/InputFil
 import Button from 'components/atoms/Button/Button';
 import TitleTabSetting from '../TitleTabSetting/TitleTabSetting';
 
-import {
-  schema,
-  initSchema,
-} from 'features/profile/helpers/profile-setting.helpers';
+import { schema } from 'features/profile/helpers/profile-setting.helpers';
+import { useAppSelector, useAppDispatch } from 'redux/store';
+import { convertDataUpdateUserInfo } from 'features/profile/helpers/profile-setting.helpers';
+import { ProfileUserInit } from '../../types/profile.types';
+import { upLoadImage } from 'helpers/uploadImage';
+import { patchUpdateUser } from '../../redux/profile.slice';
+import { updateAvatarUser } from 'features/user/user';
 
 const EditProfile = () => {
+  const dispatch = useAppDispatch();
+  const userInfo = useAppSelector((state) => state.user.userInfo);
+
+  const initUserInfo = useMemo(() => {
+    return {
+      name: userInfo?.name || '',
+      avatar: userInfo?.avatar || '',
+      coverPhoto: userInfo?.coverPhoto || '',
+      description: userInfo?.description || '',
+    };
+  }, [
+    userInfo?.avatar,
+    userInfo?.coverPhoto,
+    userInfo?.description,
+    userInfo?.name,
+  ]);
+
+  const checkImageChange = async (
+    oldImage?: string | File,
+    newImage?: string | File
+  ) => {
+    if (isEqual(oldImage, newImage)) {
+      return undefined;
+    }
+    const resImage = await upLoadImage(newImage);
+    return resImage?.img || '';
+  };
+
+  const handleSubmit = async (
+    values: ProfileUserInit,
+    { setSubmitting }: FormikHelpers<ProfileUserInit>
+  ) => {
+    if (!userInfo) return;
+
+    const avatar = await checkImageChange(userInfo.avatar, values.avatar);
+    const coverPhoto = await checkImageChange(
+      userInfo.coverPhoto,
+      values.coverPhoto
+    );
+
+    const dataUserUpdate = convertDataUpdateUserInfo(
+      {
+        ...values,
+        avatar,
+        coverPhoto,
+      },
+      userInfo
+    );
+
+    await dispatch(patchUpdateUser(dataUserUpdate))
+      .then(unwrapResult)
+      .then((res) => {
+        dispatch(updateAvatarUser(res.data.avatar));
+      })
+      .finally(() => setSubmitting(false));
+  };
+
   return (
     <>
       <TitleTabSetting
@@ -22,11 +85,12 @@ const EditProfile = () => {
       />
 
       <Formik
-        initialValues={initSchema}
-        onSubmit={(values) => console.log(values)}
+        initialValues={initUserInfo}
+        onSubmit={handleSubmit}
         validationSchema={schema}
+        enableReinitialize
       >
-        {() => {
+        {({ isSubmitting }) => {
           return (
             <Form>
               <InputFileField name="avatar" title="Ảnh đại diện" size="small" />
@@ -52,7 +116,11 @@ const EditProfile = () => {
                 className={styles.elForm}
               />
 
-              <Button className={styles.bottomButton} type="submit">
+              <Button
+                className={styles.bottomButton}
+                type="submit"
+                disabled={isSubmitting}
+              >
                 Cập nhập
               </Button>
             </Form>

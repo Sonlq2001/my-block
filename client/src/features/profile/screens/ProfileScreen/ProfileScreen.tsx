@@ -105,7 +105,7 @@ const ProfileScreen = () => {
     <div>
       {isLoadingUser && <LoadingProfile />}
       {!isLoadingUser && profileUser && (
-        <ProfileHeader>
+        <ProfileHeader coverPhoto={profileUser.coverPhoto}>
           <ProfileContentHeader profileUser={profileUser} />
         </ProfileHeader>
       )}

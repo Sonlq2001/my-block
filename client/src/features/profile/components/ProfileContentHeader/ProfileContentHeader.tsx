@@ -34,11 +34,7 @@ const ProfileContentHeader: React.FC<ProfileContentHeaderProps> = ({
               Theo dõi
             </button>
           </h2>
-          <p>
-            Amet maxime est nostrum molestiae dolorem ipsum nisi. Placeat eos
-            aut et animi error aut et. Error porro error velit voluptate aut.
-            Eligendi qui eos explicabo soluta officia.
-          </p>
+          <p>{profileUser.description}</p>
         </div>
         <Link
           to={ProfilePathsEnum.PROFILE_SETTING}

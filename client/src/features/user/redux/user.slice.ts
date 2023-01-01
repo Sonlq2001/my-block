@@ -36,6 +36,11 @@ const userSlice = createSlice({
         };
       }
     },
+    updateAvatarUser: (state, action) => {
+      if (state.userInfo) {
+        state.userInfo = { ...state.userInfo, avatar: action.payload };
+      }
+    },
   },
   extraReducers: {
     [getUserInfo.pending.type]: (state) => {
@@ -54,4 +59,4 @@ const userSlice = createSlice({
 });
 
 export const userReducer = userSlice.reducer;
-export const { updatePostSavedUser } = userSlice.actions;
+export const { updatePostSavedUser, updateAvatarUser } = userSlice.actions;

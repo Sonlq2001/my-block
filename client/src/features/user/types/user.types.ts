@@ -6,4 +6,6 @@ export type UserInfoType = {
   createdAt: string;
   updatedAt: string;
   savePost: string[];
+  description: string;
+  coverPhoto: string;
 };

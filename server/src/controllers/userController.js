@@ -67,3 +67,21 @@ export const getUserSearch = async (req, res) => {
 		return res.status(500).json({ msg: error.message });
 	}
 };
+
+export const patchUpdateUser = async (req, res) => {
+	try {
+		if (!req.user) {
+			return res.status(403).json({ message: "Bạn không thể xác thực" });
+		}
+		const userUpdated = await User.findByIdAndUpdate(
+			{ _id: req.user._id },
+			req.body,
+			{ new: true }
+		);
+		return res
+			.status(200)
+			.json({ data: { ...userUpdated._doc, password: undefined } });
+	} catch (error) {
+		return res.status(500).json({ msg: error.message });
+	}
+};
