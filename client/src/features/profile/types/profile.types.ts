@@ -7,11 +7,14 @@ export type ProfileUserInit = {
   description: string;
 };
 
+export type SocialLink = { name: string; link: string };
+
 export type RequestUpdateUser = {
   name?: string;
   avatar?: string;
   coverPhoto?: string;
   description?: string;
+  socials?: SocialLink[];
 };
 
 export type QueryParams = {

@@ -73,7 +73,7 @@ export const patchUpdateUser = async (req, res) => {
 		if (!req.user) {
 			return res.status(403).json({ message: "Bạn không thể xác thực" });
 		}
-		const userUpdated = await User.findByIdAndUpdate(
+		const userUpdated = await User.findOneAndUpdate(
 			{ _id: req.user._id },
 			req.body,
 			{ new: true }
