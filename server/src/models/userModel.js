@@ -24,6 +24,12 @@ const userSchema = new mongoose.Schema(
 			required: true,
 		},
 		description: { type: String, maxLength: 600, required: true },
+		socials: [
+			{
+				name: { type: String },
+				link: { type: String },
+			},
+		],
 		savePost: [{ type: mongoose.Types.ObjectId, ref: "posts" }],
 		refresh_token: { type: String, select: false },
 	},
