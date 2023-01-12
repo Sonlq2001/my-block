@@ -1,9 +1,10 @@
-@import "styles/variables";
+@import 'styles/variables';
 
 .profileHeader {
   max-width: 152.3rem;
   margin: 0 auto;
   position: relative;
+  width: 100%;
 
   .profileHeaderImg {
     width: 100%;

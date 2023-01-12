@@ -289,15 +289,25 @@ export const getPostNewest = async (req, res) => {
 export const getPostExplore = async (req, res) => {
 	try {
 		const { skip, perPage } = pagination(req);
+		const tag = req.query.tag;
+
+		let objectQuery = {};
+		if (tag) {
+			objectQuery = { "tags.tag": { $regex: tag } };
+		} else {
+			objectQuery = {
+				title: {
+					$regex: req.query.q,
+				},
+			};
+		}
 
 		const resData = await Post.aggregate([
 			{
 				$facet: {
 					posts: [
 						{
-							$match: {
-								title: { $regex: req.query.q },
-							},
+							$match: objectQuery,
 						},
 						{
 							$lookup: {
@@ -315,6 +325,15 @@ export const getPostExplore = async (req, res) => {
 								as: "comments",
 							},
 						},
+						{
+							$lookup: {
+								from: "users",
+								localField: "authPost",
+								foreignField: "_id",
+								as: "authPost",
+							},
+						},
+						{ $unwind: "$authPost" },
 						{ $addFields: { totalComments: { $size: "$comments" } } },
 						{ $addFields: { totalLikes: { $size: "$likes" } } },
 						{
@@ -327,6 +346,9 @@ export const getPostExplore = async (req, res) => {
 								updatedAt: 1,
 								slug: 1,
 								totalLikes: 1,
+								title: 1,
+								"authPost.name": 1,
+								"authPost.avatar": 1,
 							},
 						},
 						{ $skip: skip },

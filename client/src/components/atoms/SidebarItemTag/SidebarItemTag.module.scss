@@ -1,4 +1,4 @@
-@import "styles/variables";
+@import 'styles/variables';
 
 .itemTag {
   background-color: $white-color;
@@ -9,6 +9,7 @@
   border: 1px solid $gray1-color;
   margin: 0 8px 8px 0;
   line-height: 1.7rem;
+  cursor: pointer;
 
   &:hover {
     border: 1px solid $gray5-color;

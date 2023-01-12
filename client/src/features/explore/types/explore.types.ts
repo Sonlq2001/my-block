@@ -3,4 +3,5 @@ export type DefaultParams = {
   perPage: number;
   q: string;
   hasSearch?: boolean;
+  tag?: string;
 };

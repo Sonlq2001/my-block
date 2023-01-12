@@ -8,6 +8,8 @@ import ExploreContentHeader from './../../components/ExploreContentHeader/Explor
 import ExploreItem from './../../components/ExploreItem/ExploreItem';
 import LoadingExplore from 'components/loading/LoadingExplore/LoadingExplore';
 import CustomInfiniteScroll from 'components/atoms/CustomInfiniteScroll/CustomInfiniteScroll';
+import BannerTagSearch from '../../components/BannerTagSearch/BannerTagSearch';
+import LatestArticlesCarouselItem from 'components/atoms/LatestArticlesCarouselItem/LatestArticlesCarouselItem';
 
 import styles from './ExploreScreen.module.scss';
 
@@ -38,10 +40,14 @@ const ExploreScreen = () => {
     dispatch(getExplores(newQuery));
   };
 
+  const searchTag = new URLSearchParams(window.location.search).get('tag');
+
   useEffect(() => {
     if (!isLoading) return;
-    dispatch(getExplores(query)).finally(() => setIsLoading(false));
-  }, [dispatch, isLoading, query]);
+    dispatch(getExplores({ ...query, tag: searchTag || '' })).finally(() =>
+      setIsLoading(false)
+    );
+  }, [dispatch, isLoading, query, searchTag]);
 
   useEffect(() => {
     return () => {
@@ -51,36 +57,57 @@ const ExploreScreen = () => {
 
   return (
     <div>
-      <ExploreHeader>
-        <ExploreContentHeader
-          query={query}
-          fetchData={fetchData}
-          setQuery={setQuery}
-        />
-      </ExploreHeader>
+      {searchTag ? (
+        <BannerTagSearch />
+      ) : (
+        <ExploreHeader>
+          <ExploreContentHeader
+            query={query}
+            fetchData={fetchData}
+            setQuery={setQuery}
+          />
+        </ExploreHeader>
+      )}
 
       <div className="container">
-        <div className={styles.wrapMasonry}>
-          {isLoading && (
-            <LoadingExplore minWidth="20%" height="240px" count={7} />
-          )}
-          {!isLoading && (
-            <CustomInfiniteScroll
-              dataLength={listPost.length || 0}
-              hasMore={canLoadMore}
-              fetchMoreData={() =>
-                fetchData({ ...query, page: query.page + 1 })
-              }
-              loading={isLoadingListPost}
-            >
-              <div className={styles.groupMasonry}>
-                {listPost.map((item) => (
-                  <ExploreItem key={item._id} {...item} />
-                ))}
-              </div>
-            </CustomInfiniteScroll>
-          )}
-        </div>
+        {searchTag ? (
+          <div className={styles.wrapPostTag}>
+            {listPost &&
+              listPost.length > 0 &&
+              listPost.map((post) => (
+                <LatestArticlesCarouselItem
+                  className={styles.itemPostTag}
+                  key={post._id}
+                  post={post}
+                />
+              ))}
+          </div>
+        ) : (
+          <div className={styles.wrapMasonry}>
+            {isLoading && (
+              <LoadingExplore minWidth="20%" height="240px" count={7} />
+            )}
+            {!isLoading && (
+              <CustomInfiniteScroll
+                dataLength={listPost.length || 0}
+                hasMore={canLoadMore}
+                fetchMoreData={() =>
+                  fetchData({
+                    ...query,
+                    page: query.page + 1,
+                  })
+                }
+                loading={isLoadingListPost}
+              >
+                <div className={styles.groupMasonry}>
+                  {listPost.map((item) => (
+                    <ExploreItem key={item._id} {...item} />
+                  ))}
+                </div>
+              </CustomInfiniteScroll>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
