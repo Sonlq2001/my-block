@@ -1,25 +1,28 @@
 import React from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import clsx from 'clsx';
 
 import styles from './LatestArticlesCarouselItem.module.scss';
 import ChipInfo from 'components/atoms/ChipInfo/ChipInfo';
 import ChipTag from 'components/atoms/ChipTag/ChipTag';
 import PostCardAuth from 'components/atoms/PostCardAuth/PostCardAuth';
 import { ReactComponent as IconHeart } from 'assets/images/icon-heart.svg';
+import { ReactComponent as IconChat } from 'assets/images/icon-chat.svg';
 import { PostItemType } from 'features/new-post/new-post';
 import { PostPathsEnum } from 'features/post/post';
 
 interface LatestArticlesCarouselItemProps {
   post: PostItemType;
+  className?: string;
 }
 
 const LatestArticlesCarouselItem: React.FC<LatestArticlesCarouselItemProps> = ({
   post,
+  className,
 }) => {
-  console.log(post);
   return (
-    <div className={styles.carouselItem}>
+    <div className={clsx(styles.carouselItem, className)}>
       <Link
         to={{
           pathname: PostPathsEnum.POST.replace(/:slug/, post.slug),
@@ -32,8 +35,9 @@ const LatestArticlesCarouselItem: React.FC<LatestArticlesCarouselItemProps> = ({
 
         <div className={styles.carouselBody}>
           <div className={styles.cateGroup}>
-            <ChipTag title={post.topic.toString()} />
-            <ChipTag title="Dev" />
+            {post.topics.map((topic) => (
+              <ChipTag title={topic.name} key={topic._id} />
+            ))}
           </div>
           <h4>{post.title}</h4>
 
@@ -48,7 +52,8 @@ const LatestArticlesCarouselItem: React.FC<LatestArticlesCarouselItemProps> = ({
           </div>
         </div>
         <div className={styles.interactivePost}>
-          <ChipInfo icon={<IconHeart />} total={20} />
+          <ChipInfo icon={<IconHeart />} total={post.totalLikes} />
+          <ChipInfo icon={<IconChat />} total={post.totalComments} />
         </div>
       </Link>
     </div>

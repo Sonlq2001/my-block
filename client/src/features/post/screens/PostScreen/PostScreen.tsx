@@ -27,14 +27,14 @@ interface PostParams {
 const PostScreen = () => {
   const dispatch = useAppDispatch();
   usePostSocket();
-  // const [timeView, setTimeView] = useState<number>(0);
+
   const [loadingPost, setLoadingPost] = useState<boolean>(true);
   const [loadingComment, setLoadingComment] = useState<boolean>(false);
   const [query, setQuery] = useState<{ page: number; perPage: number }>({
     page: 1,
     perPage: 3,
   });
-  // const idTime = useRef<any>();
+
   const { slug } = useParams<PostParams>();
   const { _id: userId } = useDataToken();
 
@@ -142,9 +142,15 @@ const PostScreen = () => {
 
               <div className={styles.rowPostFooter}>
                 <div className={styles.rowPostTags}>
-                  {postItem?.tags.map((tagItem) => (
-                    <SidebarItemTag tag={`#${tagItem.tag}`} key={tagItem._id} />
-                  ))}
+                  {postItem?.tags &&
+                    postItem.tags.length > 0 &&
+                    postItem.tags.map((tagItem) => (
+                      <SidebarItemTag
+                        tag={`#${tagItem.tag}`}
+                        key={tagItem._id}
+                        imagePost={postItem?.avatar.img || ''}
+                      />
+                    ))}
                 </div>
 
                 {/* Share post */}

@@ -6,12 +6,11 @@ import api from 'api/api';
 import { ExploreEndpointsEnum } from './../constants/explore.endpoints';
 
 const getExploreApi = ({
-  page,
   perPage,
-  q,
+  ...rest
 }: DefaultParams): Promise<AxiosResponse> => {
   return api.get(ExploreEndpointsEnum.GET_EXPLORE, {
-    params: { page, per_page: perPage, q },
+    params: { per_page: perPage, ...rest },
   });
 };
 
