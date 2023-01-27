@@ -85,3 +85,48 @@ export const patchUpdateUser = async (req, res) => {
 		return res.status(500).json({ msg: error.message });
 	}
 };
+
+export const followUser = async (req, res) => {
+	try {
+		const user = await User.findOne({ _id: req.user._id });
+		if (user.following.includes(req.params.user_id)) {
+			return res.status(400).json({ message: "You followed this user" });
+		}
+
+		await User.findOneAndUpdate(
+			{ _id: req.user._id },
+			{ $push: { following: req.params.user_id } },
+			{ new: true }
+		);
+
+		await User.findOneAndUpdate(
+			{ _id: req.params.user_id },
+			{ $push: { followers: req.user._id } },
+			{ new: true }
+		);
+
+		return res.status(200).json({ message: "Theo dõi thành công" });
+	} catch (error) {
+		return res.status(500).json({ msg: error.message });
+	}
+};
+
+export const unFollowUser = async (req, res) => {
+	try {
+		await User.findOneAndUpdate(
+			{ _id: req.user._id },
+			{ $pull: { following: req.params.user_id } },
+			{ new: true }
+		);
+
+		await User.findOneAndUpdate(
+			{ _id: req.params.user_id },
+			{ $pull: { followers: req.user._id } },
+			{ new: true }
+		);
+
+		return res.status(200).json({ message: "Hủy theo dõi thành công" });
+	} catch (error) {
+		return res.status(500).json({ msg: error.message });
+	}
+};

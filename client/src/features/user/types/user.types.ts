@@ -11,4 +11,6 @@ export type UserInfoType = {
   description: string;
   coverPhoto: string;
   socials: SocialLink[];
+  following: string[];
+  followers: string[];
 };

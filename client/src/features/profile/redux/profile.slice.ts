@@ -44,6 +44,24 @@ export const patchUpdateUser = createAsyncThunk<
   } catch (error) {}
 });
 
+export const patchFollowersUser = createAsyncThunk<unknown, string>(
+  '/profile/patchFollowersUser',
+  async (userId) => {
+    try {
+      return await profileApi.patchFollowersUserApi(userId);
+    } catch (error) {}
+  }
+);
+
+export const patchUnFollowersUser = createAsyncThunk<unknown, string>(
+  '/profile/patchFollowersUser',
+  async (userId) => {
+    try {
+      return await profileApi.patchUnFollowersUserApi(userId);
+    } catch (error) {}
+  }
+);
+
 interface ProfileSlice {
   profileUser: UserInfoType | null;
   isLoadingProfileUser: boolean;

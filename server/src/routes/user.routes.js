@@ -7,6 +7,8 @@ import {
 	getUserInfo,
 	getUserSearch,
 	patchUpdateUser,
+	followUser,
+	unFollowUser,
 } from "./../controllers/userController";
 import { verifyToken } from "./../middleware/verifyToken";
 
@@ -18,4 +20,7 @@ route.patch("/user_un_save_post/:post_id", verifyToken, useUnSavePost);
 route.get("/user_info", verifyToken, getUserInfo);
 route.get("/users/search", getUserSearch);
 route.patch("/update_user", verifyToken, patchUpdateUser);
+route.patch("/follow/:user_id", verifyToken, followUser);
+route.patch("/un_follow/:user_id", verifyToken, unFollowUser);
+
 export default route;
