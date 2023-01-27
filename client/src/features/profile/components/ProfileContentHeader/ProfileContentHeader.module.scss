@@ -7,7 +7,7 @@
   .authAvatar {
     border-radius: 50%;
     overflow: hidden;
-    max-width: 14.4rem;
+    width: 14.4rem;
     height: 14.4rem;
 
     img {
@@ -22,7 +22,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  width: 100%;
+  flex-grow: 1;
 
   .authName {
     font-size: 3rem;

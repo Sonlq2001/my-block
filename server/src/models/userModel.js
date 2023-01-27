@@ -32,6 +32,8 @@ const userSchema = new mongoose.Schema(
 		],
 		savePost: [{ type: mongoose.Types.ObjectId, ref: "posts" }],
 		refresh_token: { type: String, select: false },
+		followers: [{ type: mongoose.Types.ObjectId, ref: "users" }],
+		following: [{ type: mongoose.Types.ObjectId, ref: "users" }],
 	},
 	{ timestamps: true }
 );

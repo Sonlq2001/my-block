@@ -13,7 +13,13 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   return (
     <div className={styles.profileHeader}>
       <div className={styles.profileHeaderImg}>
-        <img src={coverPhoto} alt="cover_photo" />
+        <img
+          src={
+            coverPhoto ||
+            'https://cdn.pixabay.com/photo/2023/01/14/19/50/flower-7718952_960_720.jpg'
+          }
+          alt="cover_photo"
+        />
       </div>
       <div className={styles.profileAuthInfo}>{children}</div>
     </div>

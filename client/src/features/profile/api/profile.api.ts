@@ -33,8 +33,22 @@ const patchUpdateUserApi = (data: RequestUpdateUser) => {
   return api.patch(ProfileEndpointsEnum.PATCH_USER, data);
 };
 
+const patchFollowersUserApi = (userId: string) => {
+  return api.patch(
+    ProfileEndpointsEnum.PATCH_FOLLOWERS_USER.replace(':user_id', userId)
+  );
+};
+
+const patchUnFollowersUserApi = (userId: string) => {
+  return api.patch(
+    ProfileEndpointsEnum.PATCH_UN_FOLLOWERS_USER.replace(':user_id', userId)
+  );
+};
+
 export const profileApi = {
   getUserApi,
   getPostsUserApi,
   patchUpdateUserApi,
+  patchFollowersUserApi,
+  patchUnFollowersUserApi,
 };
