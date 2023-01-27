@@ -410,6 +410,13 @@ export const getPostsType = async (req, res) => {
 								),
 							},
 						},
+						{
+							$or: [
+								{ authPost: { $in: req.user.following } },
+								{ authPost: { $ne: req.user._id } },
+								{ authPost: req.user._id },
+							],
+						},
 					],
 				},
 			},
@@ -441,7 +448,6 @@ export const getPostsType = async (req, res) => {
 			},
 			{ $addFields: { totalComments: { $size: "$comments" } } },
 			{ $addFields: { totalLikes: { $size: "$likes" } } },
-			{ $sort: { createdAt: -1 } },
 			{
 				$project: {
 					title: 1,
@@ -460,6 +466,7 @@ export const getPostsType = async (req, res) => {
 					content: 1,
 				},
 			},
+			{ $sort: { createdAt: -1 } },
 			{ $skip: skip },
 			{ $limit: perPage },
 		]);
