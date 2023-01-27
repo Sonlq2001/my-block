@@ -30,7 +30,7 @@ route.get("/posts_user/:user_id", verifyToken, getPostsUser);
 
 route.get("/post_newest", verifyToken, getPostNewest);
 route.get("/post_explore", getPostExplore);
-route.get("/posts_type", getPostsType);
+route.get("/posts_type", verifyToken, getPostsType);
 route.get("/posts_video", getPostsVideo);
 
 route.patch("/like_post/:id", verifyToken, patchLikePost);
