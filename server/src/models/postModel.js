@@ -41,6 +41,10 @@ const postSchema = new mongoose.Schema(
 			type: String,
 		},
 		likes: [{ type: mongoose.Types.ObjectId, ref: "users" }],
+		allowComment: {
+			type: Boolean,
+			default: true,
+		},
 	},
 	{ timestamps: true }
 );

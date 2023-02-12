@@ -1,5 +1,6 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 import PostHeader from './../../components/PostHeader/PostHeader';
 import PostContentHeader from './../../components/PostContentHeader/PostContentHeader';
@@ -36,7 +37,7 @@ const PostScreen = () => {
   });
 
   const { slug } = useParams<PostParams>();
-  const { _id: userId } = useDataToken();
+  const { _id: userId, name, avatar } = useDataToken();
 
   const postItem = useAppSelector((state) => state.post.postDetail);
   const commentsPost = useAppSelector((state) => state.post.comments.list);
@@ -44,62 +45,61 @@ const PostScreen = () => {
   const socketData = useAppSelector((state) => state.socket.socketData);
   const savePost = useAppSelector((state) => state.user.userInfo?.savePost);
 
-  const fetchPostAndComments = useCallback(
-    (slug) => {
+  useEffect(() => {
+    if (!loadingPost) return;
+
+    if (slug && userId && savePost) {
       Promise.all([
+        dispatch(getPost({ slug, userId, savedPost: savePost })),
         dispatch(
           getComments({
             slug,
             ...query,
           })
         ),
-        dispatch(
-          getPost({ slug, userId: userId || '', savedPost: savePost || [] })
-        ),
       ]).finally(() => setLoadingPost(false));
-    },
-    [dispatch, query, savePost, userId]
-  );
-
-  useEffect(() => {
-    if (!loadingPost) return;
-    if (slug) {
-      fetchPostAndComments(slug);
     }
-  }, [slug, fetchPostAndComments, loadingPost]);
+  }, [slug, userId, dispatch, savePost, query, loadingPost]);
 
   // join room socket
   useEffect(() => {
-    if (!postItem?._id || !socketData) return;
+    if (!postItem?._id || !socketData || !slug) return;
 
     socketData.emit('joinPostDetail', postItem._id);
     return () => {
       socketData.emit('outPostDetail', postItem._id);
     };
-  }, [postItem?._id, socketData]);
+  }, [postItem?._id, slug, socketData]);
 
   const handleComment = async (value: string) => {
-    const res = await dispatch(
+    // send comment
+    await dispatch(
       postComment({
         content: value,
         authPost: postItem?.authPost._id,
         postId: postItem?._id,
       })
-    );
+    )
+      .then(unwrapResult)
+      .then((res) => console.log(res));
 
-    // dispatch notify
-    if (postComment.fulfilled.match(res)) {
-      const resData = await dispatch(
-        createNotify({
-          id: res.payload.dataComment._id,
-          text: `${res.payload.dataComment.userComment.name} đã bình luận về bài viết của bạn.`,
-          content: value,
-          recipients: [postItem?.authPost._id],
-          image: res.payload.dataComment.userComment.avatar,
-        })
-      );
-      socketData && socketData.emit('createNotify', resData.payload.resNotify);
+    if (postItem?.authPost._id === userId) {
+      return;
     }
+
+    // send notify
+    dispatch(
+      createNotify({
+        text: `${name} đã bình luận về bài viết của bạn.`,
+        content: value,
+        recipients: [postItem?.authPost._id],
+        image: avatar,
+      })
+    )
+      .then(unwrapResult)
+      .then((res) => {
+        socketData && socketData.emit('createNotify', res.resNotify);
+      });
   };
 
   useEffect(() => {
@@ -157,22 +157,29 @@ const PostScreen = () => {
                 <SharePost />
 
                 {/* Comment */}
-                <>
-                  <InputComment getValue={handleComment} />
-                  {commentsPost.map((comment) => (
-                    <Comments key={comment._id} comment={comment} />
-                  ))}
-                  {commentsPost.length < totalComment && (
-                    <button
-                      className={styles.btnMoreComment}
-                      onClick={handleLoadMoreComment}
-                    >
-                      <span>Xem thêm bình luận</span>
-                      {!loadingComment && <i className="las la-angle-down" />}
-                      {loadingComment && <LoadingCircleDot />}
-                    </button>
-                  )}
-                </>
+                {postItem?.allowComment ? (
+                  <>
+                    <InputComment getValue={handleComment} />
+                    {commentsPost.map((comment) => (
+                      <Comments key={comment._id} comment={comment} />
+                    ))}
+                    {commentsPost.length < totalComment && (
+                      <button
+                        className={styles.btnMoreComment}
+                        onClick={handleLoadMoreComment}
+                      >
+                        <span>Xem thêm bình luận</span>
+                        {loadingComment ? (
+                          <LoadingCircleDot />
+                        ) : (
+                          <i className="las la-angle-down" />
+                        )}
+                      </button>
+                    )}
+                  </>
+                ) : (
+                  <div>Bài viết này không thể bình luận</div>
+                )}
               </div>
             </div>
           </div>

@@ -16,7 +16,7 @@ const SocketClient = () => {
 
   const decodeData = accessToken && jwt_decode<AccessTokenType>(accessToken);
 
-  useEffect(() => {
+   useEffect(() => {
     if (decodeData) {
       socketData?.emit('joinUser', decodeData._id);
     }

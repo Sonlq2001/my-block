@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './PostHeader.module.scss';
 
 interface PostHeaderProps {
-  avatar?: any;
+  avatar?: { img: string };
 }
 
 const PostHeader: React.FC<PostHeaderProps> = ({ children, avatar }) => {
