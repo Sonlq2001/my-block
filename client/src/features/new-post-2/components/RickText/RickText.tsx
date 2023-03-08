@@ -1,4 +1,4 @@
-import { useFormikContext } from 'formik';
+import { useFormikContext, ErrorMessage } from 'formik';
 
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -12,9 +12,10 @@ import Youtube from '@tiptap/extension-youtube';
 import MenuBar from './MenuBar';
 
 import styles from './RickText.module.scss';
+import stylesMain from '../../screens/NewPostScreen.module.scss';
 
 const RickText = () => {
-  const { setFieldValue } = useFormikContext();
+  const { setFieldValue, setFieldError } = useFormikContext();
 
   const editor = useEditor({
     extensions: [
@@ -38,7 +39,13 @@ const RickText = () => {
     editable: true,
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
-      setFieldValue('content', html);
+      const checkEmpty = editor.getText();
+      if (Boolean(checkEmpty)) {
+        setFieldValue('content', html, false);
+        setFieldError('content', '');
+      } else {
+        setFieldValue('content', '');
+      }
     },
   });
 
@@ -53,6 +60,11 @@ const RickText = () => {
       </div>
       <div className={styles.rickTextContent}>
         <div className={styles.rickTextContentInner}>
+          <ErrorMessage
+            name="content"
+            className={stylesMain.error}
+            component="p"
+          />
           <EditorContent editor={editor} />
         </div>
       </div>

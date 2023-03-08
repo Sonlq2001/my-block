@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import clsx from 'clsx';
 import { useFormikContext } from 'formik';
 
@@ -12,16 +12,19 @@ import { SLUG_TOPICS } from 'features/home/home';
 
 interface ContentModalCategoryProps {
   name: string;
+  isShowModal: boolean;
+  listSelectCate: string[];
+  setListSelectCate: (category: string[]) => void;
 }
 
 const ContentModalCategory: React.FC<ContentModalCategoryProps> = ({
   name,
+  listSelectCate,
+  setListSelectCate,
 }) => {
-  const { setFieldValue, values } = useFormikContext<TypeInitForm>();
+  const { values } = useFormikContext<TypeInitForm>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [listSelectCate, setListSelectCate] = useState<string[]>(
-    values.topics || []
-  );
+
   const dispatch = useAppDispatch();
 
   const topics = useAppSelector((state) =>
@@ -35,16 +38,15 @@ const ContentModalCategory: React.FC<ContentModalCategoryProps> = ({
   }, [dispatch]);
 
   useEffect(() => {
-    setFieldValue(name, listSelectCate);
-  }, [listSelectCate, name, setFieldValue]);
+    setListSelectCate(values.topics);
+  }, [setListSelectCate, values.topics]);
 
   const handleSelectTopic = (id: string) => {
-    setListSelectCate((prev) => {
-      if (listSelectCate.includes(id)) {
-        return listSelectCate.filter((item) => item !== id);
-      }
-      return [...prev, id];
-    });
+    if (listSelectCate.includes(id)) {
+      setListSelectCate(listSelectCate.filter((item) => item !== id));
+    } else {
+      setListSelectCate([...listSelectCate, id]);
+    }
   };
 
   if (isLoading) {
@@ -54,8 +56,8 @@ const ContentModalCategory: React.FC<ContentModalCategoryProps> = ({
   return (
     <div className={styles.contentModalCategory}>
       {topics &&
-        topics?.length > 0 &&
-        topics?.map((topic) => {
+        topics.length &&
+        topics.map((topic) => {
           const isActiveSelect = listSelectCate.includes(topic._id);
           return (
             <label
@@ -88,4 +90,4 @@ const ContentModalCategory: React.FC<ContentModalCategoryProps> = ({
   );
 };
 
-export default ContentModalCategory;
+export default memo(ContentModalCategory);

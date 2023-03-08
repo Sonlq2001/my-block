@@ -29,6 +29,9 @@
 }
 
 // choose category
+.categoryGroup {
+  margin: 5rem 0 3rem;
+}
 .btnCate {
   border: 1px solid $gray3-color;
   padding: 1rem 2rem;
@@ -38,7 +41,6 @@
   font-size: 1.4rem;
   line-height: 2rem;
   transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  margin: 5rem 0 3rem;
   span {
     width: 2rem;
     display: flex;
@@ -97,4 +99,11 @@
       width: 24px;
     }
   }
+}
+
+// style error
+.error {
+  color: $red-fresh;
+  font-size: 1.3rem;
+  margin-top: 7px;
 }

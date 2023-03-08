@@ -1,7 +1,7 @@
 import { useState, memo } from 'react';
 import OutsideClickHandler from 'react-outside-click-handler';
 import clsx from 'clsx';
-import { useFormikContext } from 'formik';
+import { useFormikContext, ErrorMessage } from 'formik';
 
 import { FORMAT_POST, FORMAT_POST_ID } from 'features/new-post-2/new-post';
 import styles from './SettingPost.module.scss';
@@ -11,13 +11,16 @@ import Switch from 'components/atoms/Switch/Switch';
 import Button from 'components/atoms/Button/Button';
 import { TypeInitForm } from '../../types/new-post.types';
 
+import stylesMain from '../../screens/NewPostScreen.module.scss';
+
 interface SettingPostProps {
   setIsShowModalSetting: (status: boolean) => void;
 }
 
 const SettingPost: React.FC<SettingPostProps> = ({ setIsShowModalSetting }) => {
   const [isShowSelect, setIsShowSelect] = useState(false);
-  const { values, setValues } = useFormikContext<TypeInitForm>();
+  const { values, setValues, errors, setFieldValue } =
+    useFormikContext<TypeInitForm>();
   const [settingPostValue, setSettingPostValue] = useState<{
     format: number;
     excerpt: string;
@@ -30,7 +33,7 @@ const SettingPost: React.FC<SettingPostProps> = ({ setIsShowModalSetting }) => {
 
   const handleSetValueSetting = () => {
     setValues({ ...values, ...settingPostValue });
-    setIsShowModalSetting(false);
+    setIsShowModalSetting(Boolean(errors.videoUrl));
   };
 
   return (
@@ -115,13 +118,19 @@ const SettingPost: React.FC<SettingPostProps> = ({ setIsShowModalSetting }) => {
                 placeholder="Video url"
                 className={styles.inputVideoUrl}
                 name="videoUrl"
-                onChange={(e) =>
+                onChange={(e) => {
                   setSettingPostValue({
                     ...settingPostValue,
                     videoUrl: e.target.value,
-                  })
-                }
+                  });
+                  setFieldValue('videoUrl', e.target.value);
+                }}
                 value={settingPostValue.videoUrl}
+              />
+              <ErrorMessage
+                name="videoUrl"
+                component="p"
+                className={stylesMain.error}
               />
             </div>
           )}

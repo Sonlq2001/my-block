@@ -1,18 +1,19 @@
 import { useState, memo, useEffect } from 'react';
-import { useFormikContext } from 'formik';
+import { useFormikContext, ErrorMessage } from 'formik';
 
 import styles from './FormTags.module.scss';
 import { ReactComponent as IconClose } from 'assets/images/icon-close.svg';
-import { TypeInitForm } from '../../types/new-post.types';
+import { TypeInitForm, TypeTag } from '../../types/new-post.types';
+import stylesMain from '../../screens/NewPostScreen.module.scss';
 
 interface FormTagsProps {
   name: string;
 }
 
 const FormTags: React.FC<FormTagsProps> = ({ name }) => {
-  const [listTag, setListTag] = useState<{ tag: string; idTag: string }[]>([]);
+  const { setFieldValue, values, errors } = useFormikContext<TypeInitForm>();
+  const [listTag, setListTag] = useState<TypeTag[]>(values.tags || []);
   const [tag, setTag] = useState<string>('');
-  const { setFieldValue } = useFormikContext<TypeInitForm>();
 
   useEffect(() => {
     setFieldValue(name, listTag);
@@ -23,44 +24,54 @@ const FormTags: React.FC<FormTagsProps> = ({ name }) => {
   };
 
   return (
-    <div className={styles.formTag}>
-      {listTag.length > 0 &&
-        listTag.map((itemTag) => {
-          return (
-            <div className={styles.listTag} key={itemTag.idTag}>
-              <div className={styles.itemTag}>
-                {itemTag.tag}
-                <span
-                  className={styles.iconTag}
-                  onClick={() => handleRemoveTag(itemTag.idTag)}
-                >
-                  <IconClose />
-                </span>
+    <>
+      <div className={styles.formTag}>
+        {listTag.length > 0 &&
+          listTag.map((itemTag) => {
+            return (
+              <div className={styles.listTag} key={itemTag.idTag}>
+                <div className={styles.itemTag}>
+                  {itemTag.tag}
+                  <span
+                    className={styles.iconTag}
+                    onClick={() => handleRemoveTag(itemTag.idTag)}
+                  >
+                    <IconClose />
+                  </span>
+                </div>
               </div>
-            </div>
-          );
-        })}
-      <input
-        type="text"
-        value={tag}
-        onChange={(e) => setTag(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.keyCode === 13) {
-            e.preventDefault();
-            if (tag) {
-              setListTag([
-                ...listTag,
-                { tag, idTag: Math.random().toString(36).substr(2, 9) },
-              ]);
-              setTag('');
+            );
+          })}
+        <input
+          type="text"
+          value={tag}
+          onChange={(e) => setTag(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.keyCode === 13) {
+              e.preventDefault();
+              if (tag) {
+                setListTag([
+                  ...listTag,
+                  { tag, idTag: Math.random().toString(36).substr(2, 9) },
+                ]);
+                setTag('');
+              }
             }
-          }
-        }}
-        name={name}
-        className={styles.inputTag}
-        placeholder="Nhập Tag"
-      />
-    </div>
+          }}
+          name={name}
+          className={styles.inputTag}
+          placeholder="Nhập thẻ tag"
+        />
+      </div>
+      {typeof errors.tags === 'object' && (
+        <p className={stylesMain.error}>
+          {([...errors.tags].filter((item) => Boolean(item))[0] as TypeTag).tag}
+        </p>
+      )}
+      {typeof errors.tags === 'string' && (
+        <ErrorMessage name="tags" className={stylesMain.error} component="p" />
+      )}
+    </>
   );
 };
 
