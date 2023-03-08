@@ -17,7 +17,9 @@ const FormikScrollToError: React.FC<FormikScrollToErrorProps> = ({
     const form = document.getElementById(formId);
     if (form) {
       const tagError = document.querySelector('.NewPostScreen_error__iAPfr');
-      tagError?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (tagError) {
+        tagError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     }
   }, [formId, isSubmitting]);
 
