@@ -1,3 +1,5 @@
+import { TAB_SET_IMAGE } from '../constants/new-post.constants';
+
 export type TypeInitForm = {
   title: string;
   avatar: string | File;
@@ -20,3 +22,9 @@ export interface PostBody extends Omit<TypeInitForm, 'avatar'> {
   authPost: string;
   _id: string;
 }
+
+export type LinkImage = {
+  linkImage: string | File;
+  altImage: string;
+  tab: TAB_SET_IMAGE;
+};

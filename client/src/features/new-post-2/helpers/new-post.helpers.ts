@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 
 import { TypeInitForm } from '../types/new-post.types';
-import { FORMAT_POST_ID } from '../constants/new-post.constants';
+import { FORMAT_POST_ID, TAB_SET_IMAGE } from '../constants/new-post.constants';
 
 export const initForm: TypeInitForm = {
   title: '',
@@ -15,21 +15,24 @@ export const initForm: TypeInitForm = {
   videoUrl: '',
 };
 
-export const schema = Yup.object({
-  avatar: Yup.mixed()
-    .test('avatar', 'Định dạng file không được hỗ trợ.', (file: File) => {
-      if (file) {
+const ruleFile = (name: string) => {
+  return Yup.mixed()
+    .test(name, 'Định dạng file không được hỗ trợ.', (file: File) => {
+      if (file instanceof File) {
         return ['image/jpeg', 'image/jpg', 'image/png'].includes(file.type);
       }
       return true;
     })
-    .test('avatar', 'File ảnh quá lớn.', (file: File) => {
-      if (file) {
+    .test(name, 'File ảnh quá lớn.', (file: File) => {
+      if (file instanceof File) {
         return file.size < 2000000; // max size 2mb
       }
       return true;
-    })
-    .required('Vui lòng chọn ảnh bài viết.'),
+    });
+};
+
+export const schema = Yup.object({
+  avatar: ruleFile('avatar').required('Vui lòng chọn ảnh bài viết.'),
   title: Yup.string()
     .required('Vui lòng nhập tiêu đề.')
     .max(100, 'Tiêu đề vượt quá 100 ký tự.'),
@@ -58,6 +61,16 @@ export const schema = Yup.object({
   videoUrl: Yup.string().when('format', {
     is: (format: number) => format === FORMAT_POST_ID.VIDEO,
     then: Yup.string().required('Vui lòng nhập đường dẫn video youtube.'),
+    otherwise: Yup.string().nullable(),
+  }),
+});
+
+export const schemaEditorImage = Yup.object().shape({
+  linkImage: ruleFile('linkImage').nullable(),
+  altImage: Yup.string().when(['linkImage', 'tab'], {
+    is: (linkImage: string, tab: number) =>
+      tab === TAB_SET_IMAGE.LINK && Boolean(linkImage),
+    then: Yup.string().required('Vui lòng nhập văn bản thay thế hình ảnh !'),
     otherwise: Yup.string().nullable(),
   }),
 });
