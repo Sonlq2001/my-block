@@ -39,12 +39,16 @@ const RickText = () => {
     editable: true,
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
-      const checkEmpty = editor.getText();
-      if (Boolean(checkEmpty)) {
+      const text = editor.getText();
+
+      const isEmptyEditor =
+        !text && !html.includes('<img') && !html.includes('<iframe');
+
+      if (Boolean(isEmptyEditor)) {
+        setFieldValue('content', '');
+      } else {
         setFieldValue('content', html, false);
         setFieldError('content', '');
-      } else {
-        setFieldValue('content', '');
       }
     },
   });
