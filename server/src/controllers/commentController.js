@@ -71,9 +71,9 @@ export const getComments = async (req, res) => {
 								"replyComment.replyUser.password": 0,
 							},
 						},
+						{ $sort: { createdAt: -1 } },
 						{ $skip: skip },
 						{ $limit: perPage },
-						{ $sort: { createdAt: -1 } },
 					],
 					totalCount: [
 						{

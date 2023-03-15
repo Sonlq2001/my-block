@@ -6,8 +6,10 @@ import InputComment from './../InputComment/InputComment';
 import { useAppDispatch, useAppSelector } from 'redux/store';
 import { postReplyComment } from 'features/post/post';
 import { createNotify } from 'features/notify/redux/notify.slice';
+import { useDataToken } from 'hooks/hooks';
 
 import styles from './FeedbackComment.module.scss';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 interface FeedbackCommentProps {
   comment: any;
@@ -19,13 +21,13 @@ const FeedbackComment: React.FC<FeedbackCommentProps> = ({
   setShowMoreComment,
 }) => {
   const dispatch = useAppDispatch();
-  const { socketData } = useAppSelector((state) => ({
-    socketData: state.socket.socketData,
-  }));
+  const socketData = useAppSelector((state) => state.socket.socketData);
   const [isReply, setIsReply] = useState<boolean>(false);
+  const { name, avatar } = useDataToken();
+
   const handleReply = async (value: string) => {
     setShowMoreComment && setShowMoreComment(true);
-    const res = await dispatch(
+    await dispatch(
       postReplyComment({
         content: value,
         postId: comment.postId,
@@ -36,18 +38,20 @@ const FeedbackComment: React.FC<FeedbackCommentProps> = ({
     );
 
     // dispatch notify
-    if (postReplyComment.fulfilled.match(res)) {
-      const resData = await dispatch(
+    setTimeout(() => {
+      dispatch(
         createNotify({
-          id: res.payload.data.dataReplyComment._id,
-          text: `${res.payload.data.dataReplyComment.userComment.name} đã trả lời bình luận của bạn.`,
+          text: `${name} đã trả lời bình luận của bạn.`,
           content: value,
           recipients: [comment.userComment._id],
-          image: res.payload.data.dataReplyComment.userComment.avatar,
+          image: avatar,
         })
-      );
-      socketData && socketData.emit('createNotify', resData.payload.resNotify);
-    }
+      )
+        .then(unwrapResult)
+        .then(
+          (res) => socketData && socketData.emit('createNotify', res.resNotify)
+        );
+    }, 1000);
   };
 
   return (

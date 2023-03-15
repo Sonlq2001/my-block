@@ -40,7 +40,7 @@ export const postComment = createAsyncThunk(
 );
 
 export const getComments = createAsyncThunk(
-  'getComments',
+  'post/getComments',
   async (params: ParamsComment, { rejectWithValue }) => {
     try {
       const res = await postApi.getCommentApi(params);
@@ -209,10 +209,10 @@ const postSlice = createSlice({
       state.isLoadingPost = false;
       state.postDetail = {
         ...action.payload.postItem,
-        activeLike: !!action.payload.postItem.likes.includes(
+        activeLike: !!(action.payload.postItem.likes ?? []).includes(
           action.payload.userId
         ),
-        activePostSaved: !!action.payload.savedPost.includes(
+        activePostSaved: !!(action.payload.savedPost ?? []).includes(
           action.payload.postItem._id
         ),
       };

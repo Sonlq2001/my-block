@@ -11,7 +11,7 @@ export const createNotify = async (req, res) => {
 			path: "user",
 			select: "name avatar",
 		});
-		return res.status(200).json({ msg: "Thông báo thành công !", resNotify });
+		return res.status(200).json({ resNotify });
 	} catch (error) {
 		return res.status(500).json({ msg: error.message });
 	}

@@ -19,7 +19,7 @@ const InputComment: React.FC<CommentsProps> = ({
   const [isToggleComment, setIsToggleComment] = useState<boolean>(false);
   const [valueComment, setValueComment] = useState<string>('');
 
-  const handlePostComment = async () => {
+  const handlePostComment = () => {
     if (!valueComment.trim()) return;
     getValue(valueComment);
     setValueComment('');
@@ -33,7 +33,7 @@ const InputComment: React.FC<CommentsProps> = ({
     <div className={styles.comments}>
       <div className={styles.inputComment}>
         <div className={styles.headerComment}>
-          <img src={avatar} alt="" />
+          <img src={avatar} alt="auth-avatar" />
 
           <ContentEditableTag
             html={valueComment}
