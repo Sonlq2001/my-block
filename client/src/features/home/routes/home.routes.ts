@@ -1,9 +1,9 @@
-import { RouteItemDef } from "../../../types/routes.types";
-import HomeScreen from "./../screens/HomeScreen";
+import { RouteItemDef } from '../../../types/routes.types';
+import HomeScreen from './../screens/HomeScreen';
 
 const HOME_SCREEN: RouteItemDef = {
-  id: "id_home",
-  path: "/",
+  id: 'id_home',
+  path: '/',
   component: HomeScreen,
   isExact: true,
 };

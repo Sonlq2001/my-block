@@ -49,7 +49,7 @@ const FormTags: React.FC<FormTagsProps> = ({ name }) => {
           onKeyDown={(e) => {
             if (e.keyCode === 13) {
               e.preventDefault();
-              if (tag) {
+              if (tag.trim()) {
                 setListTag([
                   ...listTag,
                   { tag, idTag: Math.random().toString(36).substr(2, 9) },
