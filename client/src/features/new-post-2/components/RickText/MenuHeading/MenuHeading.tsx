@@ -1,6 +1,7 @@
 import { useState, memo } from 'react';
 import clsx from 'clsx';
 import { Editor as CoreEditor } from '@tiptap/core';
+import OutsideClickHandler from 'react-outside-click-handler';
 
 import { ReactComponent as IconHeading } from 'assets/images/icon-editor/icon-heading.svg';
 import { HEADINGS } from 'features/new-post-2/new-post';
@@ -14,22 +15,17 @@ interface MenuHeadingProps {
 const MenuHeading: React.FC<MenuHeadingProps> = ({ editor }) => {
   const [toggleHeading, setToggleHeading] = useState<boolean>(false);
 
-  const isActiveHeading = Array(6)
-    .fill(1)
-    .some((_, index) => editor.isActive('heading', { level: index + 1 }));
-
   return (
-    <div
-      className={clsx(
-        stylesBase.itemEditor,
-        isActiveHeading && stylesBase.isActive
-      )}
-      onClick={() => setToggleHeading(!toggleHeading)}
-      title="Heading"
-    >
-      <span className={styles.iconHeading}>
-        <IconHeading />
-      </span>
+    <OutsideClickHandler onOutsideClick={() => setToggleHeading(false)}>
+      <div
+        className={stylesBase.itemEditor}
+        onClick={() => setToggleHeading(!toggleHeading)}
+        title="Heading"
+      >
+        <span className={styles.iconHeading}>
+          <IconHeading />
+        </span>
+      </div>
       {toggleHeading && editor && (
         <div className={styles.groupHeading}>
           {HEADINGS.map((heading) => (
@@ -56,7 +52,7 @@ const MenuHeading: React.FC<MenuHeadingProps> = ({ editor }) => {
           ))}
         </div>
       )}
-    </div>
+    </OutsideClickHandler>
   );
 };
 
