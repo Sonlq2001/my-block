@@ -7,7 +7,7 @@ import { authApi } from './../api/auth.api';
 import { UserItem } from './../types/auth.types';
 
 export const authRefreshToken = createAsyncThunk(
-  'authRefreshToken',
+  'auth/authRefreshToken',
   async (_params, { rejectWithValue }) => {
     try {
       const res = await authApi.authRefreshToken();
@@ -19,7 +19,7 @@ export const authRefreshToken = createAsyncThunk(
 );
 
 export const authLogout = createAsyncThunk(
-  'authLogout',
+  'auth/authLogout',
   async (_params, { rejectWithValue }) => {
     try {
       const res = await authApi.authLogout();
@@ -31,7 +31,7 @@ export const authLogout = createAsyncThunk(
 );
 
 export const authLoginGoogle = createAsyncThunk(
-  `authLoginGoogle`,
+  `auth/authLoginGoogle`,
   async (token: string, { rejectWithValue }) => {
     try {
       const res = await authApi.authLoginGoogle(token);
