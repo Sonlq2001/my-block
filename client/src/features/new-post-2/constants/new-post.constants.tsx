@@ -64,3 +64,11 @@ export enum FORMAT_POST_ID {
   STANDARD = 1,
   VIDEO = 2,
 }
+
+export const MAX_LENGTH_TITLE = 100;
+export const MAX_LENGTH_TAG = 5;
+export const MIN_LENGTH = 1;
+export const MAX_LENGTH_CHARACTER_TAG = 20;
+export const MAX_SIZE_FILE = 2000000; // 2MB;
+
+export const FILES_ACCEPT = ['image/jpeg', 'image/jpg', 'image/png'];
