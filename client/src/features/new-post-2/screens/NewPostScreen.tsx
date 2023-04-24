@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Formik, Form, ErrorMessage } from 'formik';
+import { useState, useRef } from 'react';
+import { Formik, Form, ErrorMessage, FormikProps } from 'formik';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useHistory } from 'react-router-dom';
 import OutsideClickHandler from 'react-outside-click-handler';
@@ -27,15 +27,47 @@ import { useDataToken } from 'hooks/hooks';
 
 import { PostPathsEnum } from 'features/post/post';
 import { schema } from '../helpers/new-post.helpers';
+import {
+  MAX_LENGTH_TITLE,
+  MAX_LENGTH_TAG,
+  FILES_ACCEPT,
+  MAX_SIZE_FILE,
+} from '../constants/new-post.constants';
 
 const NewPostScreen = () => {
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
   const [isShowModalSetting, setIsShowModalSetting] = useState<boolean>(false);
   const [listSelectCate, setListSelectCate] = useState<string[]>([]);
+  const [openErrorSaveDraft, setOpenErrorSaveDraft] = useState<boolean>(false);
+  const formikRef = useRef<FormikProps<TypeInitForm>>(null);
 
   const dispatch = useAppDispatch();
   const history = useHistory();
   const { _id } = useDataToken();
+
+  const checkRulePost = () => {
+    if (formikRef.current) {
+      const { values } = formikRef.current;
+      const conditionTag = values.tags.length > MAX_LENGTH_TAG;
+      const conditionTitle = values.title.length > MAX_LENGTH_TITLE;
+      const conditionImageType = values.avatar
+        ? !FILES_ACCEPT.includes((values.avatar as File).type)
+        : false;
+      const conditionImageSize = values.avatar
+        ? (values.avatar as File).size > MAX_SIZE_FILE
+        : false;
+
+      if (
+        conditionTag ||
+        conditionTitle ||
+        conditionImageType ||
+        conditionImageSize
+      ) {
+        return true;
+      }
+    }
+    return false;
+  };
 
   const handleSubmitForm = async (values: TypeInitForm) => {
     if (!_id) {
@@ -45,17 +77,26 @@ const NewPostScreen = () => {
     try {
       const dataImage = await upLoadImage(values.avatar);
       const newData = { ...values, avatar: dataImage, authPost: _id };
-      if (newData) {
-        const resNewPost = unwrapResult(
-          await dispatch(postArticle(newData as PostBody))
-        );
+      const resNewPost = unwrapResult(
+        await dispatch(postArticle(newData as PostBody))
+      );
 
-        history.push(
-          PostPathsEnum.POST.replace(/:slug/, resNewPost.post.slug),
-          resNewPost.post._id
-        );
-      }
+      history.push(
+        PostPathsEnum.POST.replace(/:slug/, resNewPost.post.slug),
+        resNewPost.post._id
+      );
     } catch (error) {}
+  };
+
+  const handleSaveDraft = (values: TypeInitForm) => {
+    const isRulePost = checkRulePost();
+    if (isRulePost) {
+      setOpenErrorSaveDraft(isRulePost);
+      return;
+    }
+
+    // todo save draft
+    console.log(values);
   };
 
   return (
@@ -68,6 +109,7 @@ const NewPostScreen = () => {
             onSubmit={handleSubmitForm}
             enableReinitialize
             validationSchema={schema}
+            innerRef={formikRef}
           >
             {({ values, setFieldValue, errors }) => {
               return (
@@ -124,6 +166,14 @@ const NewPostScreen = () => {
                         >
                           Xuất bản
                         </Button>
+                        <Button
+                          type="button"
+                          onClick={() => handleSaveDraft(values)}
+                          variant="default"
+                          className={styles.btnSaveDraft}
+                        >
+                          Lưu nháp
+                        </Button>
 
                         <div className={styles.wrapSettingPost}>
                           <button
@@ -164,6 +214,37 @@ const NewPostScreen = () => {
                         listSelectCate={listSelectCate}
                         setListSelectCate={setListSelectCate}
                       />
+                    </Modal>
+
+                    {/* modal error when save draft */}
+                    <Modal
+                      open={openErrorSaveDraft}
+                      handleClose={() => setOpenErrorSaveDraft(false)}
+                      title="Không thể lưu nháp."
+                      handSubmit={() => setOpenErrorSaveDraft(false)}
+                      small
+                      hideBtnCancel
+                    >
+                      <ul className={styles.errorSaveDraft}>
+                        {values.tags.length > MAX_LENGTH_TAG && (
+                          <li>
+                            Vượt quá {MAX_LENGTH_TAG} thẻ tag trong bài viết.
+                          </li>
+                        )}
+                        {values.title.length > MAX_LENGTH_TITLE && (
+                          <li>
+                            Vượt quá độ dài tiêu đề {MAX_LENGTH_TITLE} ký tự.
+                          </li>
+                        )}
+                        {values?.avatar
+                          ? !FILES_ACCEPT.includes(
+                              (values?.avatar as File).type
+                            )
+                          : false && <li>Định dạng file không được hỗ trợ.</li>}
+                        {values?.avatar
+                          ? (values?.avatar as File).size > MAX_SIZE_FILE
+                          : false && <li>File ảnh quá lớn.</li>}
+                      </ul>
                     </Modal>
                   </Form>
                 </FormikScrollToError>

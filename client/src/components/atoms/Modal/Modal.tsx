@@ -16,6 +16,7 @@ interface ModalProps {
   textOk?: string;
   textCancel?: string;
   disabled?: boolean;
+  hideBtnCancel?: boolean;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -29,6 +30,7 @@ const Modal: React.FC<ModalProps> = ({
   textOk = 'Đồng ý',
   textCancel = 'Huỷ',
   disabled,
+  hideBtnCancel = false,
 }) => {
   const divRef = useRef(document.createElement('div'));
 
@@ -67,12 +69,15 @@ const Modal: React.FC<ModalProps> = ({
             </div>
             <div className={styles.modalBody}>{children}</div>
             <div className={styles.modalFooter}>
-              <button
-                className={clsx(styles.modalBtn, styles.modalBtnCancel)}
-                onClick={handleClose}
-              >
-                {textCancel}
-              </button>
+              {!hideBtnCancel && (
+                <button
+                  className={clsx(styles.modalBtn, styles.modalBtnCancel)}
+                  onClick={handleClose}
+                >
+                  {textCancel}
+                </button>
+              )}
+
               <button
                 className={clsx(
                   styles.modalBtn,

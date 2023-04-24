@@ -1,7 +1,16 @@
 import * as Yup from 'yup';
 
 import { TypeInitForm } from '../types/new-post.types';
-import { FORMAT_POST_ID, TAB_SET_IMAGE } from '../constants/new-post.constants';
+import {
+  FORMAT_POST_ID,
+  TAB_SET_IMAGE,
+  MAX_LENGTH_TITLE,
+  MAX_LENGTH_TAG,
+  MIN_LENGTH,
+  MAX_LENGTH_CHARACTER_TAG,
+  MAX_SIZE_FILE,
+  FILES_ACCEPT,
+} from '../constants/new-post.constants';
 
 export const initForm: TypeInitForm = {
   title: '',
@@ -19,13 +28,13 @@ const ruleFile = (name: string) => {
   return Yup.mixed()
     .test(name, 'Định dạng file không được hỗ trợ.', (file: File) => {
       if (file instanceof File) {
-        return ['image/jpeg', 'image/jpg', 'image/png'].includes(file.type);
+        return FILES_ACCEPT.includes(file.type);
       }
       return true;
     })
     .test(name, 'File ảnh quá lớn.', (file: File) => {
       if (file instanceof File) {
-        return file.size < 2000000; // max size 2mb
+        return file.size < MAX_SIZE_FILE; // max size 2mb
       }
       return true;
     });
@@ -35,17 +44,28 @@ export const schema = Yup.object({
   avatar: ruleFile('avatar').required('Vui lòng chọn ảnh bài viết.'),
   title: Yup.string()
     .required('Vui lòng nhập tiêu đề.')
-    .max(100, 'Tiêu đề vượt quá 100 ký tự.'),
+    .max(MAX_LENGTH_TITLE, 'Tiêu đề vượt quá 100 ký tự.'),
   content: Yup.string().required('Vui lòng nhập nội dung bài viết.'),
-  topics: Yup.array().min(1, 'Bạn cần chọn tối thiểu 1 chủ đề.'),
+  topics: Yup.array().min(
+    MIN_LENGTH,
+    `Bạn cần chọn tối thiểu ${MIN_LENGTH} chủ đề.`
+  ),
   tags: Yup.array()
     .of(
       Yup.object().shape({
-        tag: Yup.string().required().max(20, 'Tên thẻ tag vượt quá 20 ký tự.'),
+        tag: Yup.string()
+          .required()
+          .max(
+            MAX_LENGTH_CHARACTER_TAG,
+            `Tên thẻ tag vượt quá ${MAX_LENGTH_CHARACTER_TAG} ký tự.`
+          ),
       })
     )
-    .min(1, 'Nhập tối thiểu 1 thẻ tag.')
-    .max(5, 'Vượt quá giới hạn 5 thẻ tag cho 1 bài viết.')
+    .min(MIN_LENGTH, `Nhập tối thiểu ${MIN_LENGTH} thẻ tag.`)
+    .max(
+      MAX_LENGTH_TAG,
+      `Vượt quá giới hạn ${MAX_LENGTH_TAG} thẻ tag cho 1 bài viết.`
+    )
     .test('tags', 'Tên thẻ đã bị trùng.', (values) => {
       const hasMap = new Map();
       if (values?.length) {
