@@ -112,6 +112,13 @@ const NewPostScreen = () => {
             innerRef={formikRef}
           >
             {({ values, setFieldValue, errors }) => {
+              const errorTypeFile = values?.avatar
+                ? !FILES_ACCEPT.includes((values?.avatar as File).type)
+                : false;
+              const errorSizeFile = values?.avatar
+                ? (values?.avatar as File).size > MAX_SIZE_FILE
+                : false;
+
               return (
                 <FormikScrollToError formId="form-post">
                   <Form>
@@ -236,14 +243,10 @@ const NewPostScreen = () => {
                             Vượt quá độ dài tiêu đề {MAX_LENGTH_TITLE} ký tự.
                           </li>
                         )}
-                        {values?.avatar
-                          ? !FILES_ACCEPT.includes(
-                              (values?.avatar as File).type
-                            )
-                          : false && <li>Định dạng file không được hỗ trợ.</li>}
-                        {values?.avatar
-                          ? (values?.avatar as File).size > MAX_SIZE_FILE
-                          : false && <li>File ảnh quá lớn.</li>}
+                        {errorTypeFile && (
+                          <li>Định dạng file không được hỗ trợ.</li>
+                        )}
+                        {errorSizeFile && <li>File ảnh quá lớn.</li>}
                       </ul>
                     </Modal>
                   </Form>

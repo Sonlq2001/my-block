@@ -16,6 +16,9 @@ const TabContent: React.FC<TabContentProps> = ({ tab }) => {
   const postsSavedData = useAppSelector(
     (state) => state.profile.postsSaved.data
   );
+  const postsDraftData = useAppSelector(
+    (state) => state.profile.postsDraft.data
+  );
 
   return (
     <>
@@ -33,6 +36,15 @@ const TabContent: React.FC<TabContentProps> = ({ tab }) => {
           {postsSavedData &&
             postsSavedData.length > 0 &&
             postsSavedData.map((post) => (
+              <PostItemProfile key={post._id} post={post} />
+            ))}
+        </div>
+      )}
+      {tab === TAB_PROFILE.DRAFT && (
+        <div className={styles.itemTab}>
+          {postsDraftData &&
+            postsDraftData.length > 0 &&
+            postsDraftData.map((post) => (
               <PostItemProfile key={post._id} post={post} />
             ))}
         </div>

@@ -148,6 +148,13 @@ const ProfileScreen = () => {
                     className={clsx(stylesCommon.navigationTabItem, {
                       [stylesCommon.active]: queries.tab === TAB_PROFILE.DRAFT,
                     })}
+                    onClick={() => {
+                      setQueries({
+                        ...queries,
+                        tab: TAB_PROFILE.DRAFT,
+                        page: 1,
+                      });
+                    }}
                   >
                     Lưu nháp
                   </button>
