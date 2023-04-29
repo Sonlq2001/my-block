@@ -638,7 +638,7 @@ export const getPostSlide = async (req, res) => {
   }
 };
 
-// [PATCH]
+// [PATCH] - [/update_post/:post_id]
 export const updatePost = async (req, res) => {
   try {
     const { post_id } = req.params;

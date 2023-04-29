@@ -201,7 +201,7 @@ const PostScreen = () => {
         </>
       )}
 
-      {/* edit */}
+      {/* edit when post is draft or private */}
       {!isNotDraftPost && (
         <div className={styles.menuPost}>
           <h3 className={styles.titleMenu}>Lưu nháp</h3>

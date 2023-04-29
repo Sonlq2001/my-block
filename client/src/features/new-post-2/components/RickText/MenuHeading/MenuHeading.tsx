@@ -2,12 +2,11 @@ import { useState, memo } from 'react';
 import clsx from 'clsx';
 import { Editor as CoreEditor } from '@tiptap/core';
 import OutsideClickHandler from 'react-outside-click-handler';
+import { Level } from '@tiptap/extension-heading/dist/packages/extension-heading/src/heading';
 
 import { ReactComponent as IconHeading } from 'assets/images/icon-editor/icon-heading.svg';
 import stylesBase from '../RickText.module.scss';
 import styles from './MenuHeading.module.scss';
-
-import { Level } from '@tiptap/extension-heading/dist/packages/extension-heading/src/heading';
 
 import { ReactComponent as IconHeading1 } from 'assets/images/icon-editor/icon-heading-1.svg';
 import { ReactComponent as IconHeading2 } from 'assets/images/icon-editor/icon-heading-2.svg';
