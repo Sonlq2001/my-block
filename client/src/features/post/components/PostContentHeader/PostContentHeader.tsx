@@ -22,6 +22,7 @@ interface PostContentHeaderProps {
   totalComments: number;
   _id: string;
   createdAt: string;
+  isNotDraftPost: boolean;
 }
 
 const PostContentHeader: React.FC<PostContentHeaderProps> = ({
@@ -31,15 +32,15 @@ const PostContentHeader: React.FC<PostContentHeaderProps> = ({
   totalComments,
   _id,
   createdAt,
+  isNotDraftPost,
 }) => {
   const { activeLike, handleLikePost, totalLike } = useToggleLikePost(_id);
 
   return (
     <div className={styles.postContentHeader}>
-      {topics?.map((topic) => (
-        <ChipTag title={topic.name} key={topic._id} />
-      ))}
-
+      {topics &&
+        topics?.length > 0 &&
+        topics.map((topic) => <ChipTag title={topic.name} key={topic._id} />)}
       <h1 className={styles.postTitle}>{title}</h1>
 
       <div className={styles.postInfo}>
@@ -54,21 +55,23 @@ const PostContentHeader: React.FC<PostContentHeaderProps> = ({
             date={formatDate(createdAt)}
           />
 
-          <div className={styles.postInfoBox}>
-            <SavePost postId={_id} />
+          {isNotDraftPost && (
+            <div className={styles.postInfoBox}>
+              <SavePost postId={_id} />
 
-            <ChipInfo total={totalComments || 0} icon={<IconChat />} dark />
-            <div className={styles.postInfoLine}></div>
-            <ChipInfo
-              total={totalLike}
-              icon={<IconHeart />}
-              dark
-              onClick={handleLikePost}
-              cursor
-              activeLike={activeLike}
-            />
-            <ChipInfo icon={<IconDownload />} download dark />
-          </div>
+              <ChipInfo total={totalComments || 0} icon={<IconChat />} dark />
+              <div className={styles.postInfoLine}></div>
+              <ChipInfo
+                total={totalLike}
+                icon={<IconHeart />}
+                dark
+                onClick={handleLikePost}
+                cursor
+                activeLike={activeLike}
+              />
+              <ChipInfo icon={<IconDownload />} download dark />
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -10,6 +10,7 @@ import {
   MAX_LENGTH_CHARACTER_TAG,
   MAX_SIZE_FILE,
   FILES_ACCEPT,
+  STATUS_POST,
 } from '../constants/new-post.constants';
 
 export const initForm: TypeInitForm = {
@@ -22,6 +23,7 @@ export const initForm: TypeInitForm = {
   format: FORMAT_POST_ID.STANDARD,
   allowComment: true,
   videoUrl: '',
+  status: STATUS_POST.PUBLIC,
 };
 
 const ruleFile = (name: string) => {

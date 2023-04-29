@@ -637,3 +637,20 @@ export const getPostSlide = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+// [PATCH]
+export const updatePost = async (req, res) => {
+  try {
+    const { post_id } = req.params;
+    const { status } = req.body;
+
+    const resData = await Post.findOneAndUpdate(
+      { _id: post_id },
+      { status },
+      { new: true }
+    );
+    return res.status(200).json({ data: resData });
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+};

@@ -32,6 +32,7 @@ import {
   MAX_LENGTH_TAG,
   FILES_ACCEPT,
   MAX_SIZE_FILE,
+  STATUS_POST,
 } from '../constants/new-post.constants';
 
 const NewPostScreen = () => {
@@ -97,6 +98,7 @@ const NewPostScreen = () => {
 
     // todo save draft
     console.log(values);
+    handleSubmitForm({ ...values, status: STATUS_POST.DRAFT });
   };
 
   return (

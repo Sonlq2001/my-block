@@ -11,6 +11,7 @@ export const initNewPost: PostType = {
   topic: '',
   tags: [],
   authPost: '',
+  status: 1,
 };
 
 export const schema = Yup.object().shape({

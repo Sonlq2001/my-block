@@ -19,7 +19,6 @@ const postSchema = new mongoose.Schema(
     },
     avatar: {
       type: Object,
-      required: true,
     },
     tags: {
       type: [tagSchema],

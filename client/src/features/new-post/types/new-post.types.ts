@@ -15,6 +15,7 @@ export interface PostType {
     img: string;
   };
   categoryId?: string;
+  status: number;
 }
 
 export interface PostItemType extends Omit<PostType, 'tags'> {

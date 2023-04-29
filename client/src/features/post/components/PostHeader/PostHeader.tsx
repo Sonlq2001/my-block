@@ -12,7 +12,13 @@ const PostHeader: React.FC<PostHeaderProps> = ({ children, avatar }) => {
       <div className="container">{children}</div>
 
       <div className={styles.postBg}>
-        <img src={avatar?.img} alt="" />
+        <img
+          src={
+            avatar?.img ||
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'
+          }
+          alt=""
+        />
       </div>
     </div>
   );
