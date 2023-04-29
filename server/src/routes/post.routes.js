@@ -1,20 +1,21 @@
 import express from "express";
 
 import {
-	getPosts,
-	createPost,
-	getPost,
-	searchPost,
-	viewPost,
-	getPostsTrending,
-	getPostsUser,
-	getPostNewest,
-	getPostExplore,
-	getPostsType,
-	getPostsVideo,
-	patchLikePost,
-	patchUnLikePost,
-	getPostSlide,
+  getPosts,
+  createPost,
+  getPost,
+  searchPost,
+  viewPost,
+  getPostsTrending,
+  getPostsUser,
+  getPostNewest,
+  getPostExplore,
+  getPostsType,
+  getPostsVideo,
+  patchLikePost,
+  patchUnLikePost,
+  getPostSlide,
+  updatePost,
 } from "./../controllers/postController";
 import { verifyToken } from "./../middleware/verifyToken";
 
@@ -37,5 +38,6 @@ route.patch("/like_post/:id", verifyToken, patchLikePost);
 route.patch("/unlike_post/:id", verifyToken, patchUnLikePost);
 
 route.get("/posts_slide", getPostSlide);
+route.patch("/update_post/:post_id", updatePost);
 
 export default route;

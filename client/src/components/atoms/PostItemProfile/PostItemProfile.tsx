@@ -24,7 +24,13 @@ const PostItemProfile: React.FC<PostItemProfileProps> = ({ post }) => {
       className={styles.postItem}
     >
       <div className={styles.postHeader}>
-        <img src={post.avatar.img} alt="" />
+        <img
+          src={
+            post?.avatar?.img ||
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'
+          }
+          alt=""
+        />
       </div>
 
       <div className={styles.postBody}>

@@ -199,6 +199,9 @@ const postSlice = createSlice({
         };
       }
     },
+    resetPostDetail: (state) => {
+      state.postDetail = null;
+    },
   },
   extraReducers: {
     // get post
@@ -266,4 +269,5 @@ export const {
   resetComments,
   updateActiveLike,
   updateActivePostSaved,
+  resetPostDetail,
 } = postSlice.actions;

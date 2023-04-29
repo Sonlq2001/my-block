@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { unwrapResult } from '@reduxjs/toolkit';
+import { Link } from 'react-router-dom';
 
 import PostHeader from './../../components/PostHeader/PostHeader';
 import PostContentHeader from './../../components/PostContentHeader/PostContentHeader';
@@ -17,10 +18,16 @@ import styles from './PostScreen.module.scss';
 
 import { useAppDispatch, useAppSelector } from 'redux/store';
 import { getPost, getComments } from './../../redux/post.slice';
-import { postComment, resetComments } from './../../redux/post.slice';
+import {
+  postComment,
+  resetComments,
+  resetPostDetail,
+} from './../../redux/post.slice';
 import { usePostSocket } from './../../socket/post.socket';
 import { createNotify } from 'features/notify/notify';
 import { useDataToken } from 'hooks/hooks';
+import { STATUS_POST } from 'features/new-post-2/new-post';
+import IconEditor from 'assets/images/writer.png';
 interface PostParams {
   slug: string;
 }
@@ -44,6 +51,11 @@ const PostScreen = () => {
   const totalComment = useAppSelector((state) => state.post.comments.total);
   const socketData = useAppSelector((state) => state.socket.socketData);
   const savePost = useAppSelector((state) => state.user.userInfo?.savePost);
+
+  const isNotDraftPost = useMemo(
+    () => postItem?.status !== STATUS_POST.DRAFT,
+    [postItem?.status]
+  );
 
   useEffect(() => {
     if (!loadingPost) return;
@@ -105,6 +117,7 @@ const PostScreen = () => {
   useEffect(() => {
     return () => {
       dispatch(resetComments());
+      dispatch(resetPostDetail());
     };
   }, [dispatch]);
 
@@ -123,13 +136,11 @@ const PostScreen = () => {
   return (
     <>
       {loadingPost && <LoadingPostDetail />}
-      {!loadingPost && (
+      {!loadingPost && postItem && (
         <>
-          {postItem && (
-            <PostHeader avatar={postItem?.avatar}>
-              <PostContentHeader {...postItem} />
-            </PostHeader>
-          )}
+          <PostHeader avatar={postItem?.avatar}>
+            <PostContentHeader {...postItem} isNotDraftPost={isNotDraftPost} />
+          </PostHeader>
 
           <div className="container">
             <div className={styles.rowPostLeft}>
@@ -154,36 +165,50 @@ const PostScreen = () => {
                 </div>
 
                 {/* Share post */}
-                <SharePost />
+                {isNotDraftPost && <SharePost />}
 
                 {/* Comment */}
-                {postItem?.allowComment ? (
+                {isNotDraftPost && (
                   <>
-                    <InputComment getValue={handleComment} />
-                    {commentsPost.map((comment) => (
-                      <Comments key={comment._id} comment={comment} />
-                    ))}
-                    {commentsPost.length < totalComment && (
-                      <button
-                        className={styles.btnMoreComment}
-                        onClick={handleLoadMoreComment}
-                      >
-                        <span>Xem thêm bình luận</span>
-                        {loadingComment ? (
-                          <LoadingCircleDot />
-                        ) : (
-                          <i className="las la-angle-down" />
+                    {postItem?.allowComment ? (
+                      <>
+                        <InputComment getValue={handleComment} />
+                        {commentsPost.map((comment) => (
+                          <Comments key={comment._id} comment={comment} />
+                        ))}
+                        {commentsPost.length < totalComment && (
+                          <button
+                            className={styles.btnMoreComment}
+                            onClick={handleLoadMoreComment}
+                          >
+                            <span>Xem thêm bình luận</span>
+                            {loadingComment ? (
+                              <LoadingCircleDot />
+                            ) : (
+                              <i className="las la-angle-down" />
+                            )}
+                          </button>
                         )}
-                      </button>
+                      </>
+                    ) : (
+                      <div>Bài viết này không thể bình luận</div>
                     )}
                   </>
-                ) : (
-                  <div>Bài viết này không thể bình luận</div>
                 )}
               </div>
             </div>
           </div>
         </>
+      )}
+
+      {/* edit when post is draft or private */}
+      {!isNotDraftPost && (
+        <div className={styles.menuPost}>
+          <h3 className={styles.titleMenu}>Lưu nháp</h3>
+          <Link to="/new-post-2" className={styles.itemMenuPost}>
+            <img src={IconEditor} alt="" className={styles.iconMenu} />
+          </Link>
+        </div>
       )}
     </>
   );

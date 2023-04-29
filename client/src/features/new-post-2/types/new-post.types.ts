@@ -10,6 +10,7 @@ export type TypeInitForm = {
   format: number;
   allowComment: boolean;
   videoUrl?: string;
+  status: number;
 };
 
 export type TypeTag = {
