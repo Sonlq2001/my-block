@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { PostItemType } from 'features/new-post/types/new-post.types';
+import { PostItemType } from 'features/new-post-2/new-post';
 import { ParamsComment } from '../types/comment.types';
 import { postApi } from './../api/post.api';
 
@@ -11,7 +11,7 @@ export const getPost = createAsyncThunk(
       slug,
       userId,
       savedPost,
-    }: { slug: string; userId: string; savedPost: string[] },
+    }: { slug: string; userId?: string; savedPost?: string[] },
     { rejectWithValue }
   ) => {
     try {
@@ -209,15 +209,12 @@ const postSlice = createSlice({
       state.isLoadingPost = true;
     },
     [getPost.fulfilled.type]: (state, action) => {
+      const { postItem, savedPost, userId } = action.payload;
       state.isLoadingPost = false;
       state.postDetail = {
-        ...action.payload.postItem,
-        activeLike: !!(action.payload.postItem.likes ?? []).includes(
-          action.payload.userId
-        ),
-        activePostSaved: !!(action.payload.savedPost ?? []).includes(
-          action.payload.postItem._id
-        ),
+        ...postItem,
+        activeLike: !!(postItem?.likes ?? []).includes(userId),
+        activePostSaved: !!(savedPost ?? []).includes(postItem?._id),
       };
     },
     [getPost.rejected.type]: (state) => {

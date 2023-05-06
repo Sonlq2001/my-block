@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { PostBody } from './../types/new-post.types';
+import { PostBody, PostHomeTypeDef } from './../types/new-post.types';
 import { postApi } from './../api/new-post.api';
 
 export const postArticle = createAsyncThunk(
@@ -8,6 +8,18 @@ export const postArticle = createAsyncThunk(
   async (data: PostBody, { rejectWithValue }) => {
     try {
       const res = await postApi.postArticleApi(data);
+      return res.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.mes);
+    }
+  }
+);
+
+export const updatePost = createAsyncThunk<{ data: PostHomeTypeDef }, PostBody>(
+  'new-post/updatePost',
+  async (data, { rejectWithValue }) => {
+    try {
+      const res = await postApi.updatePostApi(data);
       return res.data;
     } catch (error: any) {
       return rejectWithValue(error.response.mes);

@@ -26,8 +26,9 @@ import {
 import { usePostSocket } from './../../socket/post.socket';
 import { createNotify } from 'features/notify/notify';
 import { useDataToken } from 'hooks/hooks';
-import { STATUS_POST } from 'features/new-post-2/new-post';
+import { STATUS_POST, NewPostPathEnums } from 'features/new-post-2/new-post';
 import IconEditor from 'assets/images/writer.png';
+
 interface PostParams {
   slug: string;
 }
@@ -159,7 +160,7 @@ const PostScreen = () => {
                       <SidebarItemTag
                         tag={`#${tagItem.tag}`}
                         key={tagItem._id}
-                        imagePost={postItem?.avatar.img || ''}
+                        imagePost={postItem?.avatar?.img || ''}
                       />
                     ))}
                 </div>
@@ -202,10 +203,13 @@ const PostScreen = () => {
       )}
 
       {/* edit when post is draft or private */}
-      {!isNotDraftPost && (
+      {!isNotDraftPost && postItem?.slug && (
         <div className={styles.menuPost}>
-          <h3 className={styles.titleMenu}>Lưu nháp</h3>
-          <Link to="/new-post-2" className={styles.itemMenuPost}>
+          <h3 className={styles.titleMenu}>Bài viết đang ở chế độ lưu nháp</h3>
+          <Link
+            to={NewPostPathEnums.EDIT.replace(/:slug/, postItem.slug)}
+            className={styles.itemMenuPost}
+          >
             <img src={IconEditor} alt="" className={styles.iconMenu} />
           </Link>
         </div>

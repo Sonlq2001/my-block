@@ -8,6 +8,14 @@ const postArticleApi = (data: PostBody): Promise<AxiosResponse> => {
   return api.post(NewPostEndpointsEnum.POST_ARTICLE, data);
 };
 
+const updatePostApi = (data: PostBody): Promise<AxiosResponse> => {
+  return api.patch(
+    NewPostEndpointsEnum.PATCH_POST.replace(/:post_id/, data._id),
+    data
+  );
+};
+
 export const postApi = {
   postArticleApi,
+  updatePostApi,
 };
