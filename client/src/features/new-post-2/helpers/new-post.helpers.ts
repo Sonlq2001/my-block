@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-import { TypeInitForm } from '../types/new-post.types';
+import { TypeInitForm, PostItemType } from '../types/new-post.types';
 import {
   FORMAT_POST_ID,
   TAB_SET_IMAGE,
@@ -95,4 +95,18 @@ export const schemaEditorImage = Yup.object().shape({
     then: Yup.string().required('Vui lòng nhập văn bản thay thế hình ảnh !'),
     otherwise: Yup.string().nullable(),
   }),
+});
+
+export const convertPostEdit = (data: PostItemType): TypeInitForm => ({
+  title: data?.title || '',
+  avatar: data?.avatar?.img || '',
+  content: data?.content || '',
+  excerpt: data?.excerpt || '',
+  topics: data?.topics?.map((topic) => topic._id) || [],
+  tags: data?.tags?.map((item) => ({ idTag: item._id, tag: item.tag })) || [],
+  format: data?.format || FORMAT_POST_ID.STANDARD,
+  allowComment: data?.allowComment || true,
+  videoUrl: data?.videoUrl || '',
+  status: data?.status || STATUS_POST.PUBLIC,
+  _id: data?._id || '',
 });

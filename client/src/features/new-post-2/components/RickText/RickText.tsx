@@ -32,6 +32,8 @@ import { ReactComponent as IconRedo } from 'assets/images/icon-editor/icon-redo.
 import { ReactComponent as IconHightLight } from 'assets/images/icon-editor/icon-hight-light.svg';
 import { ReactComponent as IconUnderLine } from 'assets/images/icon-editor/icon-underline.svg';
 
+import { TypeInitForm } from './../../types/new-post.types';
+
 import MenuImage from './MenuImage/MenuImage';
 import MenuHeading from './MenuHeading/MenuHeading';
 import MenuYoutube from './MenuYoutube/MenuYoutube';
@@ -266,7 +268,8 @@ const MenuEditor: React.FC<MenuEditorProps> = ({ editor }) => {
 };
 
 const RickText = () => {
-  const { setFieldValue, setFieldError } = useFormikContext();
+  const { setFieldValue, setFieldError, values } =
+    useFormikContext<TypeInitForm>();
 
   const editor = useEditor({
     extensions: [
@@ -285,8 +288,7 @@ const RickText = () => {
         height: 480,
       }),
     ],
-    content: `
-    `,
+    content: values.content,
     editable: true,
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();

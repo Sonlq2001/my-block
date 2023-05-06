@@ -1,7 +1,7 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { Formik, Form, ErrorMessage, FormikProps } from 'formik';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import OutsideClickHandler from 'react-outside-click-handler';
 
 import styles from './NewPostScreen.module.scss';
@@ -19,13 +19,14 @@ import { TypeInitForm, PostBody } from '../types/new-post.types';
 import SettingPost from '../components/SettingPost/SettingPost';
 import UploadFile from '../components/UploadFile/UploadFile';
 import FormikScrollToError from 'components/atoms/FormikScrollToError/FormikScrollToError';
+import LoadingCircle from 'components/loading/LoadingCircle/LoadingCircle';
 
-import { useAppDispatch } from 'redux/store';
+import { useAppDispatch, useAppSelector } from 'redux/store';
 import { upLoadImage } from 'helpers/uploadImage';
-import { postArticle } from '../redux/new-post.slice';
+import { postArticle, updatePost } from '../redux/new-post.slice';
 import { useDataToken } from 'hooks/hooks';
+import { getPost, resetPostDetail, PostPathsEnum } from 'features/post/post';
 
-import { PostPathsEnum } from 'features/post/post';
 import { schema } from '../helpers/new-post.helpers';
 import {
   MAX_LENGTH_TITLE,
@@ -34,6 +35,7 @@ import {
   MAX_SIZE_FILE,
   STATUS_POST,
 } from '../constants/new-post.constants';
+import { convertPostEdit } from '../helpers/new-post.helpers';
 
 const NewPostScreen = () => {
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
@@ -41,22 +43,47 @@ const NewPostScreen = () => {
   const [listSelectCate, setListSelectCate] = useState<string[]>([]);
   const [openErrorSaveDraft, setOpenErrorSaveDraft] = useState<boolean>(false);
   const formikRef = useRef<FormikProps<TypeInitForm>>(null);
+  const { slug } = useParams<{ slug: string }>();
 
   const dispatch = useAppDispatch();
   const history = useHistory();
   const { _id } = useDataToken();
+
+  const postDetail = useAppSelector((state) => state.post?.postDetail);
+  const isLoadingPost = useAppSelector((state) => state.post?.isLoadingPost);
+
+  useEffect(() => {
+    if (slug) {
+      dispatch(getPost({ slug }));
+    }
+  }, [dispatch, slug]);
+
+  const initFormPost = useMemo(() => {
+    if (!postDetail) {
+      return initForm;
+    }
+    return convertPostEdit(postDetail);
+  }, [postDetail]);
 
   const checkRulePost = () => {
     if (formikRef.current) {
       const { values } = formikRef.current;
       const conditionTag = values.tags.length > MAX_LENGTH_TAG;
       const conditionTitle = values.title.length > MAX_LENGTH_TITLE;
-      const conditionImageType = values.avatar
-        ? !FILES_ACCEPT.includes((values.avatar as File).type)
-        : false;
-      const conditionImageSize = values.avatar
-        ? (values.avatar as File).size > MAX_SIZE_FILE
-        : false;
+
+      let conditionImageType = false;
+      let conditionImageSize = false;
+      if (typeof values.avatar === 'string') {
+        conditionImageType = false;
+        conditionImageSize = false;
+      } else {
+        conditionImageType = values.avatar
+          ? !FILES_ACCEPT.includes((values.avatar as File).type)
+          : false;
+        conditionImageSize = values.avatar
+          ? (values.avatar as File).size > MAX_SIZE_FILE
+          : false;
+      }
 
       if (
         conditionTag ||
@@ -70,22 +97,38 @@ const NewPostScreen = () => {
     return false;
   };
 
+  const redirectPostDetail = (slug: string) => {
+    history.push(PostPathsEnum.POST.replace(/:slug/, slug));
+  };
+
   const handleSubmitForm = async (values: TypeInitForm) => {
     if (!_id) {
       return;
     }
 
     try {
-      const dataImage = await upLoadImage(values.avatar);
-      const newData = { ...values, avatar: dataImage, authPost: _id };
+      let dataImage = null;
+      if (typeof values.avatar !== 'string') {
+        dataImage = await upLoadImage(values.avatar);
+      }
+      const newData = {
+        ...values,
+        avatar: dataImage || postDetail?.avatar,
+        authPost: _id,
+      };
+      if (values.status === STATUS_POST.DRAFT) {
+        const resPostUpdated = unwrapResult(
+          await dispatch(updatePost(newData as PostBody))
+        );
+
+        redirectPostDetail(resPostUpdated.data.slug);
+        return;
+      }
       const resNewPost = unwrapResult(
         await dispatch(postArticle(newData as PostBody))
       );
 
-      history.push(
-        PostPathsEnum.POST.replace(/:slug/, resNewPost.post.slug),
-        resNewPost.post._id
-      );
+      redirectPostDetail(resNewPost.post.slug);
     } catch (error) {}
   };
 
@@ -97,9 +140,22 @@ const NewPostScreen = () => {
     }
 
     // todo save draft
-    console.log(values);
     handleSubmitForm({ ...values, status: STATUS_POST.DRAFT });
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetPostDetail());
+    };
+  }, [dispatch]);
+
+  if (isLoadingPost) {
+    return (
+      <div className={styles.contentLoading}>
+        <LoadingCircle />
+      </div>
+    );
+  }
 
   return (
     <div className={styles.wrapCreatePost}>
@@ -107,7 +163,7 @@ const NewPostScreen = () => {
       <div className="container">
         <div className={styles.formWrap}>
           <Formik
-            initialValues={initForm}
+            initialValues={initFormPost}
             onSubmit={handleSubmitForm}
             enableReinitialize
             validationSchema={schema}

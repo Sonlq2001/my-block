@@ -7,7 +7,7 @@ import Logo from 'assets/images/logo.png';
 import Button from 'components/atoms/Button/Button';
 import NotiFicationHeader from './components/NotiFicationHeader/NotiFicationHeader';
 import SearchHeader from './components/SearchHeader/SearchHeader';
-import { NewPostPathsEnum } from 'features/new-post/new-post';
+import { NewPostPathEnums } from 'features/new-post-2/new-post';
 import { authLogout } from 'features/auth/auth';
 import { ProfilePathsEnum } from 'features/profile/profile';
 import { ChatPathsEnum } from 'features/chat/chat';
@@ -119,7 +119,7 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({
                     </li>
                     <li className={styles.itemAction}>
                       <Link
-                        to={NewPostPathsEnum.NEW_POST}
+                        to={NewPostPathEnums.CERATE}
                         className={styles.linkAction}
                       >
                         Viết blog
