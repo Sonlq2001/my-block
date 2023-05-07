@@ -7,12 +7,21 @@ import { ExplorePathsEnum } from 'features/explore/explore';
 interface SidebarItemTagProps {
   tag: string;
   imagePost?: string;
+  isNotDraftPost: boolean;
 }
 
-const SidebarItemTag: React.FC<SidebarItemTagProps> = ({ tag, imagePost }) => {
+const SidebarItemTag: React.FC<SidebarItemTagProps> = ({
+  tag,
+  imagePost,
+  isNotDraftPost,
+}) => {
   const history = useHistory();
 
   const clickTag = () => {
+    if (!isNotDraftPost) {
+      return;
+    }
+
     history.push(`${ExplorePathsEnum.EXPLORE}?tag=${tag.slice(1)}`, {
       state: { imagePost },
     });

@@ -36,6 +36,7 @@ import {
   STATUS_POST,
 } from '../constants/new-post.constants';
 import { convertPostEdit } from '../helpers/new-post.helpers';
+import ListMenuPost from 'components/atoms/ListMenuPost/ListMenuPost';
 
 const NewPostScreen = () => {
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
@@ -314,6 +315,8 @@ const NewPostScreen = () => {
           </Formik>
         </div>
       </div>
+
+      <ListMenuPost />
     </div>
   );
 };

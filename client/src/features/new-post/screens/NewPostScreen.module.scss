@@ -115,6 +115,10 @@
   font-size: 1.5rem;
   list-style: disc;
   padding-left: 1.5rem;
+  color: $red-fresh;
+  li + li {
+    margin-top: 1rem;
+  }
 }
 
 // loading
