@@ -16,11 +16,11 @@ const ListMenuPost = () => {
 
   return (
     <>
-      {!isNotDraftPost ? (
+      {!isNotDraftPost && postItem ? (
         <div className={styles.menuPost}>
           <h3 className={styles.titleMenu}>Bài viết đang ở chế độ lưu nháp</h3>
           <Link
-            to={NewPostPathEnums.EDIT.replace(/:slug/, postItem?.slug || '')}
+            to={NewPostPathEnums.EDIT.replace(/:slug/, postItem.slug)}
             className={styles.itemMenuPost}
           >
             <img src={IconEditor} alt="" className={styles.iconMenu} />
