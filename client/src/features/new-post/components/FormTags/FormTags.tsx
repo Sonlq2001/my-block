@@ -4,7 +4,6 @@ import { useFormikContext, ErrorMessage } from 'formik';
 import styles from './FormTags.module.scss';
 import { ReactComponent as IconClose } from 'assets/images/icon-close.svg';
 import { TypeInitForm, TypeTag } from '../../types/new-post.types';
-import stylesMain from '../../screens/NewPostScreen.module.scss';
 
 interface FormTagsProps {
   name: string;
@@ -64,12 +63,12 @@ const FormTags: React.FC<FormTagsProps> = ({ name }) => {
         />
       </div>
       {typeof errors.tags === 'object' && (
-        <p className={stylesMain.error}>
+        <p className="msg-error">
           {([...errors.tags].filter((item) => Boolean(item))[0] as TypeTag).tag}
         </p>
       )}
       {typeof errors.tags === 'string' && (
-        <ErrorMessage name="tags" className={stylesMain.error} component="p" />
+        <ErrorMessage name="tags" className="msg-error" component="p" />
       )}
     </>
   );

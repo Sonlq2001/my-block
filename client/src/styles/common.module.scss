@@ -6,7 +6,6 @@
   border-radius: 2.5rem;
   color: $text-title-color;
   font-size: 1.6rem;
-  font-weight: 550;
 
   &:hover {
     background-color: $gray1-color;
@@ -119,4 +118,11 @@
     font-size: 1.3rem;
     margin-top: 6px;
   }
+}
+
+// style error
+.msg-error {
+  color: $red-fresh;
+  font-size: 1.3rem;
+  margin-top: 7px;
 }
