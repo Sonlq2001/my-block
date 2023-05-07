@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { PostItemType } from 'features/new-post-2/new-post';
+import { PostItemType } from 'features/new-post/new-post';
 import { ParamsComment } from '../types/comment.types';
 import { postApi } from './../api/post.api';
 

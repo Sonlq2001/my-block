@@ -2867,11 +2867,6 @@ atob@^2.1.2:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-autobind-decorator@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/autobind-decorator/-/autobind-decorator-2.4.0.tgz#ea9e1c98708cf3b5b356f7cf9f10f265ff18239c"
-  integrity sha512-OGYhWUO72V6DafbF8PM8rm3EPbfuyMZcJhtm5/n26IDwO18pohE4eNazLoCGhPiXOCD0gEGmrbU3849QvM8bbw==
-
 autoprefixer@^9.6.1:
   version "9.8.6"
   resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-9.8.6.tgz#3b73594ca1bf9266320c5acf1588d74dea74210f"
@@ -3937,11 +3932,6 @@ core-js@^2.4.0:
   version "2.6.12"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.12.tgz#d9333dfa7b065e347cc5682219d6f690859cc2ec"
   integrity sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==
-
-core-js@^3.20.3:
-  version "3.21.0"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.21.0.tgz#f479dbfc3dffb035a0827602dd056839a774aa71"
-  integrity sha512-YUdI3fFu4TF/2WykQ2xzSiTQdldLB4KVuL9WeAy5XONZYt5Cun/fpQvctoKbCgvPhmzADeesTk/j2Rdx77AcKQ==
 
 core-js@^3.6.5:
   version "3.9.0"
@@ -7291,21 +7281,6 @@ jest@26.6.0:
     "@jest/core" "^26.6.0"
     import-local "^3.0.2"
     jest-cli "^26.6.0"
-
-jodit-react@^1.1.20:
-  version "1.1.20"
-  resolved "https://registry.yarnpkg.com/jodit-react/-/jodit-react-1.1.20.tgz#3806d517d2e05649f17f8c1382871ce4cc749401"
-  integrity sha512-iaippXKz2OTS/7IKJZvk73k+DAq+iF64aWDhA8BYyQOLrGoMeVTv51gMIvaIlaGi3ELd49oK77tDklU2TTvySg==
-  dependencies:
-    jodit "^3.9.4"
-
-jodit@^3.9.4:
-  version "3.13.2"
-  resolved "https://registry.yarnpkg.com/jodit/-/jodit-3.13.2.tgz#184d8237d4658955604d394a44f04750d864f9ab"
-  integrity sha512-YFg5mdEw3fRXhU5ieC4M/YKYWQGYZS0KIlPuEhP+wT9eywQbdCrDSdY1V55YVIUC5kR2lyXNjrMdDdkrCEAdwQ==
-  dependencies:
-    autobind-decorator "^2.4.0"
-    core-js "^3.20.3"
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"

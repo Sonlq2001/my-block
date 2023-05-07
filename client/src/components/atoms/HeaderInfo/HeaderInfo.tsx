@@ -12,7 +12,7 @@ import SavePost from 'features/post/components/SavePost/SavePost';
 import { useAppSelector } from 'redux/store';
 import { useToggleLikePost } from 'hooks/useToggleLikePost';
 
-import { STATUS_POST } from 'features/new-post-2/new-post';
+import { STATUS_POST } from 'features/new-post/new-post';
 
 interface HeaderInfoProps {
   existHeaderMain?: boolean;

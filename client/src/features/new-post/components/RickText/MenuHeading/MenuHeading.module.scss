@@ -1,0 +1,32 @@
+@import 'styles/variables';
+
+.groupHeading {
+  position: absolute;
+  background-color: $white-color;
+  top: 5rem;
+  padding: 1.2rem;
+  border-radius: 1.5rem;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
+    rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+  width: 20.8rem;
+  z-index: 10;
+}
+
+.iconHeading {
+  line-height: 0;
+}
+.itemHeading {
+  display: flex;
+  align-items: flex-end;
+  padding: 8px;
+  width: 100%;
+  border-radius: 8px;
+  .itemHeadingName {
+    font-size: 1.6rem;
+    line-height: 2.4rem;
+    padding-left: 1.3rem;
+  }
+  & + & {
+    margin-top: 4px;
+  }
+}
