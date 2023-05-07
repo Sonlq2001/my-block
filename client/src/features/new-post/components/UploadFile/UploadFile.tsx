@@ -16,7 +16,7 @@ const UploadFile = () => {
         }}
         name="avatar"
       />
-      <ErrorMessage name="avatar" component="p" className={styles.error} />
+      <ErrorMessage name="avatar" component="p" className="msg-error" />
     </>
   );
 };

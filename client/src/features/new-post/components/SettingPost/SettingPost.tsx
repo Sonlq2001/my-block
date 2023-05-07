@@ -11,8 +11,6 @@ import Switch from 'components/atoms/Switch/Switch';
 import Button from 'components/atoms/Button/Button';
 import { TypeInitForm } from '../../types/new-post.types';
 
-import stylesMain from '../../screens/NewPostScreen.module.scss';
-
 interface SettingPostProps {
   setIsShowModalSetting: (status: boolean) => void;
 }
@@ -130,7 +128,7 @@ const SettingPost: React.FC<SettingPostProps> = ({ setIsShowModalSetting }) => {
               <ErrorMessage
                 name="videoUrl"
                 component="p"
-                className={stylesMain.error}
+                className="msg-error"
               />
             </div>
           )}
