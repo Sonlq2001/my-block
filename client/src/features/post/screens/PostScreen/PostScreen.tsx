@@ -1,7 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { Link } from 'react-router-dom';
 
 import PostHeader from './../../components/PostHeader/PostHeader';
 import PostContentHeader from './../../components/PostContentHeader/PostContentHeader';
@@ -11,6 +10,7 @@ import InputComment from '../../components/Comments/InputComment/InputComment';
 import LoadingPostDetail from 'components/loading/LoadingPostDetail/LoadingPostDetail';
 import Comments from './../../components/Comments/Comments';
 import SharePost from './../../components/SharePost/SharePost';
+import ListMenuPost from 'components/atoms/ListMenuPost/ListMenuPost';
 
 import LoadingCircleDot from 'components/loading/LoadingCircleDot/LoadingCircleDot';
 
@@ -26,8 +26,7 @@ import {
 import { usePostSocket } from './../../socket/post.socket';
 import { createNotify } from 'features/notify/notify';
 import { useDataToken } from 'hooks/hooks';
-import { STATUS_POST, NewPostPathEnums } from 'features/new-post/new-post';
-import IconEditor from 'assets/images/writer.png';
+import { STATUS_POST } from 'features/new-post/new-post';
 
 interface PostParams {
   slug: string;
@@ -161,6 +160,7 @@ const PostScreen = () => {
                         tag={`#${tagItem.tag}`}
                         key={tagItem._id}
                         imagePost={postItem?.avatar?.img || ''}
+                        isNotDraftPost={isNotDraftPost}
                       />
                     ))}
                 </div>
@@ -203,17 +203,7 @@ const PostScreen = () => {
       )}
 
       {/* edit when post is draft or private */}
-      {!isNotDraftPost && postItem?.slug && (
-        <div className={styles.menuPost}>
-          <h3 className={styles.titleMenu}>Bài viết đang ở chế độ lưu nháp</h3>
-          <Link
-            to={NewPostPathEnums.EDIT.replace(/:slug/, postItem.slug)}
-            className={styles.itemMenuPost}
-          >
-            <img src={IconEditor} alt="" className={styles.iconMenu} />
-          </Link>
-        </div>
-      )}
+      <ListMenuPost />
     </>
   );
 };
