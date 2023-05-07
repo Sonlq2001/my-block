@@ -1,0 +1,44 @@
+@import 'styles/variables';
+
+.contentModalCategory {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  .itemCate {
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 1.5rem;
+    border: 1px solid $gray2-color;
+    width: 100%;
+    max-width: 23rem;
+    cursor: pointer;
+    &:hover {
+      background: $gray1-color;
+    }
+    &.active {
+      background: $blue3-color;
+      color: $white-color;
+    }
+  }
+  .imageCate {
+    width: 40px;
+    height: 40px;
+    border-radius: 1.5rem;
+    margin-right: 1rem;
+  }
+  .nameCate {
+    font-size: 14px;
+    line-height: 2rem;
+  }
+  .contentCate {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    svg {
+      height: 24px;
+    }
+  }
+}

@@ -1,19 +1,25 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { PostType } from './../types/new-post.types';
+import { PostBody, PostHomeTypeDef } from './../types/new-post.types';
 import { postApi } from './../api/new-post.api';
-import { upLoadImage } from 'helpers/uploadImage';
 
 export const postArticle = createAsyncThunk(
   'new-post/postArticle',
-  async ({ data }: { data: PostType }, { rejectWithValue }) => {
+  async (data: PostBody, { rejectWithValue }) => {
     try {
-      const imageCloud = await upLoadImage(data.avatar);
-      const res = await postApi.postArticleApi({
-        ...data,
-        image: '',
-        avatar: imageCloud,
-      });
+      const res = await postApi.postArticleApi(data);
+      return res.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.mes);
+    }
+  }
+);
+
+export const updatePost = createAsyncThunk<{ data: PostHomeTypeDef }, PostBody>(
+  'new-post/updatePost',
+  async (data, { rejectWithValue }) => {
+    try {
+      const res = await postApi.updatePostApi(data);
       return res.data;
     } catch (error: any) {
       return rejectWithValue(error.response.mes);
@@ -22,7 +28,7 @@ export const postArticle = createAsyncThunk(
 );
 
 interface NewPostSlice {
-  listPost: PostType[] | null;
+  listPost: any;
   istLoadingListPost: boolean;
 }
 

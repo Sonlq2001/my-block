@@ -26,7 +26,7 @@ import {
 import { usePostSocket } from './../../socket/post.socket';
 import { createNotify } from 'features/notify/notify';
 import { useDataToken } from 'hooks/hooks';
-import { STATUS_POST, NewPostPathEnums } from 'features/new-post-2/new-post';
+import { STATUS_POST, NewPostPathEnums } from 'features/new-post/new-post';
 import IconEditor from 'assets/images/writer.png';
 
 interface PostParams {

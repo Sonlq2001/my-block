@@ -5,14 +5,12 @@ import { AUTH_ROUTES } from 'features/auth/auth';
 import { POST_ROUTES } from 'features/post/post';
 import { PROFILE_ROUTES } from 'features/profile/profile';
 import { EXPLORE_ROUTES } from 'features/explore/routes/explore.routes';
-import { NEW_POST_ROUTES } from 'features/new-post/new-post';
 import { CHAT_ROUTES } from 'features/chat/chat';
-import { NEW_POST_2_ROUTES } from 'features/new-post-2/new-post';
+import { NEW_POST_ROUTES } from 'features/new-post/new-post';
 
 export const LIST_ROUTES = [
-  ...NEW_POST_2_ROUTES,
-  ...CHAT_ROUTES,
   ...NEW_POST_ROUTES,
+  ...CHAT_ROUTES,
   ...EXPLORE_ROUTES,
   ...PROFILE_ROUTES,
   ...POST_ROUTES,
