@@ -4,6 +4,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
 }
 
 html {
@@ -96,21 +97,4 @@ input:-webkit-autofill:active {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: $text-card-color;
-}
-
-// rick editor
-.jodit-toolbar__box:not(:empty) {
-  background-color: $white-color !important;
-  border: none !important;
-}
-.jodit-container:not(.jodit_inline) {
-  border: none !important;
-}
-.jodit-workplace + .jodit-status-bar:not(:empty),
-.jodit-editor__resize {
-  display: none !important;
-}
-.jodit-placeholder,
-.jodit-container:not(.jodit_inline) .jodit-wysiwyg {
-  padding: 1.5rem !important;
 }

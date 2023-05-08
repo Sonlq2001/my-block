@@ -210,7 +210,7 @@ const NewPostScreen = () => {
                         </button>
                         <ErrorMessage
                           name="topics"
-                          className={styles.error}
+                          className="msg-error"
                           component="p"
                         />
                       </div>
@@ -223,7 +223,7 @@ const NewPostScreen = () => {
                       />
                       <ErrorMessage
                         name="title"
-                        className={styles.error}
+                        className="msg-error"
                         component="p"
                       />
 

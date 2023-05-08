@@ -39,7 +39,6 @@ import MenuHeading from './MenuHeading/MenuHeading';
 import MenuYoutube from './MenuYoutube/MenuYoutube';
 import MenuLink from './MenuLink/MenuLink';
 import styles from './RickText.module.scss';
-import stylesMain from '../../screens/NewPostScreen.module.scss';
 
 interface MenuEditorProps {
   editor: CoreEditor;
@@ -317,11 +316,7 @@ const RickText = () => {
       </div>
       <div className={styles.rickTextContent}>
         <div className={styles.rickTextContentInner}>
-          <ErrorMessage
-            name="content"
-            className={stylesMain.error}
-            component="p"
-          />
+          <ErrorMessage name="content" className="msg-error" component="p" />
           <EditorContent editor={editor} />
         </div>
       </div>
