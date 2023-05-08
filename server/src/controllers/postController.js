@@ -651,3 +651,13 @@ export const updatePost = async (req, res) => {
     return res.status(500).json({ message: error });
   }
 };
+
+// [DELETE] - [/remove_post/:post_id]
+export const removePost = async (req, res) => {
+  try {
+    await Post.findOneAndDelete({ _id: req.params.post_id }, { new: true });
+    return res.status(200).json({ message: "Xóa thành công bài viết." });
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+};

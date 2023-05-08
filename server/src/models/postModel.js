@@ -12,7 +12,6 @@ const postSchema = new mongoose.Schema(
     title: { type: String, required: true, unique: true },
     content: {
       type: String,
-      required: true,
     },
     excerpt: {
       type: String,
@@ -23,7 +22,6 @@ const postSchema = new mongoose.Schema(
     tags: {
       type: [tagSchema],
       default: [],
-      required: true,
     },
     topics: [{ type: mongoose.Types.ObjectId, ref: "topics" }],
     authPost: { type: mongoose.Types.ObjectId, ref: "users" },

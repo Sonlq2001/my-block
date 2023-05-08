@@ -20,6 +20,7 @@ import SettingPost from '../components/SettingPost/SettingPost';
 import UploadFile from '../components/UploadFile/UploadFile';
 import FormikScrollToError from 'components/atoms/FormikScrollToError/FormikScrollToError';
 import LoadingCircle from 'components/loading/LoadingCircle/LoadingCircle';
+import IconWarning from 'assets/images/warning.png';
 
 import { useAppDispatch, useAppSelector } from 'redux/store';
 import { upLoadImage } from 'helpers/uploadImage';
@@ -37,12 +38,14 @@ import {
 } from '../constants/new-post.constants';
 import { convertPostEdit } from '../helpers/new-post.helpers';
 import ListMenuPost from 'components/atoms/ListMenuPost/ListMenuPost';
+import { NewPostPathEnums } from '../constants/new-post.paths';
 
 const NewPostScreen = () => {
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
   const [isShowModalSetting, setIsShowModalSetting] = useState<boolean>(false);
   const [listSelectCate, setListSelectCate] = useState<string[]>([]);
   const [openErrorSaveDraft, setOpenErrorSaveDraft] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const formikRef = useRef<FormikProps<TypeInitForm>>(null);
   const { slug } = useParams<{ slug: string }>();
 
@@ -60,11 +63,26 @@ const NewPostScreen = () => {
   }, [dispatch, slug]);
 
   const initFormPost = useMemo(() => {
-    if (!postDetail) {
+    if (!postDetail || window.location.pathname === NewPostPathEnums.CERATE) {
       return initForm;
     }
     return convertPostEdit(postDetail);
   }, [postDetail]);
+
+  const checkRuleImage = (image: string | File) => {
+    let conditionImageType = false;
+    let conditionImageSize = false;
+    if (typeof image === 'string') {
+      conditionImageType = false;
+      conditionImageSize = false;
+    } else {
+      conditionImageType = image
+        ? !FILES_ACCEPT.includes((image as File).type)
+        : false;
+      conditionImageSize = image ? (image as File).size > MAX_SIZE_FILE : false;
+    }
+    return { conditionImageType, conditionImageSize };
+  };
 
   const checkRulePost = () => {
     if (formikRef.current) {
@@ -72,25 +90,16 @@ const NewPostScreen = () => {
       const conditionTag = values.tags.length > MAX_LENGTH_TAG;
       const conditionTitle = values.title.length > MAX_LENGTH_TITLE;
 
-      let conditionImageType = false;
-      let conditionImageSize = false;
-      if (typeof values.avatar === 'string') {
-        conditionImageType = false;
-        conditionImageSize = false;
-      } else {
-        conditionImageType = values.avatar
-          ? !FILES_ACCEPT.includes((values.avatar as File).type)
-          : false;
-        conditionImageSize = values.avatar
-          ? (values.avatar as File).size > MAX_SIZE_FILE
-          : false;
-      }
+      const { conditionImageType, conditionImageSize } = checkRuleImage(
+        values.avatar
+      );
 
       if (
         conditionTag ||
         conditionTitle ||
         conditionImageType ||
-        conditionImageSize
+        conditionImageSize ||
+        !values.title.trim()
       ) {
         return true;
       }
@@ -117,7 +126,7 @@ const NewPostScreen = () => {
         avatar: dataImage || postDetail?.avatar,
         authPost: _id,
       };
-      if (values.status === STATUS_POST.DRAFT) {
+      if (values.status === STATUS_POST.DRAFT && postDetail) {
         const resPostUpdated = unwrapResult(
           await dispatch(updatePost(newData as PostBody))
         );
@@ -139,9 +148,10 @@ const NewPostScreen = () => {
       setOpenErrorSaveDraft(isRulePost);
       return;
     }
-
-    // todo save draft
-    handleSubmitForm({ ...values, status: STATUS_POST.DRAFT });
+    setLoading(true);
+    handleSubmitForm({ ...values, status: STATUS_POST.DRAFT }).finally(() =>
+      setLoading(false)
+    );
   };
 
   useEffect(() => {
@@ -165,18 +175,18 @@ const NewPostScreen = () => {
         <div className={styles.formWrap}>
           <Formik
             initialValues={initFormPost}
-            onSubmit={handleSubmitForm}
+            onSubmit={(values) => {
+              setLoading(true);
+              handleSubmitForm(values).finally(() => setLoading(false));
+            }}
             enableReinitialize
             validationSchema={schema}
             innerRef={formikRef}
           >
             {({ values, setFieldValue, errors }) => {
-              const errorTypeFile = values?.avatar
-                ? !FILES_ACCEPT.includes((values?.avatar as File).type)
-                : false;
-              const errorSizeFile = values?.avatar
-                ? (values?.avatar as File).size > MAX_SIZE_FILE
-                : false;
+              const { conditionImageType, conditionImageSize } = checkRuleImage(
+                values.avatar
+              );
 
               return (
                 <FormikScrollToError formId="form-post">
@@ -229,6 +239,7 @@ const NewPostScreen = () => {
                           onClick={() =>
                             setIsShowModalSetting(Boolean(errors.videoUrl))
                           }
+                          disabled={loading}
                         >
                           Xuất bản
                         </Button>
@@ -237,6 +248,7 @@ const NewPostScreen = () => {
                           onClick={() => handleSaveDraft(values)}
                           variant="default"
                           className={styles.btnSaveDraft}
+                          disabled={loading}
                         >
                           Lưu nháp
                         </Button>
@@ -269,7 +281,7 @@ const NewPostScreen = () => {
                       open={isShowModal}
                       handleClose={() => setIsShowModal(false)}
                       title={`Chọn chủ đề bài viết (${values.topics.length}/5)`}
-                      handSubmit={() => {
+                      handleSubmit={() => {
                         setIsShowModal(false);
                         setFieldValue('topics', listSelectCate);
                       }}
@@ -287,26 +299,32 @@ const NewPostScreen = () => {
                       open={openErrorSaveDraft}
                       handleClose={() => setOpenErrorSaveDraft(false)}
                       title="Không thể lưu nháp."
-                      handSubmit={() => setOpenErrorSaveDraft(false)}
+                      handleSubmit={() => setOpenErrorSaveDraft(false)}
                       small
                       hideBtnCancel
                     >
-                      <ul className={styles.errorSaveDraft}>
-                        {values.tags.length > MAX_LENGTH_TAG && (
-                          <li>
-                            Vượt quá {MAX_LENGTH_TAG} thẻ tag trong bài viết.
-                          </li>
-                        )}
-                        {values.title.length > MAX_LENGTH_TITLE && (
-                          <li>
-                            Vượt quá độ dài tiêu đề {MAX_LENGTH_TITLE} ký tự.
-                          </li>
-                        )}
-                        {errorTypeFile && (
-                          <li>Định dạng file không được hỗ trợ.</li>
-                        )}
-                        {errorSizeFile && <li>File ảnh quá lớn.</li>}
-                      </ul>
+                      <div className={styles.listMessagePost}>
+                        <img src={IconWarning} alt="d" />
+                        <ul>
+                          {!values.title && (
+                            <li>Cần nhập tối thiểu tiêu đề.</li>
+                          )}
+                          {values.tags.length > MAX_LENGTH_TAG && (
+                            <li>
+                              Vượt quá {MAX_LENGTH_TAG} thẻ tag trong bài viết.
+                            </li>
+                          )}
+                          {values.title.length > MAX_LENGTH_TITLE && (
+                            <li>
+                              Vượt quá độ dài tiêu đề {MAX_LENGTH_TITLE} ký tự.
+                            </li>
+                          )}
+                          {conditionImageType && (
+                            <li>Định dạng file không được hỗ trợ.</li>
+                          )}
+                          {conditionImageSize && <li>File ảnh quá lớn.</li>}
+                        </ul>
+                      </div>
                     </Modal>
                   </Form>
                 </FormikScrollToError>

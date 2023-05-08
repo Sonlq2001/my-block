@@ -33,7 +33,23 @@
       transition: 0.2s ease-in;
     }
   }
+  .itemMenuPost + .itemMenuPost {
+    margin-top: 1rem;
+  }
   .iconMenu {
     width: 35px;
+  }
+}
+
+.groupMessageWarning {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  color: $red-fresh;
+  font-style: italic;
+  img {
+    width: 4rem;
+    height: 4rem;
+    margin-right: 1rem;
   }
 }

@@ -87,7 +87,7 @@ const MenuImage: React.FC<MenuImageProps> = ({ editor }) => {
               }}
               title="Thêm ảnh"
               medium
-              handSubmit={submitForm}
+              handleSubmit={submitForm}
               textOk="Áp dụng"
               disabled={isLoadingImage}
             >

@@ -60,6 +60,10 @@ const patchUnLikePostApi = (postId: string): Promise<AxiosResponse> => {
   return api.patch(PostEndpointsEnum.PATCH_UNLIKE_POST.replace(/:id/, postId));
 };
 
+const removePostApi = (postId: string): Promise<AxiosResponse> => {
+  return api.delete(PostEndpointsEnum.REMOVE_POST.replace(/:post_id/, postId));
+};
+
 export const postApi = {
   getPostApi,
   postCommentApi,
@@ -71,4 +75,5 @@ export const postApi = {
   patchUnSavePost,
   patchLikePostApi,
   patchUnLikePostApi,
+  removePostApi,
 };
