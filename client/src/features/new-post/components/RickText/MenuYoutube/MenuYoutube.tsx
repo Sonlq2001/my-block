@@ -38,7 +38,7 @@ const MenuYoutube: React.FC<MenuYoutubeProps> = ({ editor }) => {
         handleClose={() => setIsShowModal(false)}
         title="Đường dẫn video youtube"
         small
-        handSubmit={handleAddYoutubeVideo}
+        handleSubmit={handleAddYoutubeVideo}
         textOk="Áp dụng"
       >
         <div className={styles.currentTabForm}>

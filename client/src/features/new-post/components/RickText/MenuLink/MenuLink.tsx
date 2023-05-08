@@ -50,7 +50,7 @@ const MenuLink: React.FC<MenuImageProps> = ({ editor }) => {
         handleClose={() => setIsShowModal(false)}
         title="Đường dẫn video youtube"
         small
-        handSubmit={handleSetLink}
+        handleSubmit={handleSetLink}
         textOk="Áp dụng"
       >
         <div className={styles.currentTabForm}>

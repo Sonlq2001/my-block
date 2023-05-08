@@ -9,4 +9,5 @@ export enum PostEndpointsEnum {
   PATCH_UN_SAVE_POST = '/user_un_save_post/:post_id',
   PATCH_LIKE_POST = '/like_post/:id',
   PATCH_UNLIKE_POST = '/unlike_post/:id',
+  REMOVE_POST = '/remove_post/:post_id',
 }

@@ -104,20 +104,24 @@
   }
 }
 
-// style error
-.error {
-  color: $red-fresh;
-  font-size: 1.3rem;
-  margin-top: 7px;
-}
-
-.errorSaveDraft {
-  font-size: 1.5rem;
-  list-style: disc;
-  padding-left: 1.5rem;
-  color: $red-fresh;
-  li + li {
+.listMessagePost {
+  display: flex;
+  font-style: italic;
+  color: $text-title-color;
+  img {
+    width: 4rem;
+    height: 4rem;
+    margin-right: 1.5rem;
+  }
+  ul {
+    font-size: 1.5rem;
+    list-style: disc;
+    padding-left: 2rem;
+    color: $red-fresh;
     margin-top: 1rem;
+    li + li {
+      margin-top: 1rem;
+    }
   }
 }
 

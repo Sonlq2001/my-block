@@ -16,6 +16,7 @@ import {
   patchUnLikePost,
   getPostSlide,
   updatePost,
+  removePost,
 } from "./../controllers/postController";
 import { verifyToken } from "./../middleware/verifyToken";
 
@@ -37,7 +38,8 @@ route.get("/posts_video", getPostsVideo);
 route.patch("/like_post/:id", verifyToken, patchLikePost);
 route.patch("/unlike_post/:id", verifyToken, patchUnLikePost);
 
-route.get("/posts_slide", getPostSlide);
-route.patch("/update_post/:post_id", updatePost);
+route.get("/posts_slide", verifyToken, getPostSlide);
+route.patch("/update_post/:post_id", verifyToken, updatePost);
+route.delete("/remove_post/:post_id", verifyToken, removePost);
 
 export default route;

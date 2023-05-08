@@ -12,7 +12,7 @@ interface ModalProps {
   title: string;
   medium?: boolean;
   small?: boolean;
-  handSubmit: () => void;
+  handleSubmit: () => void;
   textOk?: string;
   textCancel?: string;
   disabled?: boolean;
@@ -26,7 +26,7 @@ const Modal: React.FC<ModalProps> = ({
   title,
   medium = false,
   small = false,
-  handSubmit,
+  handleSubmit,
   textOk = 'Đồng ý',
   textCancel = 'Huỷ',
   disabled,
@@ -46,6 +46,7 @@ const Modal: React.FC<ModalProps> = ({
     }
 
     return () => {
+      document.body.style.overflow = 'initial';
       divElement.remove();
     };
   }, [open]);
@@ -84,7 +85,7 @@ const Modal: React.FC<ModalProps> = ({
                   styles.modalBtnOK,
                   disabled && styles.disabled
                 )}
-                onClick={handSubmit}
+                onClick={handleSubmit}
                 disabled={disabled}
               >
                 {textOk}
