@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { unwrapResult } from '@reduxjs/toolkit';
 
@@ -57,21 +57,36 @@ const PostScreen = () => {
     [postItem?.status]
   );
 
+  const fetchComments = useCallback(
+    async (slugPost: string) => {
+      if (!loadingPost && isNotDraftPost) {
+        return await dispatch(
+          getComments({
+            slug: slugPost,
+            ...query,
+          })
+        );
+      }
+      return Promise.resolve();
+    },
+    [dispatch, isNotDraftPost, loadingPost, query]
+  );
+
+  useEffect(() => {
+    if (slug) {
+      fetchComments(slug);
+    }
+  }, [fetchComments, slug]);
+
   useEffect(() => {
     if (!loadingPost) return;
 
     if (slug && userId && savePost) {
-      Promise.all([
-        dispatch(getPost({ slug, userId, savedPost: savePost })),
-        dispatch(
-          getComments({
-            slug,
-            ...query,
-          })
-        ),
-      ]).finally(() => setLoadingPost(false));
+      dispatch(getPost({ slug, userId, savedPost: savePost })).finally(() =>
+        setLoadingPost(false)
+      );
     }
-  }, [slug, userId, dispatch, savePost, query, loadingPost]);
+  }, [slug, userId, dispatch, savePost, loadingPost]);
 
   // join room socket
   useEffect(() => {
