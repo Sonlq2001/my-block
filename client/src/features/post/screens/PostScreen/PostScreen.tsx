@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { unwrapResult } from '@reduxjs/toolkit';
 
 import PostHeader from './../../components/PostHeader/PostHeader';
+import PostHeaderVideo from '../../components/PostHeaderVideo/PostHeaderVideo';
 import PostContentHeader from './../../components/PostContentHeader/PostContentHeader';
 
 import SidebarItemTag from 'components/atoms/SidebarItemTag/SidebarItemTag';
@@ -13,6 +14,7 @@ import SharePost from './../../components/SharePost/SharePost';
 import ListMenuPost from 'components/atoms/ListMenuPost/ListMenuPost';
 
 import LoadingCircleDot from 'components/loading/LoadingCircleDot/LoadingCircleDot';
+import { FORMAT_POST_ID } from 'features/new-post/new-post';
 
 import styles from './PostScreen.module.scss';
 
@@ -153,9 +155,19 @@ const PostScreen = () => {
       {loadingPost && <LoadingPostDetail />}
       {!loadingPost && postItem && (
         <>
-          <PostHeader avatar={postItem?.avatar}>
-            <PostContentHeader {...postItem} isNotDraftPost={isNotDraftPost} />
-          </PostHeader>
+          {postItem.format === FORMAT_POST_ID.STANDARD ? (
+            <PostHeader avatar={postItem?.avatar}>
+              <PostContentHeader
+                {...postItem}
+                isNotDraftPost={isNotDraftPost}
+              />
+            </PostHeader>
+          ) : (
+            <PostHeaderVideo
+              postItem={postItem}
+              isNotDraftPost={isNotDraftPost}
+            />
+          )}
 
           <div className="container">
             <div className={styles.rowPostLeft}>
