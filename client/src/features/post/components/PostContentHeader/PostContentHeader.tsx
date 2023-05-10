@@ -1,3 +1,5 @@
+import clsx from 'clsx';
+
 import ChipTag from 'components/atoms/ChipTag/ChipTag';
 import ChipInfo from 'components/atoms/ChipInfo/ChipInfo';
 import PostCardAuth from 'components/atoms/PostCardAuth/PostCardAuth';
@@ -23,6 +25,7 @@ interface PostContentHeaderProps {
   _id: string;
   createdAt: string;
   isNotDraftPost: boolean;
+  typeVideo?: boolean;
 }
 
 const PostContentHeader: React.FC<PostContentHeaderProps> = ({
@@ -33,18 +36,33 @@ const PostContentHeader: React.FC<PostContentHeaderProps> = ({
   _id,
   createdAt,
   isNotDraftPost,
+  typeVideo = false,
 }) => {
   const { activeLike, handleLikePost, totalLike } = useToggleLikePost(_id);
 
   return (
-    <div className={styles.postContentHeader}>
+    <div
+      className={clsx(
+        styles.postContentHeader,
+        typeVideo && styles.contentVideoHeader
+      )}
+    >
       {topics &&
         topics?.length > 0 &&
         topics.map((topic) => <ChipTag title={topic.name} key={topic._id} />)}
-      <h1 className={styles.postTitle}>{title}</h1>
+      <h1
+        className={clsx(styles.postTitle, typeVideo && styles.postTitleVideo)}
+      >
+        {title}
+      </h1>
 
       <div className={styles.postInfo}>
-        <div className={styles.postInfoGroup}>
+        <div
+          className={clsx(
+            styles.postInfoGroup,
+            typeVideo && styles.postInfoVideo
+          )}
+        >
           <PostCardAuth
             auth={authPost?.name}
             avatar={authPost?.avatar}
