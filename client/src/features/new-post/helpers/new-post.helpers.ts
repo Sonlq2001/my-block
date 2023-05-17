@@ -10,7 +10,7 @@ import {
   MAX_LENGTH_CHARACTER_TAG,
   MAX_SIZE_FILE,
   FILES_ACCEPT,
-  STATUS_POST,
+  STATUS_POST_ENUM,
 } from '../constants/new-post.constants';
 
 export const initForm: TypeInitForm = {
@@ -23,7 +23,7 @@ export const initForm: TypeInitForm = {
   format: FORMAT_POST_ID.STANDARD,
   allowComment: true,
   videoUrl: '',
-  status: STATUS_POST.PUBLIC,
+  status: STATUS_POST_ENUM.PUBLIC,
 };
 
 const ruleFile = (name: string) => {
@@ -98,15 +98,21 @@ export const schemaEditorImage = Yup.object().shape({
 });
 
 export const convertPostEdit = (data: PostItemType): TypeInitForm => ({
-  title: data?.title || '',
+  title: data.title || '',
   avatar: data?.avatar?.img || '',
   content: data?.content || '',
   excerpt: data?.excerpt || '',
-  topics: data?.topics?.map((topic) => topic._id) || [],
-  tags: data?.tags?.map((item) => ({ idTag: item._id, tag: item.tag })) || [],
-  format: data?.format || FORMAT_POST_ID.STANDARD,
-  allowComment: data?.allowComment || true,
+  topics:
+    data?.topics && data?.topics.length
+      ? data.topics.map((topic) => topic._id)
+      : [],
+  tags:
+    data?.tags && data?.tags.length
+      ? data.tags.map((item) => ({ idTag: item._id, tag: item.tag }))
+      : [],
+  format: data.format,
+  allowComment: data.allowComment,
   videoUrl: data?.videoUrl || '',
-  status: data?.status || STATUS_POST.PUBLIC,
-  _id: data?._id || '',
+  status: String(data.status),
+  _id: data._id,
 });

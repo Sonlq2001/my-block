@@ -68,6 +68,7 @@ interface ProfileSlice {
   postsUser: { data: TypePostUserDef[]; total: number };
   postsSaved: { data: TypePostUserDef[]; total: number };
   postsDraft: { data: TypePostUserDef[]; total: number };
+  postsPrivate: { data: TypePostUserDef[]; total: number };
 }
 
 const initialState: ProfileSlice = {
@@ -82,6 +83,9 @@ const initialState: ProfileSlice = {
 
   // post draft
   postsDraft: { data: [], total: 0 },
+
+  // post private
+  postsPrivate: { data: [], total: 0 },
 };
 
 const profileSlice = createSlice({
@@ -95,6 +99,7 @@ const profileSlice = createSlice({
       state.postsUser = { data: [], total: 0 };
       state.postsSaved = { data: [], total: 0 };
       state.postsDraft = { data: [], total: 0 };
+      state.postsPrivate = { data: [], total: 0 };
     },
   },
   extraReducers: {
@@ -135,6 +140,11 @@ const profileSlice = createSlice({
           state.postsDraft.total = action.payload.data.total;
           break;
         default:
+          state.postsPrivate.data = [
+            ...state.postsPrivate.data,
+            ...action.payload.data.data,
+          ];
+          state.postsPrivate.total = action.payload.data.total;
           break;
       }
     },

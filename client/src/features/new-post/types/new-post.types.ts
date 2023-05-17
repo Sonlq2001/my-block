@@ -17,7 +17,7 @@ export interface PostType {
     img: string;
   };
   categoryId?: string;
-  status: number;
+  status: string;
 }
 
 export interface PostItemType extends Omit<PostType, 'tags'> {
@@ -79,7 +79,7 @@ export type TypeInitForm = {
   format: number;
   allowComment: boolean;
   videoUrl?: string;
-  status: number;
+  status: string | number;
   _id?: string;
 };
 

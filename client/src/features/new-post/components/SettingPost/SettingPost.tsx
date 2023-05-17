@@ -9,8 +9,9 @@ import { ReactComponent as IconChecked } from 'assets/images/icon-check.svg';
 import { ReactComponent as IconDropDown } from 'assets/images/icon-svg/icon-drop-down.svg';
 import Switch from 'components/atoms/Switch/Switch';
 import Button from 'components/atoms/Button/Button';
+import InputRadio from 'components/atoms/FormElement/InputRadio/InputRadio';
 import { TypeInitForm } from '../../types/new-post.types';
-
+import { STATUS_POST } from '../../constants/new-post.constants';
 interface SettingPostProps {
   setIsShowModalSetting: (status: boolean) => void;
 }
@@ -138,6 +139,13 @@ const SettingPost: React.FC<SettingPostProps> = ({ setIsShowModalSetting }) => {
               Cho phép bình luận bài đăng
             </label>
             <Switch name="allowComment" />
+          </div>
+
+          <div className={styles.settingGroup}>
+            <label htmlFor="" className={styles.settingLabel}>
+              Chế độ bài đăng
+            </label>
+            <InputRadio name="status" options={STATUS_POST} />
           </div>
         </div>
       </div>

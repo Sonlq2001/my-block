@@ -46,7 +46,7 @@ export enum TAB_PROFILE {
   PUBLIC = 'public',
   SAVE = 'save',
   DRAFT = 'draft',
-  ALONE = 'alone',
+  PRIVATE = 'private',
 }
 
 export enum TAB_PROFILE_EDIT {

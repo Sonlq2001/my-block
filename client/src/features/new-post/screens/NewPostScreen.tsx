@@ -34,7 +34,7 @@ import {
   MAX_LENGTH_TAG,
   FILES_ACCEPT,
   MAX_SIZE_FILE,
-  STATUS_POST,
+  STATUS_POST_ENUM,
 } from '../constants/new-post.constants';
 import { convertPostEdit } from '../helpers/new-post.helpers';
 import ListMenuPost from 'components/atoms/ListMenuPost/ListMenuPost';
@@ -125,8 +125,9 @@ const NewPostScreen = () => {
         ...values,
         avatar: dataImage || postDetail?.avatar,
         authPost: _id,
+        status: Number(values.status),
       };
-      if (values.status === STATUS_POST.DRAFT && postDetail) {
+      if (postDetail && postDetail._id) {
         const resPostUpdated = unwrapResult(
           await dispatch(updatePost(newData as PostBody))
         );
@@ -149,9 +150,10 @@ const NewPostScreen = () => {
       return;
     }
     setLoading(true);
-    handleSubmitForm({ ...values, status: STATUS_POST.DRAFT }).finally(() =>
-      setLoading(false)
-    );
+    handleSubmitForm({
+      ...values,
+      status: STATUS_POST_ENUM.DRAFT,
+    }).finally(() => setLoading(false));
   };
 
   useEffect(() => {

@@ -206,6 +206,11 @@ export const getPostsUser = async (req, res) => {
         };
         break;
       default:
+        // search post private
+        queriesSearch = {
+          authPost: mongoose.Types.ObjectId(req.params.user_id),
+          status: { $eq: STATUS_POST.PRIVATE },
+        };
         break;
     }
 
