@@ -55,7 +55,7 @@ const PostScreen = () => {
   const savePost = useAppSelector((state) => state.user.userInfo?.savePost);
 
   const isNotDraftPost = useMemo(
-    () => postItem?.status !== STATUS_POST_ENUM.DRAFT,
+    () => String(postItem?.status) !== STATUS_POST_ENUM.DRAFT,
     [postItem?.status]
   );
 
