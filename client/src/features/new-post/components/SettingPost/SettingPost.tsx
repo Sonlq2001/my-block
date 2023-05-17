@@ -9,7 +9,7 @@ import { ReactComponent as IconChecked } from 'assets/images/icon-check.svg';
 import { ReactComponent as IconDropDown } from 'assets/images/icon-svg/icon-drop-down.svg';
 import Switch from 'components/atoms/Switch/Switch';
 import Button from 'components/atoms/Button/Button';
-import InputRadio from 'components/atoms/FormElement/InputRadio/InputRadio';
+import GroupInputRadio from 'components/atoms/FormElement/GroupInputRadio/GroupInputRadio';
 import { TypeInitForm } from '../../types/new-post.types';
 import { STATUS_POST } from '../../constants/new-post.constants';
 interface SettingPostProps {
@@ -145,7 +145,7 @@ const SettingPost: React.FC<SettingPostProps> = ({ setIsShowModalSetting }) => {
             <label htmlFor="" className={styles.settingLabel}>
               Chế độ bài đăng
             </label>
-            <InputRadio name="status" options={STATUS_POST} />
+            <GroupInputRadio name="status" options={STATUS_POST} />
           </div>
         </div>
       </div>

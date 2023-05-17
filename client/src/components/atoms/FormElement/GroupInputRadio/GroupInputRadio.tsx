@@ -1,15 +1,15 @@
-import { FC, InputHTMLAttributes } from 'react';
+import { FC, InputHTMLAttributes, memo } from 'react';
 import { Field, useFormikContext } from 'formik';
 import clsx from 'clsx';
 
-import styles from './InputRadio.module.scss';
+import styles from './GroupInputRadio.module.scss';
 
 type OptionsRadio = {
   label: string;
   value: string;
 };
 
-interface InputRadioProps extends InputHTMLAttributes<HTMLInputElement> {
+interface GroupInputRadioProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   id?: string;
   label?: string;
@@ -17,7 +17,7 @@ interface InputRadioProps extends InputHTMLAttributes<HTMLInputElement> {
   row?: boolean;
 }
 
-const InputRadio: FC<InputRadioProps> = ({
+const GroupInputRadio: FC<GroupInputRadioProps> = ({
   name,
   id,
   label,
@@ -63,4 +63,4 @@ const InputRadio: FC<InputRadioProps> = ({
   );
 };
 
-export default InputRadio;
+export default memo(GroupInputRadio);
