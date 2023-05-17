@@ -12,7 +12,7 @@ import SavePost from 'features/post/components/SavePost/SavePost';
 import { useAppSelector } from 'redux/store';
 import { useToggleLikePost } from 'hooks/useToggleLikePost';
 
-import { STATUS_POST } from 'features/new-post/new-post';
+import { STATUS_POST_ENUM } from 'features/new-post/new-post';
 
 interface HeaderInfoProps {
   existHeaderMain?: boolean;
@@ -23,7 +23,7 @@ const HeaderInfo: React.FC<HeaderInfoProps> = ({ existHeaderMain = false }) => {
 
   const titlePost = useAppSelector((state) => state.post.postDetail?.title);
   const isNotDraft = useAppSelector(
-    (state) => state.post.postDetail?.status !== STATUS_POST.DRAFT
+    (state) => String(state.post.postDetail?.status) !== STATUS_POST_ENUM.DRAFT
   );
 
   const avatarAuthPost = useAppSelector(

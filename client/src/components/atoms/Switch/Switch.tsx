@@ -1,5 +1,6 @@
 import { memo, useState, useEffect } from 'react';
 import { useFormikContext } from 'formik';
+import get from 'lodash.get';
 
 import styles from './Switch.module.scss';
 
@@ -8,8 +9,8 @@ interface SwitchProps {
 }
 
 const Switch: React.FC<SwitchProps> = ({ name, ...props }) => {
-  const { setFieldValue, values } = useFormikContext<any>();
-  const [checked, setChecked] = useState<boolean>(!!values[name]);
+  const { setFieldValue, values } = useFormikContext();
+  const [checked, setChecked] = useState<boolean>(!!get(values, name));
 
   useEffect(() => {
     setFieldValue(name, checked);

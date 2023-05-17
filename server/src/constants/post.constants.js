@@ -15,9 +15,11 @@ export const TYPE_SEARCH = {
   SAVE: "save",
   PUBLIC: "public",
   DRAFT: "draft",
+  PRIVATE: "private",
 };
 
 export const STATUS_POST = {
   PUBLIC: 1,
   DRAFT: 2,
+  PRIVATE: 3,
 };

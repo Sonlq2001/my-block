@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-import { NewPostPathEnums, STATUS_POST } from 'features/new-post/new-post';
+import { NewPostPathEnums, STATUS_POST_ENUM } from 'features/new-post/new-post';
 
 import styles from './ListMenuPost.module.scss';
 import IconEditor from 'assets/images/writer.png';
@@ -20,7 +20,7 @@ const ListMenuPost = () => {
   const postItem = useAppSelector((state) => state.post.postDetail);
   const userId = useAppSelector((state) => state.user.userInfo?._id);
   const isNotDraftPost = useMemo(
-    () => postItem?.status !== STATUS_POST.DRAFT,
+    () => String(postItem?.status) !== STATUS_POST_ENUM.DRAFT,
     [postItem?.status]
   );
 

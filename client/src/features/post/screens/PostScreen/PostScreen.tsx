@@ -28,7 +28,7 @@ import {
 import { usePostSocket } from './../../socket/post.socket';
 import { createNotify } from 'features/notify/notify';
 import { useDataToken } from 'hooks/hooks';
-import { STATUS_POST } from 'features/new-post/new-post';
+import { STATUS_POST_ENUM } from 'features/new-post/new-post';
 
 interface PostParams {
   slug: string;
@@ -55,7 +55,7 @@ const PostScreen = () => {
   const savePost = useAppSelector((state) => state.user.userInfo?.savePost);
 
   const isNotDraftPost = useMemo(
-    () => postItem?.status !== STATUS_POST.DRAFT,
+    () => String(postItem?.status) !== STATUS_POST_ENUM.DRAFT,
     [postItem?.status]
   );
 

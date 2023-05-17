@@ -27,8 +27,23 @@ export const MAX_SIZE_FILE = 2000000; // 2MB;
 
 export const FILES_ACCEPT = ['image/jpeg', 'image/jpg', 'image/png'];
 
-export enum STATUS_POST {
-  PUBLIC = 1,
-  DRAFT = 2,
-  PRIVATE = 3,
+export enum STATUS_POST_ENUM {
+  PUBLIC = '1',
+  DRAFT = '2',
+  PRIVATE = '3',
 }
+
+export const STATUS_POST = [
+  {
+    label: 'Công khai',
+    value: STATUS_POST_ENUM.PUBLIC,
+  },
+  {
+    label: 'Riêng tư',
+    value: STATUS_POST_ENUM.PRIVATE,
+  },
+  {
+    label: 'Lưu nháp',
+    value: STATUS_POST_ENUM.DRAFT,
+  },
+];

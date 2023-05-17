@@ -160,8 +160,16 @@ const ProfileScreen = () => {
                   </button>
                   <button
                     className={clsx(stylesCommon.navigationTabItem, {
-                      [stylesCommon.active]: queries.tab === TAB_PROFILE.ALONE,
+                      [stylesCommon.active]:
+                        queries.tab === TAB_PROFILE.PRIVATE,
                     })}
+                    onClick={() => {
+                      setQueries({
+                        ...queries,
+                        tab: TAB_PROFILE.PRIVATE,
+                        page: 1,
+                      });
+                    }}
                   >
                     Chỉ mình tôi
                   </button>

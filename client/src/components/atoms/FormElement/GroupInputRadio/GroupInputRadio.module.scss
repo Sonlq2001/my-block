@@ -1,0 +1,76 @@
+@import 'styles/variables';
+
+.boxRadio {
+  display: flex;
+  flex-direction: column;
+  .radio + .radio {
+    margin-top: 1.5rem;
+    margin-left: 0;
+  }
+  .labelRadio {
+    font-size: 1.6rem;
+  }
+}
+
+.labelGroupRadio {
+  font-size: 1.5rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+.rowRadio {
+  flex-direction: row;
+  .radio + .radio {
+    margin-left: 2rem;
+    margin-top: 0;
+  }
+}
+
+// styles custom radio
+.inputRadio:checked,
+.inputRadio:not(:checked) {
+  display: none;
+}
+.inputRadio:checked + label,
+.inputRadio:not(:checked) + label {
+  position: relative;
+  padding-left: 28px;
+  cursor: pointer;
+  line-height: 20px;
+  display: inline-block;
+  color: #666;
+}
+.inputRadio:checked + label:before,
+.inputRadio:not(:checked) + label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  border: 1px solid $gray3-color;
+  border-radius: 100%;
+  background: $white-color;
+}
+.inputRadio:checked + label:after,
+.inputRadio:not(:checked) + label:after {
+  content: '';
+  width: 12px;
+  height: 12px;
+  background: $blue2-color;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  border-radius: 100%;
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+.inputRadio:not(:checked) + label:after {
+  opacity: 0;
+  -webkit-transform: scale(0);
+  transform: scale(0);
+}
+.inputRadio:checked + label:after {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}

@@ -19,6 +19,9 @@ const TabContent: React.FC<TabContentProps> = ({ tab }) => {
   const postsDraftData = useAppSelector(
     (state) => state.profile.postsDraft.data
   );
+  const postsPrivateData = useAppSelector(
+    (state) => state.profile.postsPrivate.data
+  );
 
   return (
     <>
@@ -45,6 +48,15 @@ const TabContent: React.FC<TabContentProps> = ({ tab }) => {
           {postsDraftData &&
             postsDraftData.length > 0 &&
             postsDraftData.map((post) => (
+              <PostItemProfile key={post._id} post={post} />
+            ))}
+        </div>
+      )}
+      {tab === TAB_PROFILE.PRIVATE && (
+        <div className={styles.itemTab}>
+          {postsPrivateData &&
+            postsPrivateData.length > 0 &&
+            postsPrivateData.map((post) => (
               <PostItemProfile key={post._id} post={post} />
             ))}
         </div>
