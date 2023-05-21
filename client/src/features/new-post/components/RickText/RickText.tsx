@@ -1,4 +1,4 @@
-import { useState, memo } from 'react';
+import { useState } from 'react';
 
 import { useFormikContext, ErrorMessage } from 'formik';
 import clsx from 'clsx';
@@ -44,7 +44,7 @@ interface MenuEditorProps {
   editor: CoreEditor;
 }
 
-const MenuEditor: React.FC<MenuEditorProps> = memo(({ editor }) => {
+const MenuEditor: React.FC<MenuEditorProps> = ({ editor }) => {
   const [activeOption, setActiveOption] = useState<boolean>(false);
   return (
     <div className={styles.menuBar}>
@@ -264,7 +264,7 @@ const MenuEditor: React.FC<MenuEditorProps> = memo(({ editor }) => {
       </div>
     </div>
   );
-});
+};
 
 const RickText = () => {
   const { setFieldValue, setFieldError, initialValues } =
@@ -312,7 +312,9 @@ const RickText = () => {
   return (
     <div className={styles.rickText}>
       <div className={styles.bgRickText}>
+        {/* <BubbleMenu editor={editor}> */}
         <MenuEditor editor={editor} />
+        {/* </BubbleMenu> */}
       </div>
       <div className={styles.rickTextContent}>
         <div className={styles.rickTextContentInner}>
