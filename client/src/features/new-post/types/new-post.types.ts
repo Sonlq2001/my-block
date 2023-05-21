@@ -4,20 +4,13 @@ import { TopicType } from 'features/master-data/master-data';
 import { UserItem } from 'features/auth/auth';
 
 export interface PostType {
-  titleInside: string;
   content: string;
-  image: File | string;
-  titleOutside: string;
   description: string;
   tags: string[];
-  topic: string | TopicType;
-  authPost: string | UserItem;
   previewImage?: string;
   avatar?: {
     img: string;
   };
-  categoryId?: string;
-  status: string;
 }
 
 export interface PostItemType extends Omit<PostType, 'tags'> {
@@ -43,6 +36,7 @@ export interface PostItemType extends Omit<PostType, 'tags'> {
   excerpt: string;
   videoUrl?: string;
   format: number;
+  status: number;
 }
 
 export type PostHomeType = {
