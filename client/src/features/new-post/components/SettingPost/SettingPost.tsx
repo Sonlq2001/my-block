@@ -145,7 +145,7 @@ const SettingPost: React.FC<SettingPostProps> = ({ setIsShowModalSetting }) => {
             <label htmlFor="" className={styles.settingLabel}>
               Chế độ bài đăng
             </label>
-            <GroupInputRadio name="status" options={STATUS_POST} />
+            <GroupInputRadio name="status" options={STATUS_POST} row />
           </div>
         </div>
       </div>

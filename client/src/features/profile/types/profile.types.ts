@@ -42,4 +42,5 @@ export type TypePostUserDef = {
   totalLikes: number;
   totalComments: number;
   authPost: { name: string; avatar: string };
+  status: number;
 };

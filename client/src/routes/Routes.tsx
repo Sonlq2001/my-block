@@ -5,6 +5,8 @@ import { RouteItemDef } from './../types/routes.types';
 import DefaultLayout from './../layouts/DefaultLayout/DefaultLayout';
 import { LIST_ROUTES } from './routes.config';
 import { store } from './../redux/store';
+import { HomePathsEnum } from 'features/home/home';
+import { AuthPathsEnum } from 'features/auth/auth';
 
 const RouteWrapper: FC<RouteItemDef> = ({
   id,
@@ -19,11 +21,11 @@ const RouteWrapper: FC<RouteItemDef> = ({
   const RouteLayout: FC = layout || DefaultLayout;
 
   if (!auth && !isAuthRoute) {
-    return <Redirect key="AUTH_ROUTE" to="/login" />;
+    return <Redirect key="AUTH_ROUTE" to={AuthPathsEnum.LOGIN} />;
   }
 
   if (auth && isAuthRoute) {
-    return <Redirect key="ROOT_ROUTE" to="/" />;
+    return <Redirect key="ROOT_ROUTE" to={HomePathsEnum.ROOT} />;
   }
 
   const result = isExact ? true : false;

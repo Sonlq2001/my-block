@@ -264,6 +264,7 @@ export const getPostsUser = async (req, res) => {
                 format: 1,
                 "authPost.name": 1,
                 "authPost.avatar": 1,
+                status: 1,
               },
             },
             { $skip: skip },

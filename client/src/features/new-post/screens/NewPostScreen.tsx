@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { Formik, Form, ErrorMessage, FormikProps } from 'formik';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams, Redirect } from 'react-router-dom';
 import OutsideClickHandler from 'react-outside-click-handler';
 
 import styles from './NewPostScreen.module.scss';
@@ -39,6 +39,7 @@ import {
 import { convertPostEdit } from '../helpers/new-post.helpers';
 import ListMenuPost from 'components/atoms/ListMenuPost/ListMenuPost';
 import { NewPostPathEnums } from '../constants/new-post.paths';
+import { HomePathsEnum } from 'features/home/home';
 
 const NewPostScreen = () => {
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
@@ -170,6 +171,10 @@ const NewPostScreen = () => {
     );
   }
 
+  if (postDetail && postDetail.status !== Number(STATUS_POST_ENUM.DRAFT)) {
+    return <Redirect to={HomePathsEnum.ROOT} />;
+  }
+
   return (
     <div className={styles.wrapCreatePost}>
       <div className={styles.bgDeco}></div>
@@ -241,7 +246,9 @@ const NewPostScreen = () => {
                           onClick={() =>
                             setIsShowModalSetting(Boolean(errors.videoUrl))
                           }
-                          disabled={loading}
+                          disabled={
+                            loading || values.status === STATUS_POST_ENUM.DRAFT
+                          }
                         >
                           Xuất bản
                         </Button>
@@ -250,7 +257,9 @@ const NewPostScreen = () => {
                           onClick={() => handleSaveDraft(values)}
                           variant="default"
                           className={styles.btnSaveDraft}
-                          disabled={loading}
+                          disabled={
+                            loading || values.status !== STATUS_POST_ENUM.DRAFT
+                          }
                         >
                           Lưu nháp
                         </Button>
