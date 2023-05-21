@@ -312,9 +312,7 @@ const RickText = () => {
   return (
     <div className={styles.rickText}>
       <div className={styles.bgRickText}>
-        {/* <BubbleMenu editor={editor}> */}
         <MenuEditor editor={editor} />
-        {/* </BubbleMenu> */}
       </div>
       <div className={styles.rickTextContent}>
         <div className={styles.rickTextContentInner}>
