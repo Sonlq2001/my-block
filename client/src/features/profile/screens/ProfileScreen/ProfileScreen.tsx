@@ -102,7 +102,7 @@ const ProfileScreen = () => {
   }, [dispatch, queries.tab, queries.sort, keyDebounce]);
 
   return (
-    <div>
+    <>
       {isLoadingUser && <LoadingProfile />}
       {!isLoadingUser && profileUser && (
         <ProfileHeader coverPhoto={profileUser.coverPhoto}>
@@ -221,7 +221,7 @@ const ProfileScreen = () => {
 
           {/* list post */}
           {isLoadingPost ? (
-            <LoadingCardProfile count={4} />
+            <LoadingCardProfile count={8} />
           ) : (
             <TabContent tab={queries.tab} />
           )}
@@ -233,7 +233,7 @@ const ProfileScreen = () => {
           )}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
