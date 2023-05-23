@@ -171,12 +171,10 @@ const PostScreen = () => {
 
           <div className="container">
             <div className={styles.rowPostLeft}>
-              {postItem?.content && (
-                <div
-                  className="content-post"
-                  dangerouslySetInnerHTML={{ __html: postItem.content }}
-                />
-              )}
+              <div
+                className={'content-post'}
+                dangerouslySetInnerHTML={{ __html: postItem.content || '' }}
+              />
 
               <div className={styles.rowPostFooter}>
                 <div className={styles.rowPostTags}>
