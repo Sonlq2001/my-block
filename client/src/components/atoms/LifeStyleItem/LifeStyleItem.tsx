@@ -30,11 +30,9 @@ const LifeStyleItem: React.FC<LifeStyleItemProps> = ({ post }) => {
         </div>
 
         <div className={styles.itemBody}>
-          <div>
-            {post.topics.map((topic) => (
-              <ChipTag title={topic.name} key={topic.name} />
-            ))}
-          </div>
+          {post.topics.map((topic) => (
+            <ChipTag title={topic.name} key={topic.name} />
+          ))}
           <h3 className={styles.itemBodyTitle}>{post.title || ''}</h3>
           <p className={styles.itemBodyDes}>{post.excerpt || ''}</p>
         </div>
