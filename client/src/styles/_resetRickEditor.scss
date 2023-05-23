@@ -1,10 +1,12 @@
 @import './variables';
 
 // custom text editor
+.ProseMirror {
+  min-height: 50rem;
+}
 .ProseMirror,
 .content-post {
   outline: none;
-  min-height: 50rem;
 
   & > *:not(:first-child) {
     margin-top: 2.4rem;
