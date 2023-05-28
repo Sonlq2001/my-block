@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { Formik, Form, ErrorMessage, FormikProps } from 'formik';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useHistory, useParams, Redirect } from 'react-router-dom';
@@ -70,7 +70,7 @@ const NewPostScreen = () => {
     return convertPostEdit(postDetail);
   }, [postDetail]);
 
-  const checkRuleImage = (image: string | File) => {
+  const checkRuleImage = useCallback((image: string | File) => {
     let conditionImageType = false;
     let conditionImageSize = false;
     if (typeof image === 'string') {
@@ -83,7 +83,7 @@ const NewPostScreen = () => {
       conditionImageSize = image ? (image as File).size > MAX_SIZE_FILE : false;
     }
     return { conditionImageType, conditionImageSize };
-  };
+  }, []);
 
   const checkRulePost = () => {
     if (formikRef.current) {
@@ -171,7 +171,12 @@ const NewPostScreen = () => {
     );
   }
 
-  if (postDetail && postDetail.status !== Number(STATUS_POST_ENUM.DRAFT)) {
+  if (
+    postDetail &&
+    postDetail.status !== Number(STATUS_POST_ENUM.DRAFT) &&
+    window.location.pathname ===
+      NewPostPathEnums.EDIT.replace(':slug', postDetail.slug)
+  ) {
     return <Redirect to={HomePathsEnum.ROOT} />;
   }
 

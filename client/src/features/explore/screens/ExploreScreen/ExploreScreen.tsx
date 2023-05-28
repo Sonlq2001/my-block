@@ -84,10 +84,9 @@ const ExploreScreen = () => {
           </div>
         ) : (
           <div className={styles.wrapMasonry}>
-            {isLoading && (
+            {isLoading && !listPost ? (
               <LoadingExplore minWidth="20%" height="240px" count={7} />
-            )}
-            {!isLoading && (
+            ) : (
               <CustomInfiniteScroll
                 dataLength={listPost.length || 0}
                 hasMore={canLoadMore}
