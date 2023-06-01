@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { Formik, Form, FieldArray } from 'formik';
+import { useHistory } from 'react-router-dom';
 
 import TitleTabSetting from '../TitleTabSetting/TitleTabSetting';
 import InputFieldSocial from 'components/atoms/FormElement/InputFieldSocial/InputFieldSocial';
@@ -9,6 +10,7 @@ import { schemaSocialLink } from '../../helpers/profile-setting.helpers';
 import styles from './EditSocials.module.scss';
 import { patchUpdateUser } from '../../redux/profile.slice';
 import { useAppDispatch, useAppSelector } from 'redux/store';
+import { ProfilePathsEnum } from '../../constants/profile.paths';
 
 const SOCIALS = [
   {
@@ -39,6 +41,7 @@ const SOCIALS = [
 
 const EditSocials = () => {
   const dispatch = useAppDispatch();
+  const history = useHistory();
   const userInfo = useAppSelector((state) => state.user.userInfo);
 
   const initSocials = useMemo(() => {
@@ -73,7 +76,13 @@ const EditSocials = () => {
             patchUpdateUser({
               socials: socialLinks,
             })
-          ).finally(() => setSubmitting(false));
+          )
+            .then(() => {
+              history.push(
+                ProfilePathsEnum.PROFILE.replace(':userId', userInfo?._id || '')
+              );
+            })
+            .finally(() => setSubmitting(false));
         }}
         validationSchema={schemaSocialLink}
         enableReinitialize

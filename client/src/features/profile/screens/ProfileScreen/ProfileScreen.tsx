@@ -101,10 +101,20 @@ const ProfileScreen = () => {
     };
   }, [dispatch, queries.tab, queries.sort, keyDebounce]);
 
+  if (isLoadingUser) {
+    return (
+      <>
+        <LoadingProfile />
+        <div className={styles.loading}>
+          <LoadingCardProfile count={8} />
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
-      {isLoadingUser && <LoadingProfile />}
-      {!isLoadingUser && profileUser && (
+      {profileUser && (
         <ProfileHeader coverPhoto={profileUser.coverPhoto}>
           <ProfileContentHeader profileUser={profileUser} />
         </ProfileHeader>

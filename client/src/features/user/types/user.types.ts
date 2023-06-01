@@ -1,4 +1,4 @@
-import { SocialLink } from 'features/profile/profile';
+import { SocialDef } from 'features/profile/profile';
 
 export type UserInfoType = {
   _id: string;
@@ -10,7 +10,7 @@ export type UserInfoType = {
   savePost: string[];
   description: string;
   coverPhoto: string;
-  socials: SocialLink[];
+  socials: SocialDef[];
   following: string[];
   followers: string[];
 };
