@@ -8,6 +8,7 @@ export type ProfileUserInit = {
 };
 
 export type SocialLink = { name: string; link: string };
+export type SocialDef = SocialLink & { _id: string };
 
 export type RequestUpdateUser = {
   name?: string;

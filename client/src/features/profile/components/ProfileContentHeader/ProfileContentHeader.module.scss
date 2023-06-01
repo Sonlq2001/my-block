@@ -3,40 +3,54 @@
 .profileContentHeader {
   display: flex;
   align-items: center;
+  position: relative;
 
   .authAvatar {
-    border-radius: 50%;
+    border-radius: 2rem;
     overflow: hidden;
-    width: 14.4rem;
-    height: 14.4rem;
-
+    width: 17.6rem;
+    height: 17.6rem;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+      rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
     img {
       width: 100%;
       height: 100%;
+    }
+  }
+  .btnEditProfile {
+    position: absolute;
+    font-size: 1.4rem;
+    padding: 1rem 1.6rem;
+    border-radius: 1rem;
+    border: 1px solid $gray5-color;
+    color: $gray4-color;
+    top: 0;
+    right: 0;
+    font-weight: 600;
+    &:hover {
+      background-color: $gray2-color;
     }
   }
 }
 
 .authContent {
   margin-left: 3.2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-grow: 1;
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+  color: $gray4-color;
+  max-width: 70%;
 
   .authName {
     font-size: 3rem;
     line-height: 4rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     display: flex;
     align-items: center;
   }
 
-  .authDes {
-    font-size: 1.6rem;
-    line-height: 2.4rem;
-    color: $gray4-color;
-    max-width: 70%;
+  .authInfo {
+    font-size: 1.5rem;
+    color: $text-card-color;
   }
 
   .btnFlow {
@@ -58,13 +72,18 @@
       background: rgb(220, 6, 6);
     }
   }
-  .btnEditProfile {
-    font-size: 1.5rem;
-    padding: 1rem 1.6rem;
-    border-radius: 1rem;
-    border: 1px solid $gray5-color;
-    &:hover {
-      background-color: $gray2-color;
+
+  .listSocials {
+    display: flex;
+    align-items: center;
+    margin-top: 1.5rem;
+  }
+  .itemSocial {
+    img {
+      width: 3rem;
     }
+  }
+  .itemSocial + .itemSocial {
+    margin-left: 1rem;
   }
 }

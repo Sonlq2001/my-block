@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { Formik, Form, FormikHelpers } from 'formik';
 import isEqual from 'lodash.isequal';
 import { unwrapResult } from '@reduxjs/toolkit';
+import { useHistory } from 'react-router-dom';
 
 import styles from './EditProfile.module.scss';
 
@@ -18,10 +19,12 @@ import { ProfileUserInit } from '../../types/profile.types';
 import { upLoadImage } from 'helpers/uploadImage';
 import { patchUpdateUser } from '../../redux/profile.slice';
 import { updateAvatarUser } from 'features/user/user';
+import { ProfilePathsEnum } from '../../constants/profile.paths';
 
 const EditProfile = () => {
   const dispatch = useAppDispatch();
   const userInfo = useAppSelector((state) => state.user.userInfo);
+  const history = useHistory();
 
   const initUserInfo = useMemo(() => {
     return {
@@ -73,6 +76,7 @@ const EditProfile = () => {
       .then(unwrapResult)
       .then((res) => {
         dispatch(updateAvatarUser(res.data.avatar));
+        history.push(ProfilePathsEnum.PROFILE.replace(':userId', userInfo._id));
       })
       .finally(() => setSubmitting(false));
   };

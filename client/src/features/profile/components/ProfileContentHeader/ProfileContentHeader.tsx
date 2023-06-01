@@ -1,9 +1,8 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 
 import styles from './ProfileContentHeader.module.scss';
-
 import { UserInfoType } from 'features/user/user';
 import { ProfilePathsEnum } from '../../constants/profile.paths';
 import { useDataToken } from 'hooks/hooks';
@@ -13,6 +12,7 @@ import {
   patchFollowersUser,
   patchUnFollowersUser,
 } from '../../redux/profile.slice';
+import { SOCIALS } from './../../constants/profile.constants';
 
 interface ProfileContentHeaderProps {
   profileUser: UserInfoType;
@@ -49,6 +49,15 @@ const ProfileContentHeader: React.FC<ProfileContentHeaderProps> = ({
     setIsFollowing(!isFollowing);
   };
 
+  const socials = useMemo(() => {
+    return profileUser.socials.map((item) => ({
+      ...item,
+      image: SOCIALS[item.name],
+    }));
+  }, [profileUser.socials]);
+
+  console.log(socials);
+
   return (
     <div className={styles.profileContentHeader}>
       <div className={styles.authAvatar}>
@@ -56,29 +65,43 @@ const ProfileContentHeader: React.FC<ProfileContentHeaderProps> = ({
       </div>
 
       <div className={styles.authContent}>
-        <div className={styles.authDes}>
-          <h2 className={styles.authName}>
-            {profileUser.name}
+        <h2 className={styles.authName}>
+          {profileUser.name}
 
-            {userId !== profileUser._id && (
-              <button
-                className={clsx(styles.btnFlow)}
-                onClick={handleFollowOrUnFollow}
-                disabled={isLoading}
+          {userId !== profileUser._id && (
+            <button
+              className={clsx(styles.btnFlow)}
+              onClick={handleFollowOrUnFollow}
+              disabled={isLoading}
+            >
+              {isFollowing ? 'Hủy theo dõi' : 'Theo dõi'}
+            </button>
+          )}
+        </h2>
+        <p className={styles.authInfo}>{profileUser.description}</p>
+        <div className={styles.listSocials}>
+          {socials &&
+            socials.length > 0 &&
+            socials.map((social) => (
+              <a
+                href={social.link}
+                className={styles.itemSocial}
+                key={social._id}
+                target="_blank"
+                rel="noreferrer"
               >
-                {isFollowing ? 'Hủy theo dõi' : 'Theo dõi'}
-              </button>
-            )}
-          </h2>
-          <p>{profileUser.description}</p>
+                <img src={social.image} alt="" />
+              </a>
+            ))}
         </div>
-        <Link
-          to={ProfilePathsEnum.PROFILE_SETTING}
-          className={styles.btnEditProfile}
-        >
-          Sửa thông tin
-        </Link>
       </div>
+
+      <Link
+        to={ProfilePathsEnum.PROFILE_SETTING}
+        className={styles.btnEditProfile}
+      >
+        Chỉnh sửa
+      </Link>
     </div>
   );
 };

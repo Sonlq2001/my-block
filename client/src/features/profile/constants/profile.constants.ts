@@ -1,3 +1,8 @@
+import IconFacebook from 'assets/images/facebook.png';
+import IconYoutube from 'assets/images/youtube.png';
+import IconInstagram from 'assets/images/instagram.png';
+import IconGithub from 'assets/images/github-sign.png';
+
 export const LIST_SELECT = [
   {
     id: '-createdAt',
@@ -56,3 +61,10 @@ export enum TAB_PROFILE_EDIT {
 
 export const MAX_NAME = 25;
 export const MAX_DESCRIPTION = 600;
+
+export const SOCIALS: Record<string, string> = {
+  github: IconGithub,
+  instagram: IconInstagram,
+  facebook: IconFacebook,
+  youtube: IconYoutube,
+};
