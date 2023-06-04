@@ -52,6 +52,7 @@ const ExploreScreen = () => {
   useEffect(() => {
     return () => {
       dispatch(resetData());
+      setIsLoading(false);
     };
   }, [dispatch]);
 

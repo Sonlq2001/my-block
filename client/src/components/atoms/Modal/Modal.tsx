@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, memo } from 'react';
-import ReactDOM from 'react-dom';
+import React, { memo } from 'react';
 import clsx from 'clsx';
 
 import styles from './Modal.module.scss';
 import { ReactComponent as IconClose } from 'assets/images/icon-close.svg';
+import Portal from '../Portal/Portal';
 
 interface ModalProps {
   handleClose: () => void;
@@ -32,70 +32,50 @@ const Modal: React.FC<ModalProps> = ({
   disabled,
   hideBtnCancel = false,
 }) => {
-  const divRef = useRef(document.createElement('div'));
-
-  useEffect(() => {
-    const divElement = divRef.current;
-    if (open) {
-      document.body.style.overflow = 'hidden';
-      divElement.setAttribute('id', 'portal-modal');
-      document.body.appendChild(divElement);
-    } else {
-      divElement.remove();
-      document.body.style.overflow = 'initial';
-    }
-
-    return () => {
-      document.body.style.overflow = 'initial';
-      divElement.remove();
-    };
-  }, [open]);
-
-  return open && divRef.current
-    ? ReactDOM.createPortal(
-        <div className={styles.modal} onClick={handleClose}>
-          <div
-            className={clsx(
-              styles.modalContent,
-              medium && styles.modalMedium,
-              small && styles.modalSmall
-            )}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className={styles.modalHeader}>
-              <span className={styles.modalClose} onClick={handleClose}>
-                <IconClose />
-              </span>
-              <h3 className={styles.modalTitle}>{title}</h3>
-            </div>
-            <div className={styles.modalBody}>{children}</div>
-            <div className={styles.modalFooter}>
-              {!hideBtnCancel && (
-                <button
-                  className={clsx(styles.modalBtn, styles.modalBtnCancel)}
-                  onClick={handleClose}
-                >
-                  {textCancel}
-                </button>
-              )}
-
-              <button
-                className={clsx(
-                  styles.modalBtn,
-                  styles.modalBtnOK,
-                  disabled && styles.disabled
-                )}
-                onClick={handleSubmit}
-                disabled={disabled}
-              >
-                {textOk}
-              </button>
-            </div>
+  return (
+    <Portal open={open}>
+      <div className={styles.modal} onClick={handleClose}>
+        <div
+          className={clsx(
+            styles.modalContent,
+            medium && styles.modalMedium,
+            small && styles.modalSmall
+          )}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className={styles.modalHeader}>
+            <span className={styles.modalClose} onClick={handleClose}>
+              <IconClose />
+            </span>
+            <h3 className={styles.modalTitle}>{title}</h3>
           </div>
-        </div>,
-        divRef.current
-      )
-    : null;
+          <div className={styles.modalBody}>{children}</div>
+          <div className={styles.modalFooter}>
+            {!hideBtnCancel && (
+              <button
+                className={clsx(styles.modalBtn, styles.modalBtnCancel)}
+                onClick={handleClose}
+              >
+                {textCancel}
+              </button>
+            )}
+
+            <button
+              className={clsx(
+                styles.modalBtn,
+                styles.modalBtnOK,
+                disabled && styles.disabled
+              )}
+              onClick={handleSubmit}
+              disabled={disabled}
+            >
+              {textOk}
+            </button>
+          </div>
+        </div>
+      </div>
+    </Portal>
+  );
 };
 
 export default memo(Modal);

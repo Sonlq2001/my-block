@@ -31,10 +31,16 @@ const TrendingPosts = () => {
   const { postTrendingItem, listPost } = useMemo(
     () => ({
       postTrendingItem: listPostTrending?.list[0],
-      listPost: listPostTrending?.list.slice(1),
+      listPost: listPostTrending?.list.slice(1) || [],
     }),
     [listPostTrending?.list]
   );
+
+  useEffect(() => {
+    return () => {
+      setIsLoading(false);
+    };
+  }, []);
 
   return (
     <div className="container">
@@ -106,9 +112,10 @@ const TrendingPosts = () => {
             )}
 
             <div className={styles.postItemGroup}>
-              {listPost?.map((post) => (
-                <PostTrendingItem key={post._id} post={post} />
-              ))}
+              {listPost.length > 0 &&
+                listPost.map((post) => (
+                  <PostTrendingItem key={post._id} post={post} />
+                ))}
             </div>
           </div>
         </>
