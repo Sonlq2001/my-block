@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import { RouteItemDef } from './../types/routes.types';
@@ -8,34 +8,31 @@ import { store } from './../redux/store';
 import { HomePathsEnum } from 'features/home/home';
 import { AuthPathsEnum } from 'features/auth/auth';
 
-const RouteWrapper: FC<RouteItemDef> = ({
+const routeWrapper: FC<RouteItemDef> = ({
   id,
   component: Component,
   layout,
   path,
   isAuthRoute,
-  isExact,
+  isExact = false,
 }) => {
-  const auth = !!store.getState().auth.accessToken;
-
   const RouteLayout: FC = layout || DefaultLayout;
-
-  if (!auth && !isAuthRoute) {
-    return <Redirect key="AUTH_ROUTE" to={AuthPathsEnum.LOGIN} />;
-  }
-
-  if (auth && isAuthRoute) {
-    return <Redirect key="ROOT_ROUTE" to={HomePathsEnum.ROOT} />;
-  }
-
-  const result = isExact ? true : false;
 
   return (
     <Route
+      exact={isExact}
       key={id}
-      exact={result}
       path={path}
       render={(props): React.ReactElement => {
+        const auth = !!store.getState().auth.accessToken;
+        if (!auth && !isAuthRoute) {
+          return <Redirect key="AUTH_ROUTE" to={AuthPathsEnum.LOGIN} />;
+        }
+
+        if (auth && isAuthRoute) {
+          return <Redirect key="ROOT_ROUTE" to={HomePathsEnum.ROOT} />;
+        }
+
         const Content = (): JSX.Element => {
           return (
             <RouteLayout>
@@ -53,10 +50,10 @@ const Routes: FC = () => {
   return (
     <Switch>
       {LIST_ROUTES.map((route) => {
-        return <RouteWrapper key={route.id} {...route} />;
+        return routeWrapper(route);
       })}
     </Switch>
   );
 };
 
-export default Routes;
+export default memo(Routes);

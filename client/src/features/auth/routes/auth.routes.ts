@@ -9,7 +9,6 @@ const LOGIN_SCREEN: RouteItemDef = {
   path: AuthPathsEnum.LOGIN,
   component: LoginScreen,
   layout: BlankLayout,
-  isExact: true,
   isAuthRoute: true,
 };
 

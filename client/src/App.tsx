@@ -52,13 +52,13 @@ const App = () => {
   }, [dispatch, accessToken]);
 
   return (
-    <Suspense fallback={null}>
-      <Router>
+    <Router>
+      <Suspense fallback={null}>
         {accessToken && <SocketClient />}
         <ScrollToTop />
         <Routes />
-      </Router>
-    </Suspense>
+      </Suspense>
+    </Router>
   );
 };
 
