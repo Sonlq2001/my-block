@@ -369,15 +369,13 @@ export const getPostExplore = async (req, res) => {
                 "authPost.avatar": 1,
               },
             },
+            { $sort: { createdAt: -1 } },
             { $skip: skip },
             { $limit: perPage },
-            { $sort: { createdAt: -1 } },
           ],
           totalCount: [
             {
-              $match: {
-                title: { $regex: req.query.q },
-              },
+              $match: { $and: [objectQuery, { status: STATUS_POST.PUBLIC }] },
             },
             { $count: "count" },
           ],

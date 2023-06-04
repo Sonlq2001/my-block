@@ -35,6 +35,9 @@ const ExploreScreen = () => {
   );
 
   const fetchData = (dataQuery: DefaultParams, hasSearch = false) => {
+    if (isLoading) {
+      return;
+    }
     const newQuery = { ...dataQuery, hasSearch };
     setQuery(newQuery);
     dispatch(getExplores(newQuery));
