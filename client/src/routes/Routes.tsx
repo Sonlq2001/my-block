@@ -8,7 +8,7 @@ import { store } from './../redux/store';
 import { HomePathsEnum } from 'features/home/home';
 import { AuthPathsEnum } from 'features/auth/auth';
 
-export const routeWrapper: FC<RouteItemDef> = ({
+const routeWrapper: FC<RouteItemDef> = ({
   id,
   component: Component,
   layout,
