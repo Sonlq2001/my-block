@@ -20,15 +20,11 @@ import { useAppSelector, useAppDispatch } from 'redux/store';
 
 interface HeaderLayoutProps {
   showMenu?: boolean;
-  setPublish?: (value: boolean) => void;
-  isActive?: boolean;
   hideHeader?: boolean;
 }
 
 const HeaderLayout: React.FC<HeaderLayoutProps> = ({
   showMenu = false,
-  setPublish,
-  isActive,
   hideHeader = false,
 }) => {
   const [isToggleUser, setIsToggleUser] = useState<boolean>(false);
@@ -73,18 +69,7 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({
           )}
 
           <div className={styles.headerOption}>
-            {!showMenu && (
-              <button
-                className={clsx(styles.btnPublish, {
-                  [styles.activePublish]: !isActive,
-                })}
-                onClick={() => setPublish && setPublish(true)}
-              >
-                Xuất bản
-              </button>
-            )}
-
-            {showMenu && <SearchHeader />}
+            <SearchHeader />
 
             <NotiFicationHeader />
 

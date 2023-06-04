@@ -1,18 +1,16 @@
 import { useState } from 'react';
-import OutsideClickHandler from 'react-outside-click-handler';
-
 import clsx from 'clsx';
 
 import styles from './SearchHeader.module.scss';
+import Portal from 'components/atoms/Portal/Portal';
 
 const SearchHeader = () => {
   const [isToggleSearch, setIsToggleSearch] = useState<boolean>(false);
   return (
-    <button className="headerBtn" onClick={() => setIsToggleSearch(true)}>
-      <OutsideClickHandler
-        onOutsideClick={() => {
-          setIsToggleSearch(false);
-        }}
+    <>
+      <button
+        className="headerBtn"
+        onClick={() => setIsToggleSearch(!isToggleSearch)}
       >
         <div
           className={clsx(
@@ -23,21 +21,28 @@ const SearchHeader = () => {
           <span>
             <i className="las la-search" />
           </span>
+        </div>
+      </button>
+
+      <Portal open={isToggleSearch}>
+        <div
+          className={clsx(styles.searchOverlay, styles.active)}
+          onClick={() => setIsToggleSearch(false)}
+        >
           <div
-            className={clsx(styles.fromSearch, {
-              [styles.active]: isToggleSearch,
-            })}
+            className={styles.formSearch}
+            onClick={(e) => e.stopPropagation()}
           >
+            <i className={clsx('las la-search', styles.iconSearch)} />
             <input
               type="text"
-              autoFocus
-              placeholder="Tìm kiếm các bài viết..."
+              placeholder="Tìm kiếm bài viết"
               className={styles.inputSearch}
             />
           </div>
         </div>
-      </OutsideClickHandler>
-    </button>
+      </Portal>
+    </>
   );
 };
 
