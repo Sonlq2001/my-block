@@ -20,6 +20,7 @@ import { upLoadImage } from 'helpers/uploadImage';
 import { patchUpdateUser } from '../../redux/profile.slice';
 import { updateAvatarUser } from 'features/user/user';
 import { ProfilePathsEnum } from '../../constants/profile.paths';
+import { displaySnackbar } from 'redux/slices/snackbar.slice';
 
 const EditProfile = () => {
   const dispatch = useAppDispatch();
@@ -76,6 +77,7 @@ const EditProfile = () => {
       .then(unwrapResult)
       .then((res) => {
         dispatch(updateAvatarUser(res.data.avatar));
+        dispatch(displaySnackbar({ message: '12' }));
         history.push(ProfilePathsEnum.PROFILE.replace(':userId', userInfo._id));
       })
       .finally(() => setSubmitting(false));

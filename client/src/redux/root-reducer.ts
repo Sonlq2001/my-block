@@ -1,6 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
 import { commonReducer } from './slices/common.slice';
+import { snackbarReduce } from './slices/snackbar.slice';
 import { authReducer } from 'features/auth/redux/auth.slice';
 import { masterDataReducer } from 'features/master-data/master-data';
 import { exploreReducer } from 'features/explore/explore';
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   home: homeReducer,
   user: userReducer,
   chat: chatReducer,
+  snackbar: snackbarReduce,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
