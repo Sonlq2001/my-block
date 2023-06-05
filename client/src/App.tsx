@@ -9,6 +9,7 @@ import SocketClient from 'helpers/SocketClient';
 import { getNotifies } from 'features/notify/notify';
 import { getUserInfo } from 'features/user/user';
 import { store } from 'redux/store';
+import Snackbar from 'components/atoms/Snackbar/Snackbar';
 
 const Routes = lazy(() => import('./routes/Routes'));
 
@@ -55,6 +56,7 @@ const App = () => {
     <Router>
       <Suspense fallback={null}>
         {accessToken && <SocketClient />}
+        <Snackbar />
         <ScrollToTop />
         <Routes />
       </Suspense>

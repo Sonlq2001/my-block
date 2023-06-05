@@ -56,8 +56,6 @@ const ProfileContentHeader: React.FC<ProfileContentHeaderProps> = ({
     }));
   }, [profileUser.socials]);
 
-  console.log(socials);
-
   return (
     <div className={styles.profileContentHeader}>
       <div className={styles.authAvatar}>

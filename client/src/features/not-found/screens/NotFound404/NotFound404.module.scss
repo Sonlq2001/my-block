@@ -1,0 +1,14 @@
+@import 'styles/variables';
+
+.contentNotFound {
+  max-width: 768px;
+  width: 100%;
+  margin: 3rem auto auto auto;
+  text-align: center;
+  .textNotFound {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 5rem;
+    color: $gray7-color;
+  }
+}

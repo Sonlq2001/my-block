@@ -72,7 +72,7 @@ input:-webkit-autofill:active {
 }
 
 @import './styles/common.module';
-@import './styles/resetRickEditor';
+@import 'components/atoms/Snackbar/Snackbar.module.scss';
 
 .mr-fix {
   padding-top: 8rem;
