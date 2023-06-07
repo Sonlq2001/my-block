@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 
@@ -21,19 +21,22 @@ import Modal from 'components/atoms/Modal/Modal';
 import IconWarning from 'assets/images/warning.png';
 import { STATUS_POST_ENUM } from 'features/new-post/new-post';
 import { useAppDispatch } from 'redux/store';
-import { removePost } from 'features/post/post';
+import { removePost } from 'features/profile/profile';
 interface PostItemProfileProps {
   post: TypePostUserDef;
+  tab: string;
 }
 
-const PostItemProfile: React.FC<PostItemProfileProps> = ({ post }) => {
+const PostItemProfile: React.FC<PostItemProfileProps> = ({ post, tab }) => {
   const [toggle, setToggle] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
 
   const handleRemove = () => {
-    dispatch(removePost(post._id)).finally(() => setOpenModal(false));
+    dispatch(removePost({ postId: post._id, tab })).finally(() =>
+      setOpenModal(false)
+    );
   };
 
   return (
@@ -130,4 +133,4 @@ const PostItemProfile: React.FC<PostItemProfileProps> = ({ post }) => {
   );
 };
 
-export default PostItemProfile;
+export default memo(PostItemProfile);

@@ -30,7 +30,7 @@ const TabContent: React.FC<TabContentProps> = ({ tab }) => {
           {postsUserData &&
             postsUserData.length > 0 &&
             postsUserData.map((post) => (
-              <PostItemProfile key={post._id} post={post} />
+              <PostItemProfile key={post._id} post={post} tab={tab} />
             ))}
         </div>
       )}
@@ -39,7 +39,7 @@ const TabContent: React.FC<TabContentProps> = ({ tab }) => {
           {postsSavedData &&
             postsSavedData.length > 0 &&
             postsSavedData.map((post) => (
-              <PostItemProfile key={post._id} post={post} />
+              <PostItemProfile key={post._id} post={post} tab={tab} />
             ))}
         </div>
       )}
@@ -48,7 +48,7 @@ const TabContent: React.FC<TabContentProps> = ({ tab }) => {
           {postsDraftData &&
             postsDraftData.length > 0 &&
             postsDraftData.map((post) => (
-              <PostItemProfile key={post._id} post={post} />
+              <PostItemProfile key={post._id} post={post} tab={tab} />
             ))}
         </div>
       )}
@@ -57,7 +57,7 @@ const TabContent: React.FC<TabContentProps> = ({ tab }) => {
           {postsPrivateData &&
             postsPrivateData.length > 0 &&
             postsPrivateData.map((post) => (
-              <PostItemProfile key={post._id} post={post} />
+              <PostItemProfile key={post._id} post={post} tab={tab} />
             ))}
         </div>
       )}

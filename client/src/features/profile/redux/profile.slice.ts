@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { profileApi } from './../api/profile.api';
+import { postApi } from 'features/post/post';
 import {
   QueryParams,
   TypePostUser,
@@ -61,6 +62,18 @@ export const patchUnFollowersUser = createAsyncThunk<unknown, string>(
     } catch (error) {}
   }
 );
+
+export const removePost = createAsyncThunk<
+  unknown,
+  { postId: string; tab?: string }
+>(`profile/removePost`, async ({ postId, tab }, { rejectWithValue }) => {
+  try {
+    await postApi.removePostApi(postId);
+    return { postId, tab };
+  } catch (error: any) {
+    return rejectWithValue(error.response.msg);
+  }
+});
 
 interface ProfileSlice {
   profileUser: UserInfoType | null;
@@ -145,6 +158,32 @@ const profileSlice = createSlice({
             ...action.payload.data.data,
           ];
           state.postsPrivate.total = action.payload.data.total;
+          break;
+      }
+    },
+
+    // remove post
+    [removePost.fulfilled.type]: (state, action) => {
+      const { tab, postId } = action.payload;
+      const filterData = (data: TypePostUserDef[]) => {
+        return data.filter((item) => item._id !== postId);
+      };
+      switch (tab) {
+        case TAB_PROFILE.PUBLIC:
+          state.postsUser.data = filterData(state.postsUser.data);
+          state.postsUser.total = state.postsUser.total - 1;
+          break;
+        case TAB_PROFILE.SAVE:
+          state.postsSaved.data = filterData(state.postsSaved.data);
+          state.postsSaved.total = state.postsUser.total - 1;
+          break;
+        case TAB_PROFILE.DRAFT:
+          state.postsDraft.data = filterData(state.postsDraft.data);
+          state.postsDraft.total = state.postsUser.total - 1;
+          break;
+        default:
+          state.postsPrivate.data = filterData(state.postsPrivate.data);
+          state.postsPrivate.total = state.postsUser.total - 1;
           break;
       }
     },

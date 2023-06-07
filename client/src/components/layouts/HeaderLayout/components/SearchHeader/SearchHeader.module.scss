@@ -21,7 +21,7 @@
   .contentSearch {
     max-width: 51.2rem;
     width: 100%;
-    margin: 10rem auto auto auto;
+    margin: 4% auto auto;
     &.active {
       background-color: $white-color;
       border-radius: 1.6rem;
@@ -60,7 +60,7 @@
   background-color: $white-color;
   .listContentInner {
     overflow: auto;
-    height: 50rem;
+    height: 40rem;
   }
   .itemList {
     padding: 1.6rem;
