@@ -4,4 +4,5 @@ export type DefaultParams = {
   q: string;
   hasSearch?: boolean;
   tag?: string;
+  noSet?: boolean;
 };

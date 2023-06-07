@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import jwtDecode from 'jwt-decode';
 
 import { useAppSelector } from 'redux/store';
@@ -40,4 +40,15 @@ export const useDebounce = <T = unknown>(value: T, delay = 500) => {
   }, [value, delay]);
 
   return debounceValue;
+};
+
+export const useAutoFocus = (open?: boolean) => {
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [open]);
+
+  return inputRef;
 };

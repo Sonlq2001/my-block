@@ -18,17 +18,28 @@
   backdrop-filter: blur(8px);
   animation: FadeSearch 0.3s 1;
 
-  .formSearch {
-    position: relative;
+  .contentSearch {
     max-width: 51.2rem;
     width: 100%;
+    margin: 10rem auto auto auto;
+    &.active {
+      background-color: $white-color;
+      border-radius: 1.6rem;
+      overflow: hidden;
+    }
+  }
+  .formSearch {
+    position: relative;
     padding: 1.8rem 1.6rem 1.8rem 4.8rem;
     border-radius: 1.6rem;
     display: flex;
     align-items: center;
     background-color: $white-color;
-    margin: 15rem auto auto auto;
     animation: ScaleInput 0.3s 1;
+    &.active {
+      border-bottom: 1px solid $gray3-color;
+      border-radius: 0;
+    }
   }
   .iconSearch {
     position: absolute;
@@ -42,6 +53,51 @@
     border: none;
     font-size: 1.5rem;
     color: $text-color;
+  }
+}
+
+.listContent {
+  background-color: $white-color;
+  .listContentInner {
+    overflow: auto;
+    height: 50rem;
+  }
+  .itemList {
+    padding: 1.6rem;
+    display: flex;
+    align-items: center;
+    background-color: $white-color;
+    border-bottom: 1px solid $gray3-color;
+    &:hover {
+      background-color: $gray1-color;
+    }
+  }
+  .itemList:last-child {
+    border-bottom: none;
+  }
+  .itemAuth {
+    flex-grow: 1;
+    margin-right: 3rem;
+  }
+  .itemImg {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 1rem;
+  }
+  .itemTitle {
+    font-size: 1.6rem;
+    margin-top: 1.5rem;
+    line-height: 2.5rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    color: $text-color;
+  }
+  .footerSearch {
+    border-top: 1px solid $gray3-color;
+    padding: 1.6rem;
+    text-align: right;
   }
 }
 
@@ -60,5 +116,25 @@
   }
   to {
     transform: scale(1);
+  }
+}
+
+// loading / empty
+.contentEmpty {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .contentInner {
+    display: flex;
+    align-items: center;
+  }
+  .textContent {
+    font-size: 1.7rem;
+    margin-right: 1rem;
+    color: $gray7-color;
+  }
+  .imgEmpty {
+    width: 3rem;
   }
 }
