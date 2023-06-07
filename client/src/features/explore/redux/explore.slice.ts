@@ -6,10 +6,10 @@ import { DefaultParams } from './../types/explore.types';
 
 export const getExplores = createAsyncThunk(
   `explore/getExplores`,
-  async ({ hasSearch, ...rest }: DefaultParams, { rejectWithValue }) => {
+  async ({ hasSearch, noSet, ...rest }: DefaultParams, { rejectWithValue }) => {
     try {
       const res = await exploreApi.getExploreApi(rest);
-      return { list: res.data, hasSearch };
+      return { list: res.data, hasSearch, noSet };
     } catch (err: any) {
       return rejectWithValue(err.response.msg);
     }
@@ -51,7 +51,12 @@ const exploreSlice = createSlice({
       state.explore.isLoading = true;
     },
     [getExplores.fulfilled.type]: (state, action) => {
-      const { list, hasSearch } = action.payload;
+      const { list, hasSearch, noSet } = action.payload;
+
+      if (noSet) {
+        return;
+      }
+
       if (!state.explore.data || hasSearch) {
         state.explore.data = list.data;
       } else {
