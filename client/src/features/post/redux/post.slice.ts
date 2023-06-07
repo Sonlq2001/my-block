@@ -137,17 +137,6 @@ export const patchUnLikePost = createAsyncThunk<
   }
 });
 
-export const removePost = createAsyncThunk<unknown, string>(
-  `post/patchUnLikePost`,
-  async (postId, { rejectWithValue }) => {
-    try {
-      await postApi.removePostApi(postId);
-    } catch (error: any) {
-      return rejectWithValue(error.response.msg);
-    }
-  }
-);
-
 interface PostSlice {
   // post item
   postDetail: PostItemType | null;

@@ -11,7 +11,7 @@ import { useAppSelector } from 'redux/store';
 import Modal from 'components/atoms/Modal/Modal';
 import LazyImage from '../LazyImage/LazyImage';
 import { useAppDispatch } from 'redux/store';
-import { removePost } from 'features/post/post';
+import { removePost } from 'features/profile/profile';
 
 const ListMenuPost = () => {
   const dispatch = useAppDispatch();
@@ -26,7 +26,7 @@ const ListMenuPost = () => {
 
   const handleRemove = () => {
     if (postItem) {
-      dispatch(removePost(postItem._id)).then(() => {
+      dispatch(removePost({ postId: postItem._id })).then(() => {
         history.push(`/profile/${userId}?tab=draft&sort=-createdAt&q=`);
       });
     }
