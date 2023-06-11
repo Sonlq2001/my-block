@@ -78,9 +78,14 @@ const EditSocials = () => {
             })
           )
             .then(() => {
-              history.push(
-                ProfilePathsEnum.PROFILE.replace(':userId', userInfo?._id || '')
-              );
+              setTimeout(() => {
+                history.push(
+                  ProfilePathsEnum.PROFILE.replace(
+                    ':userId',
+                    userInfo?._id || ''
+                  )
+                );
+              }, 0);
             })
             .finally(() => setSubmitting(false));
         }}

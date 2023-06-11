@@ -1,3 +1,4 @@
+import { FC, memo } from 'react';
 import clsx from 'clsx';
 
 import styles from './ProfileSettingScreen.module.scss';
@@ -10,7 +11,7 @@ import { TAB_PROFILE_EDIT } from '../../constants/profile.constants';
 import { useAppDispatch } from 'redux/store';
 import { authLogout } from 'features/auth/auth';
 
-const EditProfileScreen = () => {
+const ProfileSettingScreen: FC = () => {
   const dispatch = useAppDispatch();
   const [currentTab, setCurrentTab] = useQueryState<{ tab: TAB_PROFILE_EDIT }>({
     initValue: { tab: TAB_PROFILE_EDIT.PROFILE },
@@ -83,4 +84,4 @@ const EditProfileScreen = () => {
   );
 };
 
-export default EditProfileScreen;
+export default memo(ProfileSettingScreen);

@@ -36,9 +36,9 @@ const userSlice = createSlice({
         };
       }
     },
-    updateAvatarUser: (state, action) => {
+    updateInfoUser: (state, action) => {
       if (state.userInfo) {
-        state.userInfo = { ...state.userInfo, avatar: action.payload };
+        state.userInfo = { ...state.userInfo, ...action.payload };
       }
     },
   },
@@ -59,4 +59,4 @@ const userSlice = createSlice({
 });
 
 export const userReducer = userSlice.reducer;
-export const { updatePostSavedUser, updateAvatarUser } = userSlice.actions;
+export const { updatePostSavedUser, updateInfoUser } = userSlice.actions;
