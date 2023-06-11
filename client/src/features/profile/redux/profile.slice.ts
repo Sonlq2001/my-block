@@ -9,7 +9,6 @@ import {
   RequestUpdateUser,
 } from './../types/profile.types';
 import { UserInfoType } from 'features/user/user';
-import { TAB_PROFILE } from '../constants/profile.constants';
 
 export const getProfile = createAsyncThunk(
   'getProfile',
@@ -25,11 +24,15 @@ export const getProfile = createAsyncThunk(
 
 export const getPostsUser = createAsyncThunk<
   { data: TypePostUser },
-  { userId: string; queries: QueryParams }
+  { userId: string; queries: QueryParams; isReset?: boolean }
 >('profile/getPostsUser', async (queryParams, { rejectWithValue }) => {
   try {
     const res = await profileApi.getPostsUserApi(queryParams);
-    return { data: res.data, tab: queryParams.queries.tab };
+    return {
+      data: res.data,
+      queryParams,
+      isReset: queryParams.isReset,
+    };
   } catch (error: any) {
     return rejectWithValue(error.response.data.msg);
   }
@@ -63,42 +66,28 @@ export const patchUnFollowersUser = createAsyncThunk<unknown, string>(
   }
 );
 
-export const removePost = createAsyncThunk<
-  unknown,
-  { postId: string; tab?: string }
->(`profile/removePost`, async ({ postId, tab }, { rejectWithValue }) => {
-  try {
-    await postApi.removePostApi(postId);
-    return { postId, tab };
-  } catch (error: any) {
-    return rejectWithValue(error.response.msg);
+export const removePost = createAsyncThunk<unknown, { postId: string }>(
+  `profile/removePost`,
+  async ({ postId }, { rejectWithValue }) => {
+    try {
+      await postApi.removePostApi(postId);
+      return null;
+    } catch (error: any) {
+      return rejectWithValue(error.response.msg);
+    }
   }
-});
+);
 
 interface ProfileSlice {
   profileUser: UserInfoType | null;
   isLoadingProfileUser: boolean;
   postsUser: { data: TypePostUserDef[]; total: number };
-  postsSaved: { data: TypePostUserDef[]; total: number };
-  postsDraft: { data: TypePostUserDef[]; total: number };
-  postsPrivate: { data: TypePostUserDef[]; total: number };
 }
 
 const initialState: ProfileSlice = {
-  // profile user
   profileUser: null,
   isLoadingProfileUser: false,
-  // post user
   postsUser: { data: [], total: 0 },
-
-  // post saved
-  postsSaved: { data: [], total: 0 },
-
-  // post draft
-  postsDraft: { data: [], total: 0 },
-
-  // post private
-  postsPrivate: { data: [], total: 0 },
 };
 
 const profileSlice = createSlice({
@@ -110,9 +99,6 @@ const profileSlice = createSlice({
     },
     resetPostUser: (state) => {
       state.postsUser = { data: [], total: 0 };
-      state.postsSaved = { data: [], total: 0 };
-      state.postsDraft = { data: [], total: 0 };
-      state.postsPrivate = { data: [], total: 0 };
     },
   },
   extraReducers: {
@@ -130,62 +116,21 @@ const profileSlice = createSlice({
 
     // get post user
     [getPostsUser.fulfilled.type]: (state, action) => {
-      switch (action.payload.tab) {
-        case TAB_PROFILE.PUBLIC:
-          state.postsUser.data = [
-            ...state.postsUser.data,
-            ...action.payload.data.data,
-          ];
-          state.postsUser.total = action.payload.data.total;
-          break;
-        case TAB_PROFILE.SAVE:
-          state.postsSaved.data = [
-            ...state.postsSaved.data,
-            ...action.payload.data.data,
-          ];
-          state.postsSaved.total = action.payload.data.total;
-          break;
-        case TAB_PROFILE.DRAFT:
-          state.postsDraft.data = [
-            ...state.postsDraft.data,
-            ...action.payload.data.data,
-          ];
-          state.postsDraft.total = action.payload.data.total;
-          break;
-        default:
-          state.postsPrivate.data = [
-            ...state.postsPrivate.data,
-            ...action.payload.data.data,
-          ];
-          state.postsPrivate.total = action.payload.data.total;
-          break;
-      }
-    },
+      const { data, queryParams } = action.payload;
+      const { queries } = queryParams;
 
-    // remove post
-    [removePost.fulfilled.type]: (state, action) => {
-      const { tab, postId } = action.payload;
-      const filterData = (data: TypePostUserDef[]) => {
-        return data.filter((item) => item._id !== postId);
+      const updateData = (
+        newData: TypePostUserDef[],
+        oldData: TypePostUserDef[],
+        total: number
+      ) => {
+        if (queries.page === 1) {
+          return { data: newData, total };
+        }
+        return { data: [...oldData, ...newData], total };
       };
-      switch (tab) {
-        case TAB_PROFILE.PUBLIC:
-          state.postsUser.data = filterData(state.postsUser.data);
-          state.postsUser.total = state.postsUser.total - 1;
-          break;
-        case TAB_PROFILE.SAVE:
-          state.postsSaved.data = filterData(state.postsSaved.data);
-          state.postsSaved.total = state.postsUser.total - 1;
-          break;
-        case TAB_PROFILE.DRAFT:
-          state.postsDraft.data = filterData(state.postsDraft.data);
-          state.postsDraft.total = state.postsUser.total - 1;
-          break;
-        default:
-          state.postsPrivate.data = filterData(state.postsPrivate.data);
-          state.postsPrivate.total = state.postsUser.total - 1;
-          break;
-      }
+
+      state.postsUser = updateData(data.data, state.postsUser.data, data.total);
     },
   },
 });

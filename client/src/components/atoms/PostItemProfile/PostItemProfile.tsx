@@ -21,22 +21,37 @@ import Modal from 'components/atoms/Modal/Modal';
 import IconWarning from 'assets/images/warning.png';
 import { STATUS_POST_ENUM } from 'features/new-post/new-post';
 import { useAppDispatch } from 'redux/store';
-import { removePost } from 'features/profile/profile';
+import { removePost, getPostsUser } from 'features/profile/profile';
+import { QueryParams } from 'features/profile/profile';
+import { displaySnackbar } from 'redux/slices/snackbar.slice';
+import { Message } from 'constants/message.constants';
 interface PostItemProfileProps {
   post: TypePostUserDef;
-  tab: string;
+  queries: QueryParams;
+  userId: string;
 }
 
-const PostItemProfile: React.FC<PostItemProfileProps> = ({ post, tab }) => {
+const PostItemProfile: React.FC<PostItemProfileProps> = ({
+  post,
+  queries,
+  userId,
+}) => {
   const [toggle, setToggle] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
 
   const handleRemove = () => {
-    dispatch(removePost({ postId: post._id, tab })).finally(() =>
-      setOpenModal(false)
-    );
+    dispatch(removePost({ postId: post._id })).then(async () => {
+      for (let i = 1; i <= queries.page; i++) {
+        await dispatch(
+          getPostsUser({ userId, queries: { ...queries, page: i } })
+        );
+      }
+
+      setOpenModal(false);
+      dispatch(displaySnackbar({ message: Message.POST_SUCCESS }));
+    });
   };
 
   return (
