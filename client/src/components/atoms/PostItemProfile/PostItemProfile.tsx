@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 
@@ -53,6 +53,13 @@ const PostItemProfile: React.FC<PostItemProfileProps> = ({
       dispatch(displaySnackbar({ message: Message.POST_SUCCESS }));
     });
   };
+
+  useEffect(() => {
+    return () => {
+      setToggle(false);
+      setOpenModal(false);
+    };
+  }, []);
 
   return (
     <>

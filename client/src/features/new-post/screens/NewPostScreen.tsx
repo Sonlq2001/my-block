@@ -109,7 +109,9 @@ const NewPostScreen = () => {
   };
 
   const redirectPostDetail = (slug: string) => {
-    history.push(PostPathsEnum.POST.replace(/:slug/, slug));
+    setTimeout(() => {
+      history.push(PostPathsEnum.POST.replace(/:slug/, slug));
+    }, 0);
   };
 
   const handleSubmitForm = async (values: TypeInitForm) => {

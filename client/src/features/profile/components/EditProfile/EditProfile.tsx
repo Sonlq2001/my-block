@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, FC } from 'react';
 import { Formik, Form, FormikHelpers } from 'formik';
 import isEqual from 'lodash.isequal';
 import { unwrapResult } from '@reduxjs/toolkit';
@@ -18,11 +18,12 @@ import { convertDataUpdateUserInfo } from 'features/profile/helpers/profile-sett
 import { ProfileUserInit } from '../../types/profile.types';
 import { upLoadImage } from 'helpers/uploadImage';
 import { patchUpdateUser } from '../../redux/profile.slice';
-import { updateAvatarUser } from 'features/user/user';
+import { updateInfoUser } from 'features/user/user';
 import { ProfilePathsEnum } from '../../constants/profile.paths';
 import { displaySnackbar } from 'redux/slices/snackbar.slice';
+import { Message } from 'constants/message.constants';
 
-const EditProfile = () => {
+const EditProfile: FC = () => {
   const dispatch = useAppDispatch();
   const userInfo = useAppSelector((state) => state.user.userInfo);
   const history = useHistory();
@@ -73,12 +74,17 @@ const EditProfile = () => {
       userInfo
     );
 
-    await dispatch(patchUpdateUser(dataUserUpdate))
+    dispatch(patchUpdateUser(dataUserUpdate))
       .then(unwrapResult)
       .then((res) => {
-        dispatch(updateAvatarUser(res.data.avatar));
-        dispatch(displaySnackbar({ message: '12' }));
-        history.push(ProfilePathsEnum.PROFILE.replace(':userId', userInfo._id));
+        dispatch(updateInfoUser(res.data));
+        dispatch(displaySnackbar({ message: Message.UPDATE_USER_SUCCESS }));
+
+        setTimeout(() => {
+          history.push(
+            ProfilePathsEnum.PROFILE.replace(':userId', userInfo._id)
+          );
+        }, 0);
       })
       .finally(() => setSubmitting(false));
   };
