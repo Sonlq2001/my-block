@@ -233,7 +233,7 @@ const ProfileScreen = () => {
           {isLoadingPost ? (
             <LoadingCardProfile count={8} />
           ) : (
-            <TabContent tab={queries.tab} />
+            <TabContent queries={queries} userId={userId} />
           )}
 
           {postsUserData.length < totalPostUser && (
