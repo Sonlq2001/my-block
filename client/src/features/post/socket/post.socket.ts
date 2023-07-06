@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { useAppSelector, useAppDispatch } from 'redux/store';
-import { updateComment, updateCommentReply } from './../redux/post.slice';
+import { updateComment } from './../redux/post.slice';
 
 export const usePostSocket = () => {
   const dispatch = useAppDispatch();
@@ -17,17 +17,6 @@ export const usePostSocket = () => {
 
     return () => {
       socketData.off('createComment');
-    };
-  }, [socketData, dispatch]);
-
-  useEffect(() => {
-    if (!socketData) return;
-    socketData.on('replyComment', (data) => {
-      dispatch(updateCommentReply(data));
-    });
-
-    return () => {
-      socketData.off('replyComment');
     };
   }, [socketData, dispatch]);
 };

@@ -1,28 +1,31 @@
 import mongoose from "mongoose";
 
-const commentSchema = new mongoose.Schema(
-	{
-		userComment: { type: mongoose.Types.ObjectId, ref: "users" },
-		postId: { type: mongoose.Types.ObjectId, ref: "posts" },
-		authPost: mongoose.Types.ObjectId,
-		content: {
-			type: String,
-			required: true,
-		},
-		replyComment: [{ type: mongoose.Types.ObjectId, ref: "comments" }],
-		replyUser: { type: mongoose.Types.ObjectId, ref: "users" },
-		rootComment: { type: mongoose.Types.ObjectId, ref: "comments" },
-		likes: [
-			{
-				type: mongoose.Types.ObjectId,
-				ref: "users",
-			},
-		],
-		reactionText: {
-			type: String,
-		},
-	},
-	{ timestamps: true }
+const schemeComment = new mongoose.Schema(
+  {
+    user: {
+      ref: "users",
+      type: mongoose.Types.ObjectId,
+    },
+    content: {
+      type: String,
+      required: true,
+    },
+    post: {
+      ref: "posts",
+      type: mongoose.Types.ObjectId,
+    },
+    parent_comment: {
+      ref: "new_comments",
+      type: mongoose.Types.ObjectId,
+      required: false,
+      set: (v) => (v ? v : null),
+    },
+    total_children: {
+      type: Number,
+      default: 0,
+    },
+  },
+  { timestamps: true }
 );
 
-export default mongoose.model("comments", commentSchema);
+export default mongoose.model("new_comments", schemeComment);

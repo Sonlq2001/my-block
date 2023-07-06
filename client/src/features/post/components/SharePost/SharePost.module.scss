@@ -1,8 +1,5 @@
-@import 'styles/variables';
-
-.groupShare {
-  padding-bottom: 3rem;
-  border-bottom: 1px solid $gray5-color;
+.btnShare {
+  line-height: 0 !important;
 }
 
 .itemShare + .itemShare {

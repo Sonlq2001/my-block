@@ -1,58 +1,55 @@
-import { useState } from 'react';
+import { useState, useCallback, memo } from 'react';
 import moment from 'moment';
 
 import ReactionComment from '../ReactionComment/ReactionComment';
 import InputComment from './../InputComment/InputComment';
-import { useAppDispatch, useAppSelector } from 'redux/store';
-import { postReplyComment } from 'features/post/post';
-import { createNotify } from 'features/notify/redux/notify.slice';
-import { useDataToken } from 'hooks/hooks';
+import { useAppDispatch } from 'redux/store';
 
+import { useDataToken } from 'hooks/hooks';
+import { CommentDef } from 'features/post/types/comment.types';
+import { postComment } from 'features/post/redux/post.slice';
 import styles from './FeedbackComment.module.scss';
-import { unwrapResult } from '@reduxjs/toolkit';
 
 interface FeedbackCommentProps {
-  comment: any;
+  comment: CommentDef;
   setShowMoreComment?: Function;
+  setOpenReplyComment?: (status: boolean) => void;
 }
 
 const FeedbackComment: React.FC<FeedbackCommentProps> = ({
   comment,
-  setShowMoreComment,
+  setOpenReplyComment,
 }) => {
   const dispatch = useAppDispatch();
-  const socketData = useAppSelector((state) => state.socket.socketData);
   const [isReply, setIsReply] = useState<boolean>(false);
-  const { name, avatar } = useDataToken();
+  const { _id } = useDataToken();
 
-  const handleReply = async (value: string) => {
-    setShowMoreComment && setShowMoreComment(true);
-    await dispatch(
-      postReplyComment({
-        content: value,
-        postId: comment.postId,
-        authPost: comment.authPost,
-        rootComment: comment.rootComment || comment._id,
-        replyUser: comment.userComment._id,
-      })
-    );
+  const handleReply = useCallback(
+    async (value: string) => {
+      if (!_id) return;
 
-    // dispatch notify
-    setTimeout(() => {
       dispatch(
-        createNotify({
-          text: `${name} đã trả lời bình luận của bạn.`,
+        postComment({
           content: value,
-          recipients: [comment.userComment._id],
-          image: avatar,
+          user: _id,
+          post: comment.post,
+          parent_comment: comment.parent_comment || comment._id,
         })
-      )
-        .then(unwrapResult)
-        .then(
-          (res) => socketData && socketData.emit('createNotify', res.resNotify)
-        );
-    }, 1000);
-  };
+      ).finally(() => {
+        if (setOpenReplyComment) {
+          setOpenReplyComment(true);
+        }
+      });
+    },
+    [
+      _id,
+      comment._id,
+      comment.parent_comment,
+      comment.post,
+      dispatch,
+      setOpenReplyComment,
+    ]
+  );
 
   return (
     <>
@@ -71,10 +68,12 @@ const FeedbackComment: React.FC<FeedbackCommentProps> = ({
           getValue={handleReply}
           setIsReply={setIsReply}
           isReply={isReply}
+          userTag={comment.user.name}
+          autoFocus
         />
       )}
     </>
   );
 };
 
-export default FeedbackComment;
+export default memo(FeedbackComment);

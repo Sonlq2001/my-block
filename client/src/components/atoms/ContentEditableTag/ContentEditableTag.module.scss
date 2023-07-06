@@ -1,3 +1,5 @@
+@import 'styles/variables';
+
 .contentEditable {
   outline: none;
 }
@@ -5,4 +7,6 @@
 [data-content]:empty::before {
   content: attr(data-content);
   cursor: text;
+  color: $text-card-color;
+  font-size: 1.4rem;
 }

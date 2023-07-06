@@ -1,166 +1,80 @@
 import mongoose from "mongoose";
 
-import Comment from "./../models/commentModel";
 import Post from "../models/postModel";
 
 import { pagination } from "../helpers/features.helpers";
 import { io } from "./../index";
-
-export const getComments = async (req, res) => {
-	try {
-		const { perPage, skip } = pagination(req);
-
-		const post = await Post.findOne({ slug: req.params.slug });
-
-		if (!post) {
-			return res.status(404).json({ message: "Post not found" });
-		}
-
-		const data = await Comment.aggregate([
-			{
-				$facet: {
-					totalData: [
-						{
-							$match: {
-								postId: mongoose.Types.ObjectId(post._id),
-								rootComment: { $exists: false },
-								replyUser: { $exists: false },
-							},
-						},
-						{
-							$lookup: {
-								from: "users",
-								localField: "userComment",
-								foreignField: "_id",
-								as: "userComment",
-							},
-						},
-						{ $unwind: "$userComment" },
-						{
-							$lookup: {
-								from: "comments",
-								let: { cm_id: "$replyComment" },
-								pipeline: [
-									{ $match: { $expr: { $in: ["$_id", "$$cm_id"] } } },
-									{
-										$lookup: {
-											from: "users",
-											localField: "userComment",
-											foreignField: "_id",
-											as: "userComment",
-										},
-									},
-									{ $unwind: "$userComment" },
-									{
-										$lookup: {
-											from: "users",
-											localField: "replyUser",
-											foreignField: "_id",
-											as: "replyUser",
-										},
-									},
-									{ $unwind: "$replyUser" },
-								],
-								as: "replyComment",
-							},
-						},
-						{
-							$project: {
-								"userComment.password": 0,
-								"replyComment.userComment.password": 0,
-								"replyComment.replyUser.password": 0,
-							},
-						},
-						{ $sort: { createdAt: -1 } },
-						{ $skip: skip },
-						{ $limit: perPage },
-					],
-					totalCount: [
-						{
-							$match: {
-								postId: mongoose.Types.ObjectId(post._id),
-								rootComment: { $exists: false },
-								replyUser: { $exists: false },
-							},
-						},
-						{ $count: "count" },
-					],
-				},
-			},
-		]);
-
-		const comments = data[0].totalData;
-		const count = data[0].totalCount[0]?.count;
-
-		return res.status(200).json({ comments, total: count });
-	} catch (error) {
-		return res.status(500).json({ msg: error.message });
-	}
-};
+import Comment from "../models/commentModel";
 
 export const createComment = async (req, res) => {
-	try {
-		const { postId, content, authPost, replyUser } = req.body;
-		const newComment = new Comment({
-			postId,
-			content,
-			authPost,
-			userComment: req.user._id,
-			replyUser,
-		});
+  try {
+    const { parent_comment } = req.body;
+    if (parent_comment) {
+      await Comment.findOneAndUpdate(
+        {
+          _id: req.body.parent_comment,
+        },
+        { $inc: { total_children: 1 } }
+      );
+    }
 
-		await newComment.save();
-		const dataComment = await newComment.populate({
-			path: "userComment",
-			select: "name email avatar",
-		});
-		io.to(postId).emit("createComment", dataComment);
-		return res.status(200).json({ dataComment });
-	} catch (error) {
-		return res.status(500).json({ msg: error.message });
-	}
+    const reqComment = {
+      post: req.body.post,
+      content: req.body.content,
+      parent_comment: req.body.parentComment || req.body.parent_comment,
+      user: req.body.user,
+    };
+    const commentModel = new Comment(reqComment);
+    await commentModel.save();
+    const dataComment = await commentModel.populate({
+      path: "user",
+      select: "_id name email avatar",
+      model: "users",
+    });
+    io.to(req.body.post).emit("createComment", dataComment);
+
+    return res.status(200).json({ data: dataComment });
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
 };
 
-export const replyComment = async (req, res) => {
-	try {
-		const { postId, content, authPost, rootComment, replyUser } = req.body;
+export const getComments = async (req, res) => {
+  try {
+    const { perPage, skip } = pagination(req);
 
-		const newComment = new Comment({
-			postId,
-			content,
-			authPost,
-			userComment: req.user._id,
-			rootComment,
-			replyUser,
-		});
+    const parent_comment = req.query.parent_comment;
+    const slug = req.query.slug;
 
-		// đẩy id comment reply vào trong mảng của comment root
-		await Comment.findOneAndUpdate(
-			{ _id: rootComment },
-			{ $push: { replyComment: newComment._id } }
-		);
+    if (!slug) {
+      return res.status(400).json({ message: "Not found" });
+    }
 
-		await newComment.save();
+    const postData = await Post.findOne({ slug });
 
-		const dataReplyComment = await newComment.populate({
-			path: "userComment replyUser",
-			select: "name email avatar",
-		});
-		io.to(postId).emit("replyComment", dataReplyComment);
-		return res.status(200).json({ dataReplyComment });
-	} catch (error) {
-		return res.status(500).json({ msg: error.message });
-	}
-};
+    if (!postData) {
+      return res.status(400).json({ message: "Not found" });
+    }
 
-export const reactionComment = async (req, res) => {
-	try {
-		await Comment.updateOne(
-			{ _id: req.body.commentReaction },
-			{ $addToSet: { likes: req.user._id }, reactionText: req.body.type }
-		);
-		return res.status(200).json({ msg: "like ok" });
-	} catch (error) {
-		return res.status(500).json({ msg: error.message });
-	}
+    const listData = await Comment.find({
+      post: postData._id,
+      parent_comment: parent_comment,
+    })
+      .populate({
+        path: "user",
+        select: "_id name email avatar",
+        model: "users",
+      })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(perPage);
+
+    const total = await Comment.find({
+      post: postData._id,
+    }).count();
+
+    return res.status(200).json({ data: listData, total });
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
 };
