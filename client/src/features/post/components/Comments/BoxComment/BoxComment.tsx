@@ -1,18 +1,30 @@
+import { FC, memo, ReactNode } from 'react';
+
 import styles from './BoxComment.module.scss';
 import FeedbackComment from './../FeedbackComment/FeedbackComment';
+import { CommentDef } from 'features/post/types/comment.types';
 interface BoxCommentProps {
-  comment: any;
+  children: ReactNode;
+  comment: CommentDef;
+  setOpenReplyComment: (status: boolean) => void;
 }
 
-const BoxComment: React.FC<BoxCommentProps> = ({ children, comment }) => {
+const BoxComment: FC<BoxCommentProps> = ({
+  children,
+  comment,
+  setOpenReplyComment,
+}) => {
   return (
     <div className={styles.boxComment}>
       <div className={styles.commentRoot}>
-        <div className={styles.userNameComment}>{comment.userComment.name}</div>
+        <div className={styles.userNameComment}>{comment.user.name}</div>
         <div className={styles.contentComment}>{comment.content}</div>
       </div>
 
-      <FeedbackComment comment={comment} />
+      <FeedbackComment
+        comment={comment}
+        setOpenReplyComment={setOpenReplyComment}
+      />
 
       {/* List reply comment */}
       {children}
@@ -20,4 +32,4 @@ const BoxComment: React.FC<BoxCommentProps> = ({ children, comment }) => {
   );
 };
 
-export default BoxComment;
+export default memo(BoxComment);

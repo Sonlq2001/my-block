@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import clsx from 'clsx';
 
 import styles from './InputComment.module.scss';
@@ -9,15 +9,23 @@ interface CommentsProps {
   getValue: (value: string) => void;
   isReply?: boolean;
   setIsReply?: (value: boolean) => void;
+  userTag?: string;
+  autoFocus?: boolean;
 }
 
 const InputComment: React.FC<CommentsProps> = ({
   getValue,
   isReply,
   setIsReply,
+  userTag,
+  autoFocus,
 }) => {
   const [isToggleComment, setIsToggleComment] = useState<boolean>(false);
-  const [valueComment, setValueComment] = useState<string>('');
+  const [valueComment, setValueComment] = useState<string>(
+    userTag
+      ? `<span class="${styles.userTag}" contentEditable="false" data-lexical-text="true" spellcheck="false">${userTag}</span><span data-lexical-text="true"> </span>`
+      : ''
+  );
 
   const handlePostComment = () => {
     if (!valueComment.trim()) return;
@@ -41,6 +49,23 @@ const InputComment: React.FC<CommentsProps> = ({
             data-content="Nội dung bình luận"
             className={styles.contentComment}
             onFocus={() => setIsToggleComment(true)}
+            autoFocus={autoFocus}
+            data-lexical-editor="true"
+            onKeyDown={(e) => {
+              if (e.keyCode === 8 && userTag) {
+                const elDiv = e.target as HTMLDivElement;
+                if (!elDiv) return;
+                if (!elDiv.textContent || !elDiv.childElementCount) return;
+
+                if (
+                  elDiv.childElementCount &&
+                  elDiv.textContent.startsWith(`${userTag}`) &&
+                  elDiv.textContent.length === userTag.length
+                ) {
+                  setValueComment('');
+                }
+              }
+            }}
           />
         </div>
 
@@ -71,4 +96,4 @@ const InputComment: React.FC<CommentsProps> = ({
   );
 };
 
-export default InputComment;
+export default memo(InputComment);

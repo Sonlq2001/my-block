@@ -2,13 +2,13 @@ import { AxiosResponse } from 'axios';
 
 import api from 'api/api';
 import { PostEndpointsEnum } from './../constants/post.endpoints';
-import { ParamsComment } from '../types/comment.types';
+import { ParamsComment, RequestComment } from '../types/comment.types';
 
 const getPostApi = (slug: string): Promise<AxiosResponse> => {
   return api.get(PostEndpointsEnum.GET_POST.replace(/:slug/, slug));
 };
 
-const postCommentApi = (comment: any): Promise<AxiosResponse> => {
+const postCommentApi = (comment: RequestComment): Promise<AxiosResponse> => {
   return api.post(PostEndpointsEnum.POST_COMMENT, comment);
 };
 
@@ -16,14 +16,16 @@ const getCommentApi = ({
   slug,
   page,
   perPage,
+  parentComment,
 }: ParamsComment): Promise<AxiosResponse> => {
-  return api.get(PostEndpointsEnum.GET_COMMENTS.replace(/:slug/, slug), {
-    params: { page, per_page: perPage },
+  return api.get(PostEndpointsEnum.GET_COMMENTS, {
+    params: {
+      slug,
+      parent_comment: parentComment || undefined,
+      page,
+      per_page: perPage,
+    },
   });
-};
-
-const postReplyCommentApi = (comment: any): Promise<AxiosResponse> => {
-  return api.post(PostEndpointsEnum.POST_REPLY_COMMENT, comment);
 };
 
 const patchReactionApi = (data: any): Promise<AxiosResponse> => {
@@ -68,7 +70,6 @@ export const postApi = {
   getPostApi,
   postCommentApi,
   getCommentApi,
-  postReplyCommentApi,
   patchReactionApi,
   patchViewPost,
   patchSavePost,
