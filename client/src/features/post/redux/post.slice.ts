@@ -170,16 +170,16 @@ const postSlice = createSlice({
           if (item._id === parent_comment) {
             return {
               ...item,
+              total_children: (item.total_children += 1),
               reply: [...(item?.reply ? item.reply : []), action.payload],
             };
           }
           return item;
         });
-        return;
+      } else {
+        state.comments.list = [action.payload, ...state.comments.list];
       }
-
-      state.comments.list = [action.payload, ...state.comments.list];
-      // state.comments.total = [action.payload, ...state.comments.list];
+      state.comments.total = state.comments.total += 1;
     },
     resetComments: (state) => {
       state.comments = {
