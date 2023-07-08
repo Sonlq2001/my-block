@@ -12,6 +12,10 @@ import { getComments, postComment } from '../../redux/post.slice';
 import styles from './ListComments.module.scss';
 import { useDataToken } from 'hooks/hooks';
 import { ParamsPaginate } from '../../types/comment.types';
+import {
+  DEFAULT_PER_PAGE_COMMENT,
+  DEFAULT_PAGE_COMMENT,
+} from '../../constants/post.constants';
 
 interface ListCommentsProps {
   postId: string;
@@ -23,8 +27,8 @@ const ListComments: FC<ListCommentsProps> = ({ postId, allowComment }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLoadingMoreCmt, setIsLoadingMoreCmt] = useState<boolean>(false);
   const [query, setQuery] = useState<ParamsPaginate>({
-    page: 1,
-    perPage: 4,
+    page: DEFAULT_PAGE_COMMENT,
+    perPage: DEFAULT_PER_PAGE_COMMENT,
   });
   const { slug } = useParams<PostParams>();
   const { _id } = useDataToken();
