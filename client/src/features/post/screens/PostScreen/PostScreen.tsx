@@ -77,7 +77,7 @@ const PostScreen: FC = () => {
   return (
     <>
       {postItem.format === FORMAT_POST_ID.STANDARD ? (
-        <PostHeader avatar={postItem?.avatar}>
+        <PostHeader avatar={postItem.avatar}>
           <PostContentHeader {...postItem} isNotDraftPost={isNotDraftPost} />
         </PostHeader>
       ) : (
@@ -93,8 +93,7 @@ const PostScreen: FC = () => {
 
           <div className={styles.rowPostFooter}>
             <div className={styles.rowPostTags}>
-              {postItem?.tags &&
-                postItem.tags.length > 0 &&
+              {postItem.tags.length > 0 &&
                 postItem.tags.map((tagItem) => (
                   <SidebarItemTag
                     tag={`#${tagItem.tag}`}

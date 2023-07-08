@@ -4,7 +4,7 @@ import styles from './PostHeader.module.scss';
 
 interface PostHeaderProps {
   children: ReactNode;
-  avatar?: { img: string; idImg: string };
+  avatar: { img: string; idImg: string };
 }
 
 const PostHeader: FC<PostHeaderProps> = ({ children, avatar }) => {
