@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import styles from './NavigationCarousel.module.scss';
 
@@ -23,4 +23,4 @@ const NavigationCarousel: React.FC<NavigationCarouselProps> = ({
   );
 };
 
-export default NavigationCarousel;
+export default memo(NavigationCarousel);

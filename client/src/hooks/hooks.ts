@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import jwtDecode from 'jwt-decode';
 
 import { useAppSelector } from 'redux/store';
@@ -51,4 +51,28 @@ export const useAutoFocus = (open?: boolean) => {
   }, [open]);
 
   return inputRef;
+};
+
+export const useDetectSCrollVertical = () => {
+  const [y, setY] = useState(document?.scrollingElement?.scrollHeight || 0);
+  const [scrollDirection, setScrollDirection] = useState<boolean>(false);
+
+  const handleNavigation = useCallback(() => {
+    if (y > window.scrollY) {
+      setScrollDirection(false);
+    } else if (y < window.scrollY) {
+      setScrollDirection(true);
+    }
+    setY(window.scrollY);
+  }, [y]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleNavigation);
+
+    return () => {
+      window.removeEventListener('scroll', handleNavigation);
+    };
+  }, [handleNavigation]);
+
+  return scrollDirection;
 };

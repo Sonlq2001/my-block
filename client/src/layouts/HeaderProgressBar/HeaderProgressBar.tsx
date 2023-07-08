@@ -1,16 +1,16 @@
-import React from 'react';
+import { FC } from 'react';
 
 import HeaderLayout from '../../components/layouts/HeaderLayout/HeaderLayout';
 import FooterLayout from '../../components/layouts/FooterLayout/FooterLayout';
 import HeaderInfo from 'components/atoms/HeaderInfo/HeaderInfo';
-import { useHideHeaderScroll } from 'hooks/useScrollHeader';
+import { useDetectSCrollVertical } from 'hooks/hooks';
 
-const HeaderProgressBar: React.FC = ({ children }) => {
-  const isHideHeader = useHideHeaderScroll();
+const HeaderProgressBar: FC = ({ children }) => {
+  const isScrollDown = useDetectSCrollVertical();
   return (
     <div id="app-layout">
-      <HeaderLayout showMenu hideHeader={isHideHeader} />
-      <HeaderInfo existHeaderMain={!isHideHeader} />
+      <HeaderLayout showMenu hideHeader={isScrollDown} />
+      <HeaderInfo existHeaderMain={!isScrollDown} />
       <div className="mr-fix">{children}</div>
       <FooterLayout />
     </div>

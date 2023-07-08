@@ -1,12 +1,13 @@
-import React from 'react';
+import { FC, memo, ReactNode } from 'react';
 
 import styles from './PostHeader.module.scss';
 
 interface PostHeaderProps {
-  avatar?: { img: string };
+  children: ReactNode;
+  avatar: { img: string; idImg: string };
 }
 
-const PostHeader: React.FC<PostHeaderProps> = ({ children, avatar }) => {
+const PostHeader: FC<PostHeaderProps> = ({ children, avatar }) => {
   return (
     <div className={styles.postHeader}>
       <div className="container">{children}</div>
@@ -24,4 +25,4 @@ const PostHeader: React.FC<PostHeaderProps> = ({ children, avatar }) => {
   );
 };
 
-export default PostHeader;
+export default memo(PostHeader);
