@@ -65,7 +65,7 @@ export const getComments = async (req, res) => {
         select: "_id name email avatar",
         model: "users",
       })
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: parent_comment ? 1 : -1 })
       .skip(skip)
       .limit(perPage);
 

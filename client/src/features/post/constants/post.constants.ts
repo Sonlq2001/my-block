@@ -11,3 +11,8 @@ export const REACTION_COMMENT = [
   { type: 'wow', icon: IconWow },
   { type: 'sad', icon: IconSad },
 ];
+
+export const DEFAULT_PER_PAGE_REPLY = 10;
+export const DEFAULT_PAGE_REPLY = 0;
+export const DEFAULT_PER_PAGE_COMMENT = 5;
+export const DEFAULT_PAGE_COMMENT = 1;

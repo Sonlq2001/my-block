@@ -171,7 +171,7 @@ const postSlice = createSlice({
             return {
               ...item,
               total_children: (item.total_children += 1),
-              reply: [...(item?.reply ? item.reply : []), action.payload],
+              reply: [...(item?.reply ?? []), action.payload],
             };
           }
           return item;
@@ -224,14 +224,22 @@ const postSlice = createSlice({
     },
 
     // get comment
-    [getComments.fulfilled.type]: (state, action) => {
+    [getComments.fulfilled.type]: (
+      state,
+      action: PayloadAction<ResponseComments>
+    ) => {
       const { data, parentComment } = action.payload;
       if (parentComment) {
         state.comments.list = state.comments.list.map((item) => {
           if (item._id === parentComment) {
             return {
               ...item,
-              reply: [...(item?.reply ? item.reply : []), ...data.data],
+              reply: [...(item?.reply ?? []), ...data.data].filter(
+                (obj, index, arr) => {
+                  // filter out the same data when just commenting and loading more data
+                  return index === arr.findIndex((o) => o._id === obj._id);
+                }
+              ),
             };
           }
           return item;

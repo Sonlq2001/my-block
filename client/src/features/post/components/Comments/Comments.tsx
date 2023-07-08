@@ -9,6 +9,11 @@ import { CommentReply } from '../../types/comment.types';
 import IconArrowDown from 'assets/images/arrow-line-down.png';
 import styles from './Comments.module.scss';
 import { ParamsPaginate } from '../../types/comment.types';
+import {
+  DEFAULT_PER_PAGE_REPLY,
+  DEFAULT_PAGE_REPLY,
+} from '../../constants/post.constants';
+
 interface CommentsProps {
   comment: CommentReply;
   fetchComments: (
@@ -22,10 +27,11 @@ const Comments: FC<CommentsProps> = ({ comment, fetchComments }) => {
   const [isLoadingMoreReply, setIsLoadingMoreReply] = useState<boolean>(false);
   const [openReplyComment, setOpenReplyComment] = useState<boolean>(false);
   const [query, setQuery] = useState<ParamsPaginate>({
-    page: 0,
-    perPage: 3,
+    page: DEFAULT_PAGE_REPLY,
+    perPage: DEFAULT_PER_PAGE_REPLY,
   });
 
+  // handle see reply comment
   const handleFetchRepComment = () => {
     if (comment.reply && comment.reply.length > 0) {
       setOpenReplyComment(!openReplyComment);
@@ -42,6 +48,7 @@ const Comments: FC<CommentsProps> = ({ comment, fetchComments }) => {
     });
   };
 
+  // handle fetch more reply comment
   const handleFetchMoreRepComment = () => {
     const newQuery = { ...query, page: query.page + 1 };
     setQuery(newQuery);
@@ -62,7 +69,12 @@ const Comments: FC<CommentsProps> = ({ comment, fetchComments }) => {
               className={styles.moreComment}
               onClick={handleFetchRepComment}
             >
-              <span>Xem {comment.total_children} câu trả lời</span>
+              <span>
+                {openReplyComment
+                  ? 'Ẩn câu trả lời'
+                  : `Xem ${comment.total_children} câu trả lời`}
+              </span>
+
               {isLoading ? (
                 <LoadingCircleDot />
               ) : (
@@ -108,6 +120,8 @@ const Comments: FC<CommentsProps> = ({ comment, fetchComments }) => {
                     );
                   })}
               </div>
+
+              {/* load more comment reply*/}
               {(comment?.reply ?? []).length < comment.total_children && (
                 <button
                   className={styles.moreComment}
