@@ -1,14 +1,14 @@
 import HeaderLayout from 'components/layouts/HeaderLayout/HeaderLayout';
 import FooterLayout from 'components/layouts/FooterLayout/FooterLayout';
 
-import { useHideHeaderScroll } from 'hooks/useScrollHeader';
+import { useDetectSCrollVertical } from 'hooks/hooks';
 
 const NewPostLayout: React.FC = ({ children }) => {
-  const isHideHeader = useHideHeaderScroll();
+  const isScrollDown = useDetectSCrollVertical();
 
   return (
     <>
-      <HeaderLayout showMenu hideHeader={isHideHeader} />
+      <HeaderLayout showMenu hideHeader={isScrollDown} />
       <div className="mr-fix">{children}</div>
       <FooterLayout />
     </>

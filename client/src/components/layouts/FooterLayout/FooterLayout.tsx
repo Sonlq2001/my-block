@@ -1,10 +1,10 @@
-import React from "react";
+import { FC } from 'react';
 
-import FooterColum from "./components/FooterColumn/FooterColumn";
-import FooterInfo from "./components/FooterInfo/FooterInfo";
-import styles from "./FooterLayout.module.scss";
+import FooterColum from './components/FooterColumn/FooterColumn';
+import FooterInfo from './components/FooterInfo/FooterInfo';
+import styles from './FooterLayout.module.scss';
 
-const FooterLayout: React.FC = () => {
+const FooterLayout: FC = () => {
   return (
     <div className={styles.footer}>
       <div className="container">

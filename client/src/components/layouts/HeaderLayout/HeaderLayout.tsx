@@ -41,7 +41,7 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({
   return (
     <div className={clsx(styles.header, hideHeader && styles.hideHeader)}>
       <header className="container-full">
-        <div className={clsx(styles.headerGroup)}>
+        <div className={styles.headerGroup}>
           <div className={styles.headerLogo}>
             <Link to="/">
               <img src={Logo} alt="logo" />
